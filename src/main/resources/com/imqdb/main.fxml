@@ -12,7 +12,7 @@
       <children>
       
           <Label fx:id="title" text="IMQDB" />
-         <ChoiceBox maxWidth="1.7976931348623157E308" />
+         <ChoiceBox fx:id="querySelector" maxWidth="1.7976931348623157E308" />
       </children>
    </HBox>
    <TabPane fx:id="paramTabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
