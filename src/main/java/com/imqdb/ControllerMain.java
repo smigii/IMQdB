@@ -6,7 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
-public class Controller {
+public class ControllerMain {
 	@FXML
 	private ChoiceBox<Query> querySelector;
 	@FXML
