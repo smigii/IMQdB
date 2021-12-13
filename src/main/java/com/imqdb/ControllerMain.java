@@ -6,11 +6,20 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
+import java.sql.*;
+
 public class ControllerMain {
 	@FXML
 	private ChoiceBox<Query> querySelector;
 	@FXML
 	private AnchorPane queryParamPane;
+
+	private Connection db;
+
+	public ControllerMain()
+	{
+		db = SqliteConnection.connect();
+	}
 
 	/*
 	Like a constructor, but called after everything is setup, put any component setup in here.
@@ -27,6 +36,7 @@ public class ControllerMain {
 
 		// Whenever selection changes, this method is called
 		querySelector.setOnAction(this::onQuerySelectionChanged);
+
 	}
 
 	public void onQuerySelectionChanged(ActionEvent event)
@@ -39,6 +49,18 @@ public class ControllerMain {
 	protected void onRunBtnClick()
 	{
 		System.out.println("TEST");
+		try {
+			PreparedStatement ps = db.prepareStatement("select * from genres");
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				System.out.println(rs.getString("genre") + rs.getString("genre_id"));
+			}
+			System.out.println("TEST");
+		}
+		catch(SQLException e) {
+			System.out.println(e.getMessage());
+		}
+
 	}
 
 	private void setQueryParamPane(Node n)

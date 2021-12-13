@@ -33,7 +33,7 @@
          </Button>
       </children>
    </HBox>
-   <TitledPane animated="false" collapsible="false" contentDisplay="RIGHT" minHeight="0.0" text="Query Parameters" textAlignment="CENTER">
+   <TitledPane contentDisplay="RIGHT" text="Query Parameters" textAlignment="CENTER">
       <content>
          <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
             <children>
@@ -42,11 +42,11 @@
          </VBox>
       </content>
    </TitledPane>
-   <TitledPane text="Results" VBox.vgrow="ALWAYS">
+   <TitledPane contentDisplay="CENTER" text="Results" VBox.vgrow="ALWAYS">
      <content>
-       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
             <children>
-               <TableView prefHeight="200.0" prefWidth="200.0">
+               <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                  <columns>
                    <TableColumn prefWidth="75.0" text="C1" />
                    <TableColumn prefWidth="75.0" text="C2" />
