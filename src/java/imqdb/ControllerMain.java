@@ -1,20 +1,23 @@
 package imqdb;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class ControllerMain {
-	@FXML
-	private ChoiceBox<Query> querySelector;
-	@FXML
-	private AnchorPane queryParamPane;
+	@FXML private ChoiceBox<Query> querySelector;
+	@FXML private AnchorPane queryParamPane;
+	@FXML private TableView<String[]> resultsTable;
 
-	private Connection db;
+	private final Connection db;
 
 	public ControllerMain()
 	{
@@ -32,32 +35,72 @@ public class ControllerMain {
 		// Query selector
 		querySelector.getItems().addAll(QueryFactory.generate());
 		querySelector.setValue(QueryFactory.dummy);
-		setQueryParamPane(QueryFactory.dummy.getFxml());
+		setQueryParamPane(QueryFactory.dummy.getNode());
 
 		// Whenever selection changes, this method is called
 		querySelector.setOnAction(this::onQuerySelectionChanged);
+
+		// Table
+		resultsTable.getColumns().clear();
 
 	}
 
 	public void onQuerySelectionChanged(ActionEvent event)
 	{
-		Node n = querySelector.getValue().getFxml();
+		Query currentQuery = querySelector.getValue();
+		Node n = currentQuery.getNode();
 		setQueryParamPane(n);
+		QueryBus.setController(currentQuery.getController());
 	}
 
 	@FXML
 	protected void onRunBtnClick()
 	{
-		System.out.println("TEST");
+		// TODO: make this work
+		if(!QueryBus.hasController())
+			return;
+
 		try {
-			PreparedStatement ps = db.prepareStatement("select * from genres");
-			ResultSet rs = ps.executeQuery();
-			while(rs.next()) {
-				System.out.println(rs.getString("genre") + rs.getString("genre_id"));
+			resultsTable.getColumns().clear();
+			ResultSet rs = QueryBus.getController().execute(db);
+
+			if (rs != null) {
+				ResultSetMetaData rsmd = rs.getMetaData();
+
+				int nCols = rsmd.getColumnCount();
+//				while(rs.next()) {
+//					String[] arr = new String[nCols];
+//					for(int i = 1; i <= nCols; i++){
+//						arr[i] = rs.getString(i);
+//					}
+//					resultsTable.getItems().add(arr);
+//				}
+
+				for(int i = 1; i <= nCols; i++){
+					String colName = rsmd.getColumnLabel(i);
+					TableColumn<String[], String> tc = new TableColumn<>(colName);
+					int finalI = i;
+//					tc.setCellValueFactory(x -> x[finalI]);
+					resultsTable.getColumns().add(tc);
+//					tc.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<String[], String>, ObservableValue<String>>() {
+//						@Override
+//						public ObservableValue<String> call(TableColumn.CellDataFeatures<String[], String> p) {
+//							String[] x = p.getValue();
+//							if (x != null && x.length>0) {
+//								return new SimpleStringProperty(x[0]);
+//							} else {
+//								return new SimpleStringProperty("<no name>");
+//							}
+//						}
+//					});
+				}
+
+
+
+				System.out.println("DONE");
 			}
-			System.out.println("TEST");
 		}
-		catch(SQLException e) {
+		catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
 

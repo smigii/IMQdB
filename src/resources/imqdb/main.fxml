@@ -46,7 +46,7 @@
      <content>
        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
             <children>
-               <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+               <TableView fx:id="resultsTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                  <columns>
                    <TableColumn prefWidth="75.0" text="C1" />
                    <TableColumn prefWidth="75.0" text="C2" />

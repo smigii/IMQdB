@@ -7,13 +7,16 @@ import java.io.IOException;
 public class Query {
 
 	private String name;
-	private Node fxml;
+	private QueryController controller;
+	private Node node;
 
 	public Query(String name, String fxmlPath)
 	{
 		this.name = name;
 		try {
-			this.fxml = FXMLLoader.load(getClass().getResource(fxmlPath));
+			FXMLLoader l = new FXMLLoader(getClass().getResource(fxmlPath));
+			this.node = l.load();
+			this.controller = l.<QueryController>getController();
 		}
 		catch(IOException e) {
 			// TODO: Handle this less shittely
@@ -26,9 +29,14 @@ public class Query {
 		return name;
 	}
 
-	public Node getFxml()
+	public Node getNode()
 	{
-		return fxml;
+		return node;
+	}
+
+	public QueryController getController()
+	{
+		return controller;
 	}
 
 	public String toString()
