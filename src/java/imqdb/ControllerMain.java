@@ -1,4 +1,4 @@
-package com.imqdb;
+package imqdb;
 
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;

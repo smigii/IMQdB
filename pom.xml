@@ -60,7 +60,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.imqdb/com.imqdb.App</mainClass>
+                            <mainClass>com.imqdb/imqdb.App</mainClass>
                         </configuration>
                     </execution>
                 </executions>
