@@ -1,0 +1,1 @@
+imdb.db file should go in src/resources/imqdb/

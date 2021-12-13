@@ -1,4 +1,4 @@
-package com.imqdb;
+package imqdb;
 
 public class ControllerQuery2 {
 }
