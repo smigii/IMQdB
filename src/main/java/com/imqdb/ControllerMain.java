@@ -21,8 +21,9 @@ public class ControllerMain {
 	public void initialize()
 	{
 		// Query selector
-//		querySelector.setValue("Select a query!");
 		querySelector.getItems().addAll(QueryFactory.generate());
+		querySelector.setValue(QueryFactory.dummy);
+		setQueryParamPane(QueryFactory.dummy.getFxml());
 
 		// Whenever selection changes, this method is called
 		querySelector.setOnAction(this::onQuerySelectionChanged);
@@ -30,15 +31,20 @@ public class ControllerMain {
 
 	public void onQuerySelectionChanged(ActionEvent event)
 	{
-		Node n = querySelector.getSelectionModel().getSelectedItem().getFxml();
-		queryParamPane.getChildren().clear();
-		queryParamPane.getChildren().add(n);
+		Node n = querySelector.getValue().getFxml();
+		setQueryParamPane(n);
 	}
 
 	@FXML
 	protected void onRunBtnClick()
 	{
 		System.out.println("TEST");
+	}
+
+	private void setQueryParamPane(Node n)
+	{
+		queryParamPane.getChildren().clear();
+		queryParamPane.getChildren().add(n);
 	}
 
 }

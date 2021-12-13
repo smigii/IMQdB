@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 public class QueryFactory {
 
+	public final static Query dummy = new Query(
+		"-- Select a query! --", "query_dummy.fxml"
+	);
+
 	public static ArrayList<Query> generate()
 	{
 		ArrayList<Query> queries = new ArrayList<Query>();
