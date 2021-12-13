@@ -1,42 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="637.0" prefWidth="617.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.imqdb.Controller">
+<VBox alignment="TOP_CENTER" prefHeight="637.0" prefWidth="617.0" spacing="20.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.imqdb.Controller">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-   <HBox fillHeight="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
+   <HBox alignment="CENTER_LEFT" fillHeight="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308">
       <children>
       
-          <Label fx:id="title" text="IMQDB" />
-         <ChoiceBox fx:id="querySelector" maxWidth="1.7976931348623157E308" />
+          <Label fx:id="title" text="IMQDB ">
+            <font>
+               <Font name="System Bold" size="26.0" />
+            </font></Label>
+         <ChoiceBox fx:id="querySelector" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" HBox.hgrow="ALWAYS">
+            <HBox.margin>
+               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </HBox.margin></ChoiceBox>
+          <Button fx:id="btn_run" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" onAction="#onRunBtnClick" text="Go!" textAlignment="CENTER">
+            <padding>
+               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding>
+            <HBox.margin>
+               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </HBox.margin>
+         </Button>
       </children>
    </HBox>
-   <TabPane fx:id="paramTabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
-     <tabs>
-       <Tab text="Query1">
-         <content>
-           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                  <children>
-                     <Label text="QUERY 1" />
-                  </children></AnchorPane>
-         </content>
-       </Tab>
-       <Tab text="Query2">
-         <content>
-           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                  <children>
-                     <Label text="QUERY NUMBER TWO" />
-                  </children></AnchorPane>
-         </content>
-       </Tab>
-     </tabs>
-   </TabPane>
-    <Button fx:id="btn_run" alignment="CENTER" maxWidth="1.7976931348623157E308" onAction="#onRunBtnClick" text="Go!" textAlignment="CENTER" />
-   <TitledPane animated="false" text="Results">
+   <TitledPane animated="false" collapsible="false" contentDisplay="RIGHT" minHeight="0.0" text="Query Parameters" textAlignment="CENTER">
+      <content>
+         <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+            <children>
+               <AnchorPane fx:id="queryParamPane" />
+            </children>
+         </VBox>
+      </content>
+   </TitledPane>
+   <TitledPane text="Results" VBox.vgrow="ALWAYS">
      <content>
        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
             <children>

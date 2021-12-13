@@ -2,18 +2,15 @@ package com.imqdb;
 
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.SingleSelectionModel;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.Tab;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 
 public class Controller {
 	@FXML
-	private TabPane paramTabPane;
+	private ChoiceBox<Query> querySelector;
 	@FXML
-	private ChoiceBox<String> querySelector;
-
-	private SingleSelectionModel<Tab> queryPaneSelectionModel;
+	private AnchorPane queryParamPane;
 
 	/*
 	Like a constructor, but called after everything is setup, put any component setup in here.
@@ -23,14 +20,9 @@ public class Controller {
 	@FXML
 	public void initialize()
 	{
-		// Tab Pane stuff
-		// Use this for setting active query pane
-		queryPaneSelectionModel = paramTabPane.getSelectionModel();
-
 		// Query selector
-		querySelector.setValue("Select a query!");
-		querySelector.getItems().add("Query 1");
-		querySelector.getItems().add("Query 2");
+//		querySelector.setValue("Select a query!");
+		querySelector.getItems().addAll(QueryFactory.generate());
 
 		// Whenever selection changes, this method is called
 		querySelector.setOnAction(this::onQuerySelectionChanged);
@@ -38,8 +30,9 @@ public class Controller {
 
 	public void onQuerySelectionChanged(ActionEvent event)
 	{
-		int queryIdx = querySelector.getSelectionModel().getSelectedIndex();
-		queryPaneSelectionModel.select(queryIdx);
+		Node n = querySelector.getSelectionModel().getSelectedItem().getFxml();
+		queryParamPane.getChildren().clear();
+		queryParamPane.getChildren().add(n);
 	}
 
 	@FXML
@@ -47,4 +40,5 @@ public class Controller {
 	{
 		System.out.println("TEST");
 	}
+
 }
