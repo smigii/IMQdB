@@ -9,7 +9,7 @@ public class QcGenres implements QueryController {
 	public ResultSet execute(Connection db)
 	{
 		try {
-			PreparedStatement ps = db.prepareStatement("select * from genres");
+			PreparedStatement ps = db.prepareStatement("select genre_id as Id, genre as Genre from genres");
 			ResultSet rs = ps.executeQuery();
 			return rs;
 		}

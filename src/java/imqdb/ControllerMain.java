@@ -74,7 +74,7 @@ public class ControllerMain {
 			List<String> columns = new ArrayList<>();
 
 			for(int i = 1; i <= nCols; i++){
-				columns.add(rsmd.getColumnName(i));
+				columns.add(rsmd.getColumnLabel(i));
 			}
 
 			while(rs.next()){
