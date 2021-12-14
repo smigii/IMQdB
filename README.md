@@ -6,7 +6,6 @@
 |SqliteConnection|Handles connecting to sqlite .db file|
 |Query|Holds some query metadata and gives us a reference to the queries controller object so that we can access it from ControllerMain|
 |QueryController (interface)|Forces implementation of an execute method, which should return the result set of an actual sql query|
-|QueryBus|Holds the reference to the query controller that is currently selected by the choice-box in ControllerMain|
 |QueryFactory|For creating all the queries at the start of the program|
 |Qc*|Classes that implement the QueryController interface and implement any query specific fxml logic, and the sql query itself|
 |DataResult|Wrapper for ResultSet, lets us store the result in the TableView|

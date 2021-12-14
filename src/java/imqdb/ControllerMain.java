@@ -52,18 +52,18 @@ public class ControllerMain {
 		Query currentQuery = querySelector.getValue();
 		Node n = currentQuery.getNode();
 		setQueryParamPane(n);
-		QueryBus.setController(currentQuery.getController());
 	}
 
 	@FXML
 	protected void onRunBtnClick()
 	{
-		if(!QueryBus.hasController())
+		QueryController activeController = querySelector.getValue().getController();
+		if(activeController == null)
 			return;
 
 		try {
 			resultsTable.getColumns().clear();
-			ResultSet rs = QueryBus.getController().execute(db);
+			ResultSet rs = activeController.execute(db);
 			// TODO: FIX
 			if(rs == null) return;
 

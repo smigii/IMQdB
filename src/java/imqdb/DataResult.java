@@ -31,3 +31,8 @@ public class DataResult {
 		return data ;
 	}
 }
+
+/*
+May the sun shine eternal on James_D
+https://stackoverflow.com/questions/42970625/javafx-create-a-dynamic-tableview-with-generic-types
+ */
