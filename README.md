@@ -9,6 +9,7 @@
 |QueryBus|Holds the reference to the query controller that is currently selected by the choice-box in ControllerMain|
 |QueryFactory|For creating all the queries at the start of the program|
 |Qc*|Classes that implement the QueryController interface and implement any query specific fxml logic, and the sql query itself|
+|DataResult|Wrapper for ResultSet, lets us store the result in the TableView|
 
 ## Creating a query
 

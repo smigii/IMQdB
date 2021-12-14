@@ -1,5 +1,6 @@
 package imqdb;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -11,11 +12,12 @@ import javafx.util.Callback;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ControllerMain {
 	@FXML private ChoiceBox<Query> querySelector;
 	@FXML private AnchorPane queryParamPane;
-	@FXML private TableView<String[]> resultsTable;
+	@FXML private TableView<List<String>> resultsTable;
 
 	private final Connection db;
 
@@ -56,49 +58,45 @@ public class ControllerMain {
 	@FXML
 	protected void onRunBtnClick()
 	{
-		// TODO: make this work
 		if(!QueryBus.hasController())
 			return;
 
 		try {
 			resultsTable.getColumns().clear();
 			ResultSet rs = QueryBus.getController().execute(db);
+			// TODO: FIX
+			if(rs == null) return;
 
-			if (rs != null) {
-				ResultSetMetaData rsmd = rs.getMetaData();
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int nCols = rsmd.getColumnCount();
 
-				int nCols = rsmd.getColumnCount();
-//				while(rs.next()) {
-//					String[] arr = new String[nCols];
-//					for(int i = 1; i <= nCols; i++){
-//						arr[i] = rs.getString(i);
-//					}
-//					resultsTable.getItems().add(arr);
-//				}
+			List<List<String>> data = new ArrayList<>();
+			List<String> columns = new ArrayList<>();
 
-				for(int i = 1; i <= nCols; i++){
-					String colName = rsmd.getColumnLabel(i);
-					TableColumn<String[], String> tc = new TableColumn<>(colName);
-					int finalI = i;
-//					tc.setCellValueFactory(x -> x[finalI]);
-					resultsTable.getColumns().add(tc);
-//					tc.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<String[], String>, ObservableValue<String>>() {
-//						@Override
-//						public ObservableValue<String> call(TableColumn.CellDataFeatures<String[], String> p) {
-//							String[] x = p.getValue();
-//							if (x != null && x.length>0) {
-//								return new SimpleStringProperty(x[0]);
-//							} else {
-//								return new SimpleStringProperty("<no name>");
-//							}
-//						}
-//					});
-				}
-
-
-
-				System.out.println("DONE");
+			for(int i = 1; i <= nCols; i++){
+				columns.add(rsmd.getColumnName(i));
 			}
+
+			while(rs.next()){
+				List<String> row = new ArrayList<>();
+				for(int i = 1; i <= nCols; i++){
+					row.add(rs.getString(i));
+				}
+				data.add(row);
+			}
+
+			DataResult result = new DataResult(columns, data);
+
+			for(int i = 0; i < result.getNumColumns(); i++){
+				TableColumn<List<String>, String> column = new TableColumn<>(result.getColumnName(i));
+				int colIdx = i;
+				column.setCellValueFactory(cellData ->
+					new SimpleObjectProperty<>(cellData.getValue().get(colIdx)));
+				resultsTable.getColumns().add(column);
+			}
+
+			resultsTable.getItems().setAll(result.getData());
+
 		}
 		catch (SQLException e) {
 			System.out.println(e.getMessage());
