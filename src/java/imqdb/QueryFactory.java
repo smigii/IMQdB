@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class QueryFactory {
 
 	public final static Query dummy = new Query(
-		"-- Select a query! --", "q_dummy.fxml"
+		"~~ Select a query! ~~", "q_dummy.fxml"
 	);
 
 	public static ArrayList<Query> generate()
@@ -21,7 +21,7 @@ public class QueryFactory {
 		);
 
 		queries.add(
-			new Query("Highest USA Gross Income by Year", "q_gross_by_year.fxml")
+			new Query("Highest Gross Income by Year", "q_gross_by_year.fxml")
 		);
 
 		return queries;

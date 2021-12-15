@@ -37,5 +37,19 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </HBox.margin>
       </VBox>
+      <VBox alignment="CENTER_LEFT">
+         <children>
+            <RadioButton fx:id="radioDomestic" mnemonicParsing="false" text="US and Canada">
+               <toggleGroup>
+                  <ToggleGroup fx:id="grossGroup"/>
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="radioWorldwide" mnemonicParsing="false" text="Worldwide">
+               <toggleGroup>
+                  <fx:reference source="grossGroup"/>
+               </toggleGroup>
+            </RadioButton>
+         </children>
+      </VBox>
    </children>
 </HBox>
