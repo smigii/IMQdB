@@ -24,6 +24,10 @@ public class QueryFactory {
 			new Query("Highest Gross Income by Year", "q_gross_by_year.fxml")
 		);
 
+		queries.add(
+			new Query("Billion Dollar Club", "q_billion_club.fxml")
+		);
+
 		return queries;
 	}
 
