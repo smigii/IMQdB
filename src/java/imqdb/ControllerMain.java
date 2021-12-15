@@ -14,7 +14,7 @@ import java.util.List;
 public class ControllerMain {
 	@FXML private ChoiceBox<Query> querySelector;
 	@FXML private AnchorPane queryParamPane;
-	@FXML private TableView<List<String>> resultsTable;
+	@FXML private TableView<List<Object>> resultsTable;
 
 	private final Connection db;
 
@@ -67,7 +67,7 @@ public class ControllerMain {
 			ResultSetMetaData rsmd = rs.getMetaData();
 			int nCols = rsmd.getColumnCount();
 
-			List<List<String>> data = new ArrayList<>();
+			List<List<Object>> data = new ArrayList<>();
 			List<String> columns = new ArrayList<>();
 
 			for(int i = 1; i <= nCols; i++){
@@ -75,9 +75,9 @@ public class ControllerMain {
 			}
 
 			while(rs.next()){
-				List<String> row = new ArrayList<>();
+				List<Object> row = new ArrayList<>();
 				for(int i = 1; i <= nCols; i++){
-					row.add(rs.getString(i));
+					row.add(rs.getObject(i));
 				}
 				data.add(row);
 			}
@@ -85,8 +85,9 @@ public class ControllerMain {
 			DataResult result = new DataResult(columns, data);
 
 			for(int i = 0; i < result.getNumColumns(); i++){
-				TableColumn<List<String>, String> column = new TableColumn<>(result.getColumnName(i));
+//				int colType = rsmd.getColumnType(i);
 				int colIdx = i;
+				TableColumn<List<Object>, Object> column = new TableColumn<>(result.getColumnName(i));
 				column.setCellValueFactory(cellData ->
 					new SimpleObjectProperty<>(cellData.getValue().get(colIdx)));
 				resultsTable.getColumns().add(column);

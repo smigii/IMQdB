@@ -4,9 +4,9 @@ import java.util.List;
 
 public class DataResult {
 	private final List<String> columnNames ;
-	private final List<List<String>> data ;
+	private final List<List<Object>> data ;
 
-	public DataResult(List<String> columnNames, List<List<String>> data) {
+	public DataResult(List<String> columnNames, List<List<Object>> data) {
 		this.columnNames = columnNames ;
 		this.data = data ;
 	}
@@ -27,7 +27,7 @@ public class DataResult {
 		return data.get(row).get(column);
 	}
 
-	public List<List<String>> getData() {
+	public List<List<Object>> getData() {
 		return data ;
 	}
 }
