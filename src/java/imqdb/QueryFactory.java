@@ -20,6 +20,10 @@ public class QueryFactory {
 			new Query("Select all names", "q_names.fxml")
 		);
 
+		queries.add(
+			new Query("Highest USA Gross Income by Year", "q_gross_by_year.fxml")
+		);
+
 		return queries;
 	}
 

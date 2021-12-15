@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="imqdb.QcGrossByYear">
+   <children>
+      <VBox>
+         <children>
+            <Label text="Genre" />
+            <ChoiceBox fx:id="genreBox" />
+         </children>
+         <HBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </HBox.margin>
+      </VBox>
+      <VBox>
+         <Label text="Min Year" />
+         <Spinner fx:id="minYear" editable="true" maxWidth="75.0" BorderPane.alignment="CENTER">
+            <valueFactory>
+               <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1" initialValue="2010" max="2099" min="1900" />
+            </valueFactory>
+         </Spinner>
+         <HBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </HBox.margin>
+      </VBox>
+      <VBox>
+         <Label text="Max Year" />
+         <Spinner fx:id="maxYear" editable="true" maxWidth="75.0" BorderPane.alignment="CENTER">
+            <valueFactory>
+               <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1" initialValue="2020" max="2099" min="1900" />
+            </valueFactory>
+         </Spinner>
+         <HBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </HBox.margin>
+      </VBox>
+   </children>
+</HBox>

@@ -14,18 +14,12 @@ public class QcNames implements QueryController {
 	Spinner<Integer> limitSpinner;
 
 	@Override
-	public ResultSet execute(Connection db)
+	public ResultSet execute(Connection db) throws SQLException
 	{
-		try {
-			int limit = limitSpinner.getValue();
-			PreparedStatement ps = db.prepareStatement("select name from actor order by imdb_name_id limit " + limit);
-			ResultSet rs = ps.executeQuery();
-			return rs;
-		}
-		catch(SQLException e) {
-			System.out.println(e.getMessage());
-			return null;
-		}
+		int limit = limitSpinner.getValue();
+		PreparedStatement ps = db.prepareStatement("select name from actor order by imdb_name_id limit " + limit);
+		ResultSet rs = ps.executeQuery();
+		return rs;
 	}
 
 }
