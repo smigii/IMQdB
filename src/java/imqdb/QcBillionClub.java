@@ -36,15 +36,20 @@ public class QcBillionClub implements QueryController {
 		String titleSection = "";
 		String titleSelection = titleBox.getValue();
 		if(!titleSelection.equals("Any")) {
-			titleSection = "and titles.title = \"" + titleSelection + "\"";
+			titleSection = "where titles.title = \"" + titleSelection + "\"";
 		}
 
 		PreparedStatement ps = db.prepareStatement(
-			"select artist.name as Name, titles.title as \"Artist Job\", movies.original_title as Title, movies.year as Year, movies.worldwide_gross_income as \"Worldwide Gross\"\n" +
-				"from title_principals left join titles on title_principals.title_id = titles.title_id\n" +
+			"select\n" +
+				"artist.name as Name,\n" +
+				"titles.title as \"Artist Job\",\n" +
+				"billion_dollar_movies.original_title as Title,\n" +
+				"billion_dollar_movies.year as Year,\n" +
+				"billion_dollar_movies.worldwide_gross_income as \"Worldwide Gross\"\n" +
+				"from billion_dollar_movies\n" +
+				"left join title_principals on billion_dollar_movies.imdb_title_id = title_principals.imdb_title_id\n" +
 				"left join artist on title_principals.imdb_name_id = artist.imdb_name_id\n" +
-				"left join movies on title_principals.imdb_title_id = movies.imdb_title_id\n" +
-				"where movies.worldwide_gross_income >= 1000000000 " + titleSection
+				"left join titles on title_principals.title_id = titles.title_id " + titleSection
 		);
 
 		return ps.executeQuery();
