@@ -17,7 +17,7 @@ public class QcNames implements QueryController {
 	public ResultSet execute(Connection db) throws SQLException
 	{
 		int limit = limitSpinner.getValue();
-		PreparedStatement ps = db.prepareStatement("select name from actor order by imdb_name_id limit " + limit);
+		PreparedStatement ps = db.prepareStatement("select name from artist order by imdb_name_id limit " + limit);
 		ResultSet rs = ps.executeQuery();
 		return rs;
 	}
