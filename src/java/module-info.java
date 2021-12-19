@@ -7,4 +7,6 @@ module com.imqdb {
 
 	exports imqdb;
 	opens imqdb to javafx.fxml;
+	exports imqdb.qc;
+	opens imqdb.qc to javafx.fxml;
 }

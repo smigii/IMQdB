@@ -1,5 +1,6 @@
-package imqdb;
+package imqdb.qc;
 
+import imqdb.QueryController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Spinner;
 

@@ -1,4 +1,6 @@
-package imqdb;
+package imqdb.qc;
+
+import imqdb.QueryController;
 
 import java.sql.*;
 
