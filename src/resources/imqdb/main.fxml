@@ -5,42 +5,61 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="TOP_CENTER" prefHeight="637.0" prefWidth="617.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="imqdb.ControllerMain">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
-   <HBox alignment="CENTER_LEFT" fillHeight="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308">
-      <children>
-      
-          <Label fx:id="title" text="IMQDB ">
-            <font>
-               <Font name="System Bold" size="26.0" />
-            </font>
-            <HBox.margin>
-               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-            </HBox.margin></Label>
-         <ChoiceBox fx:id="querySelector" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" HBox.hgrow="ALWAYS">
-            <HBox.margin>
-               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-            </HBox.margin></ChoiceBox>
-          <Button fx:id="btn_run" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" onAction="#onRunBtnClick" text="Go!" textAlignment="CENTER">
-            <padding>
-               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-            </padding>
-            <HBox.margin>
-               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-            </HBox.margin>
-         </Button>
-      </children>
-   </HBox>
-   <TitledPane contentDisplay="RIGHT" text="Query Parameters" textAlignment="CENTER">
-      <content>
-         <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+<SplitPane dividerPositions="0.5" minWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="imqdb.ControllerMain">
+   <items>
+      <VBox fx:id="mainVbox" alignment="TOP_CENTER" spacing="20.0">
+          <padding>
+              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+          </padding>
+         <HBox alignment="CENTER_LEFT" fillHeight="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308">
             <children>
-               <AnchorPane fx:id="queryParamPane" />
+            
+                <Label fx:id="title" text="IMQDB ">
+                  <font>
+                     <Font name="System Bold" size="26.0" />
+                  </font>
+                  <HBox.margin>
+                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  </HBox.margin>
+               </Label>
+               <ChoiceBox fx:id="querySelector" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" HBox.hgrow="ALWAYS">
+                  <HBox.margin>
+                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  </HBox.margin>
+               </ChoiceBox>
+                <Button fx:id="btn_run" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" onAction="#onRunBtnClick" text="Go!" textAlignment="CENTER">
+                  <padding>
+                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  </padding>
+                  <HBox.margin>
+                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  </HBox.margin>
+               </Button>
             </children>
-         </VBox>
-      </content>
-   </TitledPane>
-   <TableView fx:id="resultsTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
-</VBox>
+         </HBox>
+         <TitledPane contentDisplay="RIGHT" text="Query Parameters" textAlignment="CENTER">
+            <content>
+               <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                  <children>
+                     <AnchorPane fx:id="queryParamPane" />
+                  </children>
+               </VBox>
+            </content>
+         </TitledPane>
+      </VBox>
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Artist Details">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+          <Tab text="Movie Details">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </items>
+</SplitPane>
