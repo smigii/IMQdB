@@ -19,7 +19,7 @@ public class ControllerMain {
 
 	public ControllerMain()
 	{
-		db = SqliteConnection.connect();
+		db = SqliteConnection.getConnection();
 	}
 
 	@FXML public void initialize()

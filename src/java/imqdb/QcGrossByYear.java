@@ -20,7 +20,7 @@ public class QcGrossByYear implements QueryController {
 	{
 		radioDomestic.fire();
 		try {
-			Connection connection = SqliteConnection.connect();
+			Connection connection = SqliteConnection.getConnection();
 			PreparedStatement ps = connection.prepareStatement("select genre from genres");
 			ResultSet rs = ps.executeQuery();
 			genreBox.getItems().add("Any");

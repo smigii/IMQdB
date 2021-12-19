@@ -7,10 +7,11 @@ import java.util.logging.Logger;
 
 public class SqliteConnection {
 
-	public static Connection connect()
+	private static Connection connection;
+
+	public static void connect()
 	{
 		checkDrivers();
-		Connection connection;
 
 		try {
 			String prefix = "jdbc:sqlite:";
@@ -22,7 +23,10 @@ public class SqliteConnection {
 			System.out.println("UH OH PROBLEM CREATING DB CONNECTION");
 			connection = null;
 		}
+	}
 
+	public static Connection getConnection()
+	{
 		return connection;
 	}
 

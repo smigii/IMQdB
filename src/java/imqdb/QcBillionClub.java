@@ -16,7 +16,7 @@ public class QcBillionClub implements QueryController {
 	public void initialize()
 	{
 		try {
-			Connection connection = SqliteConnection.connect();
+			Connection connection = SqliteConnection.getConnection();
 			PreparedStatement ps = connection.prepareStatement("select title from titles");
 			ResultSet rs = ps.executeQuery();
 			titleBox.getItems().add("Any");
