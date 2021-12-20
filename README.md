@@ -16,7 +16,7 @@
 1. Create a query controller object that implements the QueryController interface
 2. Create an FXML file that defines the parameter UI
    1. Use either an HBox or VBox as the root element 
-   2. Do not use any hard-coded values for layout information, set it to COMPUTED_SIZE
+   2. Try not to use any hard-coded values for layout information, set it to COMPUTED_SIZE
 3. Set the fx:controller of the .fxml file to the QueryController you created at step 1 
 4. Update the `generate()` method of QueryFactory by creating a new Query object and adding it to the list
    1. Give the query a nice name
