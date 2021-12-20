@@ -20,6 +20,10 @@ public class QueryFactory {
 			new Query("Billion Dollar Club", "qc/q_billion_club.fxml")
 		);
 
+		queries.add(
+			new Query("Shortest Movies", "qc/q_shortest_movie.fxml")
+		);
+
 		return queries;
 	}
 
