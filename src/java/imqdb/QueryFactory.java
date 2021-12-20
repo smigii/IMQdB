@@ -13,14 +13,6 @@ public class QueryFactory {
 		ArrayList<Query> queries = new ArrayList<Query>();
 
 		queries.add(
-			new Query("Select all genres", "qc/q_genres.fxml")
-		);
-
-		queries.add(
-			new Query("Select all names", "qc/q_names.fxml")
-		);
-
-		queries.add(
 			new Query("Highest Gross Income by Year", "qc/q_gross_by_year.fxml")
 		);
 

@@ -103,7 +103,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </VBox.margin>
                         </TitledPane>
-                        <TitledPane maxHeight="200.0" text="Movie Credits" VBox.vgrow="NEVER">
+                        <TitledPane maxHeight="350.0" text="Movie Credits" VBox.vgrow="NEVER">
                           <content>
                               <VBox>
                                  <children>
