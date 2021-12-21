@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<HBox xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="imqdb.qc.QcMovieRating">
+<HBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="imqdb.qc.QcMovieRating">
    <children>
       <VBox>
          <children>
@@ -26,7 +33,7 @@
       </VBox>
       <VBox>
          <Label text="Min Vote Count" />
-         <Spinner fx:id="minCount" editable="true" maxWidth="75.0" BorderPane.alignment="CENTER">
+         <Spinner fx:id="minCount" editable="true" maxWidth="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <valueFactory>
                <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="10000" initialValue="10000" max="10000000" min="0" />
             </valueFactory>
@@ -61,12 +68,12 @@
          <children>
             <RadioButton fx:id="radioHighest" mnemonicParsing="false" text="Best Rated">
                <toggleGroup>
-                  <ToggleGroup fx:id="grossGroup"/>
+                  <ToggleGroup fx:id="grossGroup" />
                </toggleGroup>
             </RadioButton>
             <RadioButton fx:id="radioLowest" mnemonicParsing="false" text="Worst Rated">
                <toggleGroup>
-                  <fx:reference source="grossGroup"/>
+                  <fx:reference source="grossGroup" />
                </toggleGroup>
             </RadioButton>
          </children>

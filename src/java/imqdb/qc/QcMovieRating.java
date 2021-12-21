@@ -19,9 +19,11 @@ public class QcMovieRating implements QueryController {
     @FXML private Spinner<Integer> minYear;
     @FXML private Spinner<Integer> maxYear;
     @FXML private RadioButton radioHighest;
+    @FXML private Spinner<Integer> minCount;
 
     @FXML void initialize()
     {
+        radioHighest.fire();
         try {
             Connection connection = SqliteConnection.getConnection();
             PreparedStatement ps = connection.prepareStatement("select genre from genres");
@@ -31,6 +33,14 @@ public class QcMovieRating implements QueryController {
                 genreBox.getItems().add(rs.getString("genre"));
             }
             genreBox.setValue("Any");
+
+            ps = connection.prepareStatement("select language from languages");
+            rs = ps.executeQuery();
+            languageBox.getItems().add("Any");
+            while (rs.next()) {
+                languageBox.getItems().add(rs.getString("language"));
+            }
+            languageBox.setValue("English");
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -42,11 +52,13 @@ public class QcMovieRating implements QueryController {
     {
         String genre_selected = genreBox.getValue();
         String language_selected = languageBox.getValue();
-        String genre_where = " and genre = \"" + genre_selected + "\"";
-        String language_where = " and language = \"" + language_selected + "\"";
+        String genre_where = "\n\tand genre = \"" + genre_selected + "\"";
+        String language_where = "\n\tand language = \"" + language_selected + "\"";
         String minValue = Integer.toString(minYear.getValue());
         String maxValue = Integer.toString(maxYear.getValue());
         String highLow = "";
+        String count = Integer.toString(minCount.getValue());
+        String count_where = "\n\tand votes >= " + count;
 
         if (genre_selected.equals("Any")) {
             genre_where = "";
@@ -60,13 +72,18 @@ public class QcMovieRating implements QueryController {
             highLow = "desc";
         }
 
-        PreparedStatement ps = db.prepareStatement("select original_title as Title, avg_vote as Rating " +
+        PreparedStatement ps = db.prepareStatement("select distinct original_title as Title, avg_vote as Rating " +
                         "from movies\n" +
-                        "\twhere substr(date_published, 0, 4) >= " + minValue +
-                        "\n\tand substr(date_published, 0, 4) <= " + maxValue +
+                        "natural join movie_genre " +
+                        "natural join genres " +
+                        "natural join movie_language " +
+                        "natural join languages " +
+                        "\n\twhere year >= " + minValue +
+                        "\n\tand year <= " + maxValue +
                         genre_where +
                         language_where +
-                        "\n\torder by avg_vote" + highLow +
+                        count_where +
+                        "\n\torder by avg_vote " + highLow +
                         "\n\tlimit 10;");
 
         return ps.executeQuery();
