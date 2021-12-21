@@ -42,6 +42,8 @@ public class ControllerMain {
 
 		// Tables
 		mainQueryTable = new TableWrapper();
+		mainQueryTable.getTable().setMaxHeight(999999999);
+		mainQueryTable.getTable().setPrefHeight(999999999);
 		mainVbox.getChildren().add(mainQueryTable.getTable());
 	}
 

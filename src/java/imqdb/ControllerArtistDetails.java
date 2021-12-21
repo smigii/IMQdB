@@ -20,9 +20,10 @@ public class ControllerArtistDetails {
 
 	private Connection connection;
 
-	@FXML private ListView<ArtistSearchResult> artistSearchResult;
+	@FXML private ListView<ArtistSearchResult> artistSearchList;
 	@FXML private TextField artistSearchField;
-	@FXML private VBox artistBasicInfo;
+	@FXML private VBox basicInfoLabels;
+	@FXML private VBox basicInfoFields;
 	@FXML private TextArea artistBio;
 	@FXML private VBox artistMoneyBox;
 	@FXML private VBox artistCreditBox;
@@ -35,7 +36,7 @@ public class ControllerArtistDetails {
 
 	@FXML public void initialize()
 	{
-		artistSearchResult.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends ArtistSearchResult> ov, ArtistSearchResult old_val, ArtistSearchResult new_val) -> {
+		artistSearchList.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends ArtistSearchResult> ov, ArtistSearchResult old_val, ArtistSearchResult new_val) -> {
 			onArtistSearchSelectionChanged(new_val);
 		});
 
@@ -102,10 +103,10 @@ public class ControllerArtistDetails {
 				"left join countries c2 on artist.country_of_death_id = c2.country_id\n" +
 				"where artist.name like \"%" + val + "%\"");
 			ResultSet rs = ps.executeQuery();
-			artistSearchResult.getItems().clear();
+			artistSearchList.getItems().clear();
 			while(rs.next()) {
 				ArtistSearchResult asr = new ArtistSearchResult(rs);
-				artistSearchResult.getItems().add(asr);
+				artistSearchList.getItems().add(asr);
 			}
 		}
 		catch(SQLException e) {
@@ -115,46 +116,66 @@ public class ControllerArtistDetails {
 
 	private void fillArtistBasicInfo(ArtistSearchResult asr)
 	{
-		List<Node> basicInfo = new ArrayList<>();
-		basicInfo.add(new Label("Name: " + asr.name));
+		basicInfoLabels.getChildren().clear();
+		basicInfoFields.getChildren().clear();
 
-		if(asr.birth_name != null)
-			basicInfo.add(new Label("Birth Name: " + asr.birth_name));
+		List<Node> labels = new ArrayList<>();
+		List<Node> fields = new ArrayList<>();
 
-		if(asr.height != null)
-			basicInfo.add(new Label("Height: " + asr.height + "cm"));
+		if(asr.name != null) {
+			labels.add(new Label("Name:"));
+			fields.add(new Label(asr.name));
+		}
 
-		String born = "";
-		if(asr.place_of_birth != null)
-			born += asr.place_of_birth;
+		if(asr.birth_name != null) {
+			labels.add(new Label("Birth Name:"));
+			fields.add(new Label(asr.birth_name));
+		}
 
-		if(asr.country_of_birth != null)
-			born += ", " + asr.country_of_birth;
+		if(asr.height != null) {
+			labels.add(new Label("Height:"));
+			fields.add(new Label(asr.height + "cm"));
+		}
 
-		if(asr.date_of_birth != null)
-			born += " " + asr.date_of_birth;
+		if(asr.date_of_birth != null) {
+			labels.add(new Label("Date of Birth:"));
+			fields.add(new Label(asr.date_of_birth));
+		}
 
-		if(!born.equals(""))
-			basicInfo.add(new Label("Born: " + born));
+		if(asr.place_of_birth != null) {
+			labels.add(new Label("Place of Birth:"));
+			fields.add(new Label(asr.place_of_birth));
+		}
+
+		if(asr.country_of_birth != null) {
+			labels.add(new Label("Country of Birth:"));
+			fields.add(new Label(asr.country_of_birth));
+		}
 
 		String death = "";
-		if(asr.place_of_death != null && !asr.place_of_death.equals("null"))
-			death += asr.place_of_death;
 
-		if(asr.country_of_death != null && !asr.country_of_death.equals("null"))
-			death += ", " + asr.country_of_death;
+		if(asr.date_of_death != null) {
+			labels.add(new Label("Date of Death:"));
+			fields.add(new Label(asr.date_of_death));
+		}
 
-		if(asr.date_of_death != null && !asr.date_of_death.equals("null"))
-			death += " " + asr.date_of_death;
+		if(asr.place_of_death != null) {
+			labels.add(new Label("Place of Death:"));
+			fields.add(new Label(asr.place_of_death));
+		}
 
-		if(!death.equals(""))
-			basicInfo.add(new Label("Death: " + death));
+		if(asr.country_of_death != null) {
+			labels.add(new Label("Country of Death:"));
+			fields.add(new Label(asr.country_of_death));
+		}
 
-		if(asr.reason_of_death != null && !asr.reason_of_death.equals("null"))
-			basicInfo.add(new Label("Cause of death: " + asr.reason_of_death));
+		if(asr.reason_of_death != null) {
+			labels.add(new Label("Cause of Death:"));
+			fields.add(new Label(asr.reason_of_death));
+		}
 
-		artistBasicInfo.getChildren().clear();
-		artistBasicInfo.getChildren().addAll(basicInfo);
+		basicInfoLabels.getChildren().addAll(labels);
+		basicInfoFields.getChildren().addAll(fields);
 	}
 
 	static class ArtistSearchResult {

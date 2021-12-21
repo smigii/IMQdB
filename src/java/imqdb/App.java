@@ -15,6 +15,7 @@ public class App extends javafx.application.Application {
 		scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());  // Apply stylesheet
 		stage.setTitle("IMQDB");
 		stage.setScene(scene);
+		stage.setMaximized(true);
 		stage.show();
 	}
 

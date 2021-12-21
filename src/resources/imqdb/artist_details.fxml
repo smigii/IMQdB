@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="imqdb.ControllerArtistDetails">
+<VBox xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="imqdb.ControllerArtistDetails">
    <children>
       <TitledPane text="Artist Search">
         <content>
@@ -30,7 +24,7 @@
                         </Button>
                      </children>
                   </HBox>
-                  <ListView fx:id="artistSearchResult" maxHeight="50.0">
+                  <ListView fx:id="artistSearchList" maxHeight="50.0">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
@@ -47,7 +41,20 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </VBox.margin>
          <content>
-            <VBox fx:id="artistBasicInfo" minHeight="0.0" />
+            <HBox>
+               <children>
+                  <VBox fx:id="basicInfoLabels" alignment="TOP_RIGHT">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox fx:id="basicInfoFields">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+            </HBox>
          </content>
       </TitledPane>
       <TitledPane maxHeight="150.0" text="Bio" VBox.vgrow="NEVER">
@@ -66,8 +73,14 @@
         <content>
             <VBox>
                <children>
-                  <VBox fx:id="artistMoneyBox" VBox.vgrow="NEVER" />
-                  <VBox fx:id="artistCreditBox" VBox.vgrow="NEVER" />
+                  <VBox fx:id="artistMoneyBox" VBox.vgrow="NEVER">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin></VBox>
+                  <VBox fx:id="artistCreditBox" VBox.vgrow="NEVER">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin></VBox>
                </children>
             </VBox>
         </content>

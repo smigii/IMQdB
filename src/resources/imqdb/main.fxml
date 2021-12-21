@@ -64,12 +64,12 @@
         <tabs>
           <Tab text="Artist Details">
             <content>
-                <fx:include source="artist_details.fxml"/>
+                <fx:include source="artist_details.fxml" />
             </content>
           </Tab>
           <Tab text="Movie Details">
             <content>
-                  <fx:include source="movie_details.fxml"/>
+                  <fx:include source="movie_details.fxml" />
             </content>
           </Tab>
         </tabs>
