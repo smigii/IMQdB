@@ -51,9 +51,24 @@ public class ControllerMovieDetails {
 		}
 
 		try {
-			PreparedStatement ps = connection.prepareStatement("select * from movies\n" +
-				"left join production_companies on movies.production_id = production_companies.production_id\n" +
-				"where movies.original_title like \"%" + val + "%\";");
+			PreparedStatement ps = connection.prepareStatement("select\n" +
+				"\tmovies.*,\n" +
+				"\tproduction_company,\n" +
+				"\tgroup_concat(distinct country) as \"countries\",\n" +
+				"\tgroup_concat(distinct genre) as \"genres\",\n" +
+				"\tgroup_concat(distinct language) as \"languages\"\n" +
+				"from movies\n" +
+				"\n" +
+				"inner join production_companies on production_companies.production_id = movies.production_id\n" +
+				"inner join movie_country on movie_country.imdb_title_id = movies.imdb_title_id\n" +
+				"inner join countries on movie_country.country_id = countries.country_id\n" +
+				"inner join movie_genre on movie_genre.imdb_title_id = movies.imdb_title_id\n" +
+				"inner join genres on movie_genre.genre_id = genres.genre_id\n" +
+				"inner join movie_language on movie_language.imdb_title_id = movies.imdb_title_id\n" +
+				"inner join languages on movie_language.language_id = languages.language_id\n" +
+				"where\n" +
+				"\tmovies.original_title like \"%" + val + "%\"\n" +
+				"group by movies.imdb_title_id;");
 			ResultSet rs = ps.executeQuery();
 			movieSearchList.getItems().clear();
 			while(rs.next()) {
@@ -111,6 +126,21 @@ public class ControllerMovieDetails {
 		if (msr.duration != null) {
 			labels.add(new Label("Duration:"));
 			fields.add(new Label(msr.duration + " mins"));
+		}
+
+		if (msr.genres != null) {
+			labels.add(new Label("Genres:"));
+			fields.add(new Label(msr.genres));
+		}
+
+		if (msr.languages != null) {
+			labels.add(new Label("Available in:"));
+			fields.add(new Label(msr.languages));
+		}
+
+		if (msr.countries != null) {
+			labels.add(new Label("Produced in:"));
+			fields.add(new Label(msr.countries));
 		}
 
 		if (msr.imdb_score != null) {
@@ -173,6 +203,10 @@ public class ControllerMovieDetails {
 		public Integer metascore;
 		public Long num_votes;
 
+		public String genres;
+		public String languages;
+		public String countries;
+
 		public MovieSearchResult(ResultSet rs)
 		{
 			try {
@@ -188,6 +222,9 @@ public class ControllerMovieDetails {
 				this.imdb_score = rs.getFloat("avg_vote");
 				this.metascore = rs.getInt("metascore");
 				this.num_votes = rs.getLong("votes");
+				this.genres = rs.getString("genres");
+				this.countries = rs.getString("countries");
+				this.languages = rs.getString("languages");
 			}
 			catch(SQLException e) {
 				System.out.println(e.getMessage());
