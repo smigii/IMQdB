@@ -91,8 +91,9 @@ public class QcMovieDuration implements QueryController {
         }
 
         PreparedStatement ps = db.prepareStatement(
-            "select movies.original_title as Title, movies.duration as Duration, movies.year as Year,\n" +
-                    "group_concat(distinct country) as Countries, group_concat(distinct genre) as Genres, " +
+            "select movies.original_title as Title, movies.duration as \"Duration (minutes)\", " +
+                    "movies.year as Year, group_concat(distinct country) as Countries, \n" +
+                    "group_concat(distinct genre) as Genres, \n" +
                     "group_concat(distinct language) as Languages\n" +
                     "from movies\n" +
                     "\n" +
@@ -123,7 +124,7 @@ public class QcMovieDuration implements QueryController {
                     count_where +
                     "\n\tgroup by movies.imdb_title_id" +
                 "\n\torder by duration " + highLow +
-                "\n\tlimit 10;"
+                "\n\t;"
         );
 
 
