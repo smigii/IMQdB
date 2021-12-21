@@ -13,6 +13,10 @@ public class QueryFactory {
 		ArrayList<Query> queries = new ArrayList<Query>();
 
 		queries.add(
+			new Query("Table Browser", "qc/q_all_tables.fxml")
+		);
+
+		queries.add(
 			new Query("Highest Gross Income by Year", "qc/q_gross_by_year.fxml")
 		);
 
