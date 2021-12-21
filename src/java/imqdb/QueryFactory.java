@@ -24,6 +24,10 @@ public class QueryFactory {
 			new Query("Shortest Movies", "qc/q_shortest_movie.fxml")
 		);
 
+		queries.add(
+			new Query("Movie Rating", "qc/q_movie_rating.fxml")
+		);
+
 		return queries;
 	}
 
