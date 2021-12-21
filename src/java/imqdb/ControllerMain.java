@@ -8,6 +8,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,10 @@ public class ControllerMain {
 	@FXML private VBox artistMoneyBox;
 	@FXML private VBox artistCreditBox;
 	private TableWrapper artistCreditTable;
+
+	@FXML private Button exportCsvBtn;
+	@FXML private Label exportMsg;
+	private String lastQuery;
 
 	public ControllerMain()
 	{
@@ -63,6 +69,7 @@ public class ControllerMain {
 		Query currentQuery = querySelector.getValue();
 		Node n = currentQuery.getNode();
 		setQueryParamPane(n);
+		lastQuery = querySelector.getValue().getName();
 	}
 
 	@FXML protected void onRunBtnClick()
@@ -201,6 +208,23 @@ public class ControllerMain {
 	{
 		queryParamPane.getChildren().clear();
 		queryParamPane.getChildren().add(n);
+	}
+
+	@FXML protected void onExportCsvClick()
+	{
+		Timestamp ts = new Timestamp(System.currentTimeMillis());
+		String query = lastQuery.replaceAll("\\s+", "_");
+		String path = "csv/" + query + "-" + ts.getTime() + ".csv";
+		try {
+			Files.createDirectories(Path.of("csv"));
+			mainQueryTable.toCSV(path);
+			exportMsg.setText("Exported CSV to " + path);
+		}
+		catch(Exception e) {
+			System.out.println(e.getMessage());
+			exportMsg.setText("Failed to export CSV :(");
+		}
+
 	}
 
 }
