@@ -1,4 +1,4 @@
-module com.imqdb {
+module imqdb {
 	requires java.sql;
 	requires org.xerial.sqlitejdbc;
 

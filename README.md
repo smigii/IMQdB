@@ -27,3 +27,10 @@
 * imdb.db file should go in src/resources/imqdb/
 * Query parameter fxml files should go in the `qc` directory start with "q_"
 * QueryController implementations should go in the `qc` package and start with "Qc"
+
+### Artifacts
+
+1. Build -> Build Artifacts -> IMQDB.jar
+2. Move the make sure there is a db/imqdb.db file in the directory of jar
+3. Unzip javafx sdk in lib/
+4. From project root: `java --module-path "lib/javafx-sdk-17.0.1\lib" --add-modules javafx.controls,javafx.fxml -jar out/artifacts/IMQDB_jar/IMQDB.jar App`
