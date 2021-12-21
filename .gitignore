@@ -1,7 +1,7 @@
 target/
 out/
+
 db/imdb.db
-lib/javafx-sdk-17.0.1
 
 .idea/workspace.xml
 .idea/usage.statistics.xml

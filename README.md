@@ -30,7 +30,24 @@
 
 ### Artifacts
 
-1. Build -> Build Artifacts -> IMQDB.jar
-2. Move the make sure there is a db/imqdb.db file in the directory of jar
-3. Unzip javafx sdk in lib/
-4. From project root: `java --module-path "lib/javafx-sdk-17.0.1\lib" --add-modules javafx.controls,javafx.fxml -jar out/artifacts/IMQDB_jar/IMQDB.jar App`
+Build -> Build Artifacts -> IMQDB.jar
+
+### Deployment
+
+What we need to submit
+
+* db/imdb.db
+* IMQDB.jar
+* JavaFX sdk
+
+Javafx SDK can be downloaded from https://gluonhq.com/products/javafx/
+
+We should include the x64 SDKs for Windows, Mac and Linux.
+
+Then, instructions as follows...
+
+1. Unzip db/imdb.zip to db/imdb.db
+2. Unzip javafx sdk that corresponds to your OS, do not change name
+3. From project root:
+   1. Windows10: `java --module-path "openjfx-17.0.1_windows-x64_bin-sdk/javafx-sdk-17.0.1/lib" --add-modules javafx.controls,javafx.fxml -jar IMQDB.jar App`
+   2. Linux: `java --module-path "openjfx-17.0.1_linux-x64_bin-sdk/javafx-sdk-17.0.1/lib" --add-modules javafx.controls,javafx.fxml -jar IMQDB.jar App`
