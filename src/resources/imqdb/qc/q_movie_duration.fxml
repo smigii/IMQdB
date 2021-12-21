@@ -41,7 +41,7 @@
          </HBox.margin>
       </VBox>
       <VBox>
-         <Label text="Min Duration" />
+         <Label text="Min Duration (minutes)" />
          <Spinner fx:id="minDuration" editable="true" maxWidth="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <valueFactory>
                <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="10" initialValue="90" max="10000" min="0" />
