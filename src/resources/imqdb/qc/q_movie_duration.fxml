@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="imqdb.qc.QcMovieDuration">
+   <children>
+      <VBox>
+         <children>
+            <Label text="Genre" />
+            <ChoiceBox fx:id="genreBox" />
+         </children>
+         <HBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </HBox.margin>
+      </VBox>
+      <VBox>
+         <children>
+            <Label text="Language" />
+            <ChoiceBox fx:id="languageBox" />
+         </children>
+         <HBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </HBox.margin>
+      </VBox>
+      <VBox>
+         <Label text="Min Duration" />
+         <Spinner fx:id="minDuration" editable="true" maxWidth="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <valueFactory>
+               <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="10" initialValue="90" max="10000" min="0" />
+            </valueFactory>
+         </Spinner>
+         <HBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </HBox.margin>
+      </VBox>
+      <VBox>
+         <Label text="Min Vote Count" />
+         <Spinner fx:id="minCount" editable="true" maxWidth="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <valueFactory>
+               <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="10000" initialValue="10000" max="10000000" min="0" />
+            </valueFactory>
+         </Spinner>
+         <HBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </HBox.margin>
+      </VBox>
+      <VBox>
+         <Label text="Min Year" />
+         <Spinner fx:id="minYear" editable="true" maxWidth="75.0" BorderPane.alignment="CENTER">
+            <valueFactory>
+               <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1" initialValue="2010" max="2099" min="1900" />
+            </valueFactory>
+         </Spinner>
+         <HBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </HBox.margin>
+      </VBox>
+      <VBox>
+         <Label text="Max Year" />
+         <Spinner fx:id="maxYear" editable="true" maxWidth="75.0" BorderPane.alignment="CENTER">
+            <valueFactory>
+               <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1" initialValue="2020" max="2099" min="1900" />
+            </valueFactory>
+         </Spinner>
+         <HBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </HBox.margin>
+      </VBox>
+      <VBox alignment="CENTER_LEFT">
+         <children>
+            <RadioButton fx:id="radioLongest" mnemonicParsing="false" text="Longest">
+               <toggleGroup>
+                  <ToggleGroup fx:id="grossGroup" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="radioShortest" mnemonicParsing="false" text="Shortest">
+               <toggleGroup>
+                  <fx:reference source="grossGroup" />
+               </toggleGroup>
+            </RadioButton>
+         </children>
+      </VBox>
+   </children>
+</HBox>
