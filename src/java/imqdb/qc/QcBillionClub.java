@@ -1,7 +1,8 @@
 package imqdb.qc;
 
 import imqdb.QueryController;
-import imqdb.SqliteConnection;
+import imqdb.UtilQueryCache;
+import imqdb.UtilQueryPair;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 
@@ -12,33 +13,22 @@ import java.sql.SQLException;
 
 public class QcBillionClub implements QueryController {
 
-	@FXML ChoiceBox<String> titleBox;
+	@FXML ChoiceBox<UtilQueryPair> titleBox;
 
 	@FXML
 	public void initialize()
 	{
-		try {
-			Connection connection = SqliteConnection.getConnection();
-			PreparedStatement ps = connection.prepareStatement("select title from titles");
-			ResultSet rs = ps.executeQuery();
-			titleBox.getItems().add("Any");
-			while (rs.next()) {
-				titleBox.getItems().add(rs.getString("title"));
-			}
-			titleBox.setValue("Any");
-		}
-		catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
+		titleBox.getItems().add(UtilQueryPair.ANY);
+		titleBox.getItems().addAll(UtilQueryCache.getTitles());
+		titleBox.setValue(UtilQueryPair.ANY);
 	}
 
 	@Override
 	public ResultSet execute(Connection db) throws SQLException
 	{
 		String titleSection = "";
-		String titleSelection = titleBox.getValue();
-		if(!titleSelection.equals("Any")) {
-			titleSection = "where titles.title = \"" + titleSelection + "\"";
+		if(!titleBox.getValue().getId().equals("*")) {
+			titleSection = "where titles.title_id = \"" + titleBox.getValue().getId() + "\"";
 		}
 
 		PreparedStatement ps = db.prepareStatement(
@@ -51,7 +41,8 @@ public class QcBillionClub implements QueryController {
 				"from billion_dollar_movies\n" +
 				"left join title_principals on billion_dollar_movies.imdb_title_id = title_principals.imdb_title_id\n" +
 				"left join artist on title_principals.imdb_name_id = artist.imdb_name_id\n" +
-				"left join titles on title_principals.title_id = titles.title_id " + titleSection
+				"left join titles on title_principals.title_id = titles.title_id " +
+				titleSection
 		);
 
 		return ps.executeQuery();

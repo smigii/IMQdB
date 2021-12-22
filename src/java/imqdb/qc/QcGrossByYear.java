@@ -1,7 +1,8 @@
 package imqdb.qc;
 
 import imqdb.QueryController;
-import imqdb.SqliteConnection;
+import imqdb.UtilQueryCache;
+import imqdb.UtilQueryPair;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.RadioButton;
@@ -11,7 +12,7 @@ import java.sql.*;
 
 public class QcGrossByYear implements QueryController {
 
-	@FXML ChoiceBox<String> genreBox;
+	@FXML ChoiceBox<UtilQueryPair> genreBox;
 	@FXML Spinner<Integer> minYear;
 	@FXML Spinner<Integer> maxYear;
 	@FXML RadioButton radioDomestic;
@@ -21,19 +22,9 @@ public class QcGrossByYear implements QueryController {
 	public void initialize()
 	{
 		radioDomestic.fire();
-		try {
-			Connection connection = SqliteConnection.getConnection();
-			PreparedStatement ps = connection.prepareStatement("select genre from genres");
-			ResultSet rs = ps.executeQuery();
-			genreBox.getItems().add("Any");
-			while (rs.next()) {
-				genreBox.getItems().add(rs.getString("genre"));
-			}
-			genreBox.setValue("Any");
-		}
-		catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
+		genreBox.getItems().add(UtilQueryPair.ANY);
+		genreBox.getItems().addAll(UtilQueryCache.getGenres());
+		genreBox.setValue(UtilQueryPair.ANY);
 	}
 
 	@Override
@@ -41,9 +32,8 @@ public class QcGrossByYear implements QueryController {
 	{
 		// Genre selection
 		String genre_section = "";
-		String genre_selection = genreBox.getValue();
-		if(!genre_selection.equals("Any")) {
-			genre_section = "genres.genre = \"" + genre_selection + "\" and";
+		if(!genreBox.getValue().getId().equals("*")) {
+			genre_section = "genres.genre_id = \"" + genreBox.getValue().getId() + "\" and";
 		}
 
 		// Region selection
