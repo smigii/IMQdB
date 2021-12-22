@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="imqdb.qc.QcFamilyFun">
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="imqdb.qc.QcFamilyFun">
    <children>
       <Label text="Which actors have worked on movies with a family member? A great query for discovering hollywood nepotism!" wrapText="true">
          <VBox.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            <Insets left="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
+      </Label>
+      <Label text="WARNING: This query can take up to 20 when searching for all family relations and no filters!">
+         <VBox.margin>
+            <Insets bottom="15.0" left="5.0" right="5.0" />
          </VBox.margin>
       </Label>
       <HBox>
@@ -16,7 +26,7 @@
             <VBox>
                <children>
                   <Label text="Artist Role" />
-                  <ChoiceBox prefWidth="150.0" />
+                  <ChoiceBox fx:id="artistRoleBox" prefWidth="150.0" />
                </children>
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -25,7 +35,7 @@
             <VBox>
                <children>
                   <Label text="Family Member Role" />
-                  <ChoiceBox prefWidth="150.0" />
+                  <ChoiceBox fx:id="familyRoleBox" prefWidth="150.0" />
                </children>
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -38,8 +48,8 @@
                      <children>
                         <VBox>
                            <children>
-                              <CheckBox mnemonicParsing="false" text="Children" />
-                              <CheckBox mnemonicParsing="false" text="Parents" />
+                              <CheckBox fx:id="famBoxChildren" mnemonicParsing="false" text="Children" />
+                              <CheckBox fx:id="famBoxParents" mnemonicParsing="false" text="Parents" />
                            </children>
                            <HBox.margin>
                               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -47,8 +57,8 @@
                         </VBox>
                         <VBox>
                            <children>
-                              <CheckBox mnemonicParsing="false" text="Spouses" />
-                              <CheckBox mnemonicParsing="false" text="Relatives" />
+                              <CheckBox fx:id="famBoxSpouses" mnemonicParsing="false" text="Spouses" />
+                              <CheckBox fx:id="famBoxRelatives" mnemonicParsing="false" text="Relatives" />
                            </children>
                            <HBox.margin>
                               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -66,7 +76,7 @@
                   <Label text="Min Year" />
                      <Spinner fx:id="minYear" editable="true" maxWidth="75.0">
                         <valueFactory>
-                           <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1" initialValue="2020" max="2099" min="1900" />
+                           <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1" initialValue="2010" max="2099" min="1900" />
                         </valueFactory>
                      </Spinner>
                </children>
@@ -80,6 +90,19 @@
                   <Spinner fx:id="maxYear" editable="true" maxWidth="75.0">
                      <valueFactory>
                         <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1" initialValue="2020" max="2099" min="1900" />
+                     </valueFactory>
+                  </Spinner>
+               </children>
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </VBox>
+            <VBox>
+               <children>
+                  <Label text="Min Budget" />
+                  <Spinner fx:id="minBudget" editable="true" maxWidth="100.0">
+                     <valueFactory>
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="100000" initialValue="1000000" max="500000000" min="0" />
                      </valueFactory>
                   </Spinner>
                </children>
