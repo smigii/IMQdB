@@ -32,6 +32,10 @@ public class QueryFactory {
 				new Query("Movie Duration", "qc/q_movie_duration.fxml")
 		);
 
+		queries.add(
+			new Query("Family Fun", "qc/q_family_fun.fxml")
+		);
+
 		return queries;
 	}
 
