@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class QcMovieDuration implements QueryController {
 
@@ -63,130 +64,60 @@ public class QcMovieDuration implements QueryController {
         String genre_selected = genreBox.getValue();
         String language_selected = languageBox.getValue();
         String country_selected = countryBox.getValue();
-        String genre_where = "\n\twhere genre = \"" + genre_selected + "\"";
-        String language_where = "\n\twhere language = \"" + language_selected + "\"";
-        String country_where = "\n\twhere country = \"" + country_selected + "\"";
-        String minValue = Integer.toString(minYear.getValue());
-        String maxValue = Integer.toString(maxYear.getValue());
+
+        String genre_where = "movies.imdb_title_id in (select imdb_title_id from movie_genre natural join genres where genres.genre = \"" + genre_selected + "\")";
+        String language_where = "movies.imdb_title_id in (select imdb_title_id from movie_language natural join languages where languages.language = \"" + language_selected + "\")";
+        String country_where = "movies.imdb_title_id in (select imdb_title_id from movie_country natural join countries where countries.country = \"" + country_selected + "\")";
+
+        String clg_where = "";
+        int clauses = 0;
+        if(!genre_selected.equals("Any")) {
+            clg_where += genre_where + "\n";
+            clauses++;
+        }
+        if(!language_selected.equals("Any")) {
+            if(clauses > 0)
+                clg_where += "and ";
+            clg_where += language_where + "\n";
+            clauses++;
+        }
+        if(!country_selected.equals("Any")) {
+            if(clauses > 0)
+                clg_where += "and ";
+            clg_where += country_where + "\n";
+            clauses++;
+        }
+        if(clauses > 0)
+            clg_where += " and ";
+
         String highLow = "";
-        String duration = Integer.toString(minDuration.getValue());
-        String duration_where = "\n\tand duration >= " + duration;
-        String count = Integer.toString(minCount.getValue());
-        String count_where = "\n\tand votes >= " + count;
-
-        if (genre_selected.equals("Any")) {
-            genre_where = "";
-        }
-
-        if (language_selected.equals("Any")) {
-            language_where = "";
-        }
-
-        if (country_selected.equals("Any")){
-            count_where = "";
-        }
-
         if (radioLongest.isSelected()){
             highLow = "desc";
         }
 
+        System.out.println(clg_where);
+
         PreparedStatement ps = db.prepareStatement(
             "select movies.original_title as Title, movies.duration as \"Duration (minutes)\", " +
-                    "movies.year as Year, group_concat(distinct country) as Countries, \n" +
-                    "group_concat(distinct genre) as Genres, \n" +
-                    "group_concat(distinct language) as Languages\n" +
-                    "from movies\n" +
-                    "\n" +
-                    "inner join movie_country on movie_country.imdb_title_id = movies.imdb_title_id\n" +
-                    "inner join countries on movie_country.country_id = countries.country_id\n" +
-                    "inner join movie_genre on movie_genre.imdb_title_id = movies.imdb_title_id\n" +
-                    "inner join genres on movie_genre.genre_id = genres.genre_id\n" +
-                    "inner join movie_language on movie_language.imdb_title_id = movies.imdb_title_id\n" +
-                    "inner join languages on movie_language.language_id = languages.language_id\n" +
-                    "\n\twhere year >= " + minValue +
-                    "\n\tand year <= " + maxValue +
-                    "\n\tand " +
-                    "    movies.imdb_title_id in (\n" +
-                    "        select imdb_title_id from movie_country natural join countries\n" +
-                    country_where +
-                    "    )\n" +
-                    "    and\n" +
-                    "    movies.imdb_title_id in (\n" +
-                    "        select imdb_title_id from movie_genre natural join genres\n" +
-                    genre_where +
-                    "    )\n" +
-                    "    and\n" +
-                    "    movies.imdb_title_id in (\n" +
-                    "        select imdb_title_id from movie_language natural join languages\n" +
-                    language_where +
-                    "    )\n" +
-                    duration_where +
-                    count_where +
-                    "\n\tgroup by movies.imdb_title_id" +
-                "\n\torder by duration " + highLow +
-                "\n\t;"
+                "movies.year as Year, group_concat(distinct country) as Countries, \n" +
+                "group_concat(distinct genre) as Genres, \n" +
+                "group_concat(distinct language) as Languages \n" +
+                "from movies\n" +
+                "inner join movie_country on movie_country.imdb_title_id = movies.imdb_title_id\n" +
+                "inner join countries on movie_country.country_id = countries.country_id\n" +
+                "inner join movie_genre on movie_genre.imdb_title_id = movies.imdb_title_id\n" +
+                "inner join genres on movie_genre.genre_id = genres.genre_id\n" +
+                "inner join movie_language on movie_language.imdb_title_id = movies.imdb_title_id\n" +
+                "inner join languages on movie_language.language_id = languages.language_id\n" +
+                "where\n" +
+                clg_where + "\n" +
+                "year >= " + minYear.getValue() + "\n" +
+                "and year <= " + maxYear.getValue() + "\n" +
+                "and duration >= " + minDuration.getValue() + "\n" +
+                "and votes >= " + minCount.getValue() + "\n" +
+                "group by movies.imdb_title_id\n" +
+                "order by duration " + highLow + ";"
         );
-
-
-//        PreparedStatement ps = db.prepareStatement(
-//                "select distinct a.original_title, a.duration, a.year, b.countries from " +
-//                "(select distinct original_title, duration, " +
-//                        "year " + //GROUP_CONCAT(country, ',') as Countries " +
-//                        "from movies" +
-//                        "\n\tnatural join movie_genre" +
-//                        "\n\tnatural join genres" +
-//                        "\n\tnatural join movie_language" +
-//                        "\n\tnatural join languages" +
-//                        "\n\twhere year >= " + minValue +
-//                        "\n\tand year <= " + maxValue +
-//                        genre_where +
-//                        language_where +
-//                        duration_where +
-//                        count_where +
-//                        "\n\tgroup by original_title " +
-//                        "\n\torder by duration " + highLow +
-//                        "\n\tlimit 10) a" +
-//
-//                        "\ninner join " +
-//
-//                        "(select movies.original_title, group_concat(country) as countries from movie_country" +
-//                        "\ninner join movies on movie_country.imdb_title_id = movies.imdb_title_id" +
-//                        "\ninner join countries on movie_country.country_id = countries.country_id" +
-//                        "\ngroup by movies.imdb_title_id) b" +
-//                        "\n on a.original_title = b.original_title"
-//                );
-
-
-
-
-
-//        PreparedStatement ps = db.prepareStatement(
-//                "select distinct original_title as Title, duration as \"Length (min)\", " +
-//                "year as Year " + //GROUP_CONCAT(country, ',') as Countries " +
-//                "from movies" +
-////                "from movie_country" +
-////                "\n\tinner join movies on movie_country.imdb_title_id = movies.imdb_title_id" +
-////                "\n\tinner join countries on movie_country.country_id = countries.country_id" +
-//                "\n\tnatural join movie_genre" +
-//                "\n\tnatural join genres" +
-//                "\n\tnatural join movie_language" +
-//                "\n\tnatural join languages" +
-//                "\n\twhere year >= " + minValue +
-//                "\n\tand year <= " + maxValue +
-//                genre_where +
-//                language_where +
-//                duration_where +
-//                count_where +
-//                "\n\tgroup by original_title " +
-//                "\n\torder by duration " + highLow +
-//                "\n\tlimit 10;");
-//
-////        PreparedStatement ps = db.prepareStatement(
-////        "select movies.original_title, group_concat(country) from movie_country" +
-////        "\ninner join movies on movie_country.imdb_title_id = movies.imdb_title_id" +
-////        "\ninner join countries on movie_country.country_id = countries.country_id" +
-////        "\ngroup by movies.imdb_title_id"
-////        );
 
         return ps.executeQuery();
     }
