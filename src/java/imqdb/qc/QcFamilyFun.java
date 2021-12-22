@@ -1,7 +1,8 @@
 package imqdb.qc;
 
+import imqdb.UtilQueryCache;
 import imqdb.QueryController;
-import imqdb.SqliteConnection;
+import imqdb.UtilQueryPair;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -15,8 +16,8 @@ import java.util.ArrayList;
 
 public class QcFamilyFun implements QueryController {
 
-	@FXML private ChoiceBox<String> artistRoleBox;
-	@FXML private ChoiceBox<String> familyRoleBox;
+	@FXML private ChoiceBox<UtilQueryPair> artistRoleBox;
+	@FXML private ChoiceBox<UtilQueryPair> familyRoleBox;
 	@FXML private CheckBox famBoxChildren;
 	@FXML private CheckBox famBoxParents;
 	@FXML private CheckBox famBoxSpouses;
@@ -27,23 +28,12 @@ public class QcFamilyFun implements QueryController {
 
 	@FXML public void initialize()
 	{
-		try {
-			Connection connection = SqliteConnection.getConnection();
-			PreparedStatement ps = connection.prepareStatement("select genre from genres");
-			ResultSet rs = ps.executeQuery();
-			artistRoleBox.getItems().add("Any");
-			familyRoleBox.getItems().add("Any");
-			while(rs.next()) {
-				String genre = rs.getString("genre");
-				artistRoleBox.getItems().add(genre);
-				familyRoleBox.getItems().add(genre);
-			}
-			artistRoleBox.setValue("Any");
-			familyRoleBox.setValue("Any");
-		}
-		catch(SQLException e) {
-			System.out.println(e.getMessage());
-		}
+		artistRoleBox.getItems().add(UtilQueryPair.ANY);
+		familyRoleBox.getItems().add(UtilQueryPair.ANY);
+		artistRoleBox.getItems().addAll(UtilQueryCache.getTitles());
+		familyRoleBox.getItems().addAll(UtilQueryCache.getTitles());
+		artistRoleBox.setValue(UtilQueryPair.ANY);
+		familyRoleBox.setValue(UtilQueryPair.ANY);
 	}
 
 	@Override
@@ -101,6 +91,14 @@ public class QcFamilyFun implements QueryController {
 		if(unionSection.isEmpty())
 			return null;
 
+		String artistRole = "";
+		if(!artistRoleBox.getValue().getId().equals("*"))
+			artistRole = "t1.title_id = " + artistRoleBox.getValue().getId() + " and\n";
+
+		String familyRole = "";
+		if(!familyRoleBox.getValue().getId().equals("*"))
+			familyRole = "t2.title_id = " + familyRoleBox.getValue().getId() + " and\n";
+
 		PreparedStatement ps = db.prepareStatement(
 			"select m.original_title as \"Movie\", m.year as \"Year\", a1.name as \"Artist\", t1.title as Role, a2.name as \"Family Member\", t2.title as \"Family Member Role\", Relation as \"Family Member Relation\" from (\n" +
 				"\n" + unionSection + "\n" +
@@ -114,6 +112,8 @@ public class QcFamilyFun implements QueryController {
 				"where\n" +
 				"m.year >= " + minYear.getValue() + " and\n" +
 				"m.year <= " + maxYear.getValue() + " and\n" +
+				artistRole +
+				familyRole +
 				"m.budget_currency >= " + minBudget.getValue() + " and m.currency = \"USD\"\n" +
 				"order by\n" +
 				"\tm.imdb_title_id"
