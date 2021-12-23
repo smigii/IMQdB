@@ -2,10 +2,7 @@ package imqdb.qc;
 
 import imqdb.ControllerArtistDetails;
 import imqdb.QueryController;
-import imqdb.utils.ArtistSearchResult;
-import imqdb.utils.SqliteConnection;
-import imqdb.utils.UtilQueries;
-import imqdb.utils.UtilQueryPair;
+import imqdb.utils.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -137,6 +134,7 @@ public class QcMostLeastWatched implements QueryController {
                 "group by movies.imdb_title_id\n" +
                 "order by (movies.reviews_from_users + movies.reviews_from_critics) " + highLow + ";";
 
+        Logger.log(sql);
         PreparedStatement ps = db.prepareStatement(sql);
 
         return ps.executeQuery();

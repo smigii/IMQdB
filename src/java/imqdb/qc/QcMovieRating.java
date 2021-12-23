@@ -1,6 +1,7 @@
 package imqdb.qc;
 
 import imqdb.QueryController;
+import imqdb.utils.Logger;
 import imqdb.utils.SqliteConnection;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
@@ -72,19 +73,21 @@ public class QcMovieRating implements QueryController {
             highLow = "desc";
         }
 
-        PreparedStatement ps = db.prepareStatement("select distinct original_title as Title, avg_vote as Rating " +
-                        "from movies\n" +
-                        "natural join movie_genre " +
-                        "natural join genres " +
-                        "natural join movie_language " +
-                        "natural join languages " +
-                        "\n\twhere year >= " + minValue +
-                        "\n\tand year <= " + maxValue +
-                        genre_where +
-                        language_where +
-                        count_where +
-                        "\n\torder by avg_vote " + highLow +
-                        "\n\tlimit 10;");
+        String sql = "select distinct original_title as Title, avg_vote as Rating " +
+                "from movies\n" +
+                "natural join movie_genre " +
+                "natural join genres " +
+                "natural join movie_language " +
+                "natural join languages " +
+                "\n\twhere year >= " + minValue +
+                "\n\tand year <= " + maxValue +
+                genre_where +
+                language_where +
+                count_where +
+                "\n\torder by avg_vote " + highLow +
+                "\n\tlimit 10;";
+        Logger.log(sql);
+        PreparedStatement ps = db.prepareStatement(sql);
 
         return ps.executeQuery();
     }

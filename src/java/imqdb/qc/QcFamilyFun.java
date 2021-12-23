@@ -1,5 +1,6 @@
 package imqdb.qc;
 
+import imqdb.utils.Logger;
 import imqdb.utils.UtilQueries;
 import imqdb.QueryController;
 import imqdb.utils.UtilQueryPair;
@@ -116,7 +117,7 @@ public class QcFamilyFun implements QueryController {
 						"m.budget_currency >= " + minBudget.getValue() + " and m.currency = \"USD\"\n" +
 						"order by\n" +
 						"\tm.imdb_title_id";
-		System.out.println(sql);
+		Logger.log(sql);
 		PreparedStatement ps = db.prepareStatement(sql);
 		return ps.executeQuery();
 	}

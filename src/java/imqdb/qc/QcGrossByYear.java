@@ -1,6 +1,7 @@
 package imqdb.qc;
 
 import imqdb.QueryController;
+import imqdb.utils.Logger;
 import imqdb.utils.UtilQueries;
 import imqdb.utils.UtilQueryPair;
 import javafx.fxml.FXML;
@@ -79,14 +80,15 @@ public class QcGrossByYear implements QueryController {
 
 		}
 
-		PreparedStatement ps = db.prepareStatement(
-			"select movies.original_title as \"Title\", movies.year as \"Year\", movies." + region + subtractionAmount + " as \"" + regionAlias + "\" from movies\n" +
-				"natural join movie_genre natural join genres natural join countries\n" +
-				"where " + genre_section + count_section + "movies.year >= " + minYear.getValue() + " and movies.year <= " + maxYear.getValue() + "\n" +
-				"group by movies.year\n" +
-				"having max(movies." + region + ")\n" +
-					orderBy
-		);
+		String sql =
+				"select movies.original_title as \"Title\", movies.year as \"Year\", movies." + region + subtractionAmount + " as \"" + regionAlias + "\" from movies\n" +
+						"natural join movie_genre natural join genres natural join countries\n" +
+						"where " + genre_section + count_section + "movies.year >= " + minYear.getValue() + " and movies.year <= " + maxYear.getValue() + "\n" +
+						"group by movies.year\n" +
+						"having max(movies." + region + ")\n" +
+						orderBy;
+		Logger.log(sql);
+		PreparedStatement ps = db.prepareStatement(sql);
 
 		return ps.executeQuery();
 	}

@@ -2,6 +2,7 @@ package imqdb.qc;
 
 import imqdb.QueryController;
 import imqdb.utils.ArtistSearchResult;
+import imqdb.utils.Logger;
 import imqdb.utils.UtilQueries;
 import imqdb.utils.UtilQueryPair;
 import javafx.event.EventHandler;
@@ -99,51 +100,53 @@ public class QcArtistMoneyGenerated implements QueryController {
 			famMoviesWhere = "and tp.title_id = " + titleBox.getValue().getId() + "\n";
 		}
 
-		PreparedStatement ps = db.prepareStatement(
-			"select\n" +
-			"	fam_movies.name as \"Artist\",\n" +
-			"	sum(fam_movies.worldwide_gross_income) as \"Worldwide Revenue Generated\",\n" +
-			"	sum(fam_movies.usa_gross_income) as \"Domestic Revenue Generated\",\n" +
-			"	fam_names.family_names as \"Family Members Queried\",\n" +
-			"	group_concat(fam_movies.original_title,'; ') as \"Movies Included in Query\"\n" +
-			"from (\n" +
-			"	-- Get all movies involving artist or artist family member\n" +
-			"	select distinct\n" +
-			"		a.imdb_name_id,\n" +
-			"		a.name,\n" +
-			"		m.*\n" +
-			"	from (\n" +
-				unionSection +
-			"	) as x\n" +
-			"	inner join title_principals tp on\n" +
-			"		tp.imdb_name_id = x.fam_id\n" +
-			"	inner join movies m on\n" +
-			"		tp.imdb_title_id = m.imdb_title_id\n" +
-			"	inner join artist a on\n" +
-			"		x.imdb_name_id = a.imdb_name_id\n" +
-			"	where\n" +
-			"		m.currency = \"USD\"\n" +
-			"		and m.year >= " + minYear.getValue() + "\n" +
-			"		and m.year <= " + maxYear.getValue() + "\n" +
-					famMoviesWhere +
-			"\n" +
-			") as fam_movies\n" +
-			"inner join (\n" +
-			"	-- Get the list of family members\n" +
-			"	select \n" +
-			"		fam_ids.imdb_name_id,\n" +
-			"		group_concat(fam_names.name,'; ') as \"family_names\"\n" +
-			"	from (\n" +
-				unionSection +
-			"	) as fam_ids\n" +
-			"	inner join artist fam_names on fam_ids.fam_id = fam_names.imdb_name_id\n" +
-			"	group by fam_ids.imdb_name_id\n" +
-			") fam_names\n" +
-			"on fam_movies.imdb_name_id = fam_names.imdb_name_id\n" +
-			artistIdWhere +
-			"group by\n" +
-			"	fam_movies.imdb_name_id\n" +
-			"order by \"Worldwide Revenue Generated\" desc");
+		String sql =
+				"select\n" +
+						"	fam_movies.name as \"Artist\",\n" +
+						"	sum(fam_movies.worldwide_gross_income) as \"Worldwide Revenue Generated\",\n" +
+						"	sum(fam_movies.usa_gross_income) as \"Domestic Revenue Generated\",\n" +
+						"	fam_names.family_names as \"Family Members Queried\",\n" +
+						"	group_concat(fam_movies.original_title,'; ') as \"Movies Included in Query\"\n" +
+						"from (\n" +
+						"	-- Get all movies involving artist or artist family member\n" +
+						"	select distinct\n" +
+						"		a.imdb_name_id,\n" +
+						"		a.name,\n" +
+						"		m.*\n" +
+						"	from (\n" +
+						unionSection +
+						"	) as x\n" +
+						"	inner join title_principals tp on\n" +
+						"		tp.imdb_name_id = x.fam_id\n" +
+						"	inner join movies m on\n" +
+						"		tp.imdb_title_id = m.imdb_title_id\n" +
+						"	inner join artist a on\n" +
+						"		x.imdb_name_id = a.imdb_name_id\n" +
+						"	where\n" +
+						"		m.currency = \"USD\"\n" +
+						"		and m.year >= " + minYear.getValue() + "\n" +
+						"		and m.year <= " + maxYear.getValue() + "\n" +
+						famMoviesWhere +
+						"\n" +
+						") as fam_movies\n" +
+						"inner join (\n" +
+						"	-- Get the list of family members\n" +
+						"	select \n" +
+						"		fam_ids.imdb_name_id,\n" +
+						"		group_concat(fam_names.name,'; ') as \"family_names\"\n" +
+						"	from (\n" +
+						unionSection +
+						"	) as fam_ids\n" +
+						"	inner join artist fam_names on fam_ids.fam_id = fam_names.imdb_name_id\n" +
+						"	group by fam_ids.imdb_name_id\n" +
+						") fam_names\n" +
+						"on fam_movies.imdb_name_id = fam_names.imdb_name_id\n" +
+						artistIdWhere +
+						"group by\n" +
+						"	fam_movies.imdb_name_id\n" +
+						"order by \"Worldwide Revenue Generated\" desc";
+		Logger.log(sql);
+		PreparedStatement ps = db.prepareStatement(sql);
 		return ps.executeQuery();
 	}
 
