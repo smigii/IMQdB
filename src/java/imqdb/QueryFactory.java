@@ -44,6 +44,10 @@ public class QueryFactory {
 				new Query("Most or Least Watched Movies", "qc/q_most_least_watched.fxml")
 		);
 
+		queries.add(
+			new Query("Frequent Collaborators", "qc/q_frequent_collaborators.fxml")
+		);
+
 		return queries;
 	}
 

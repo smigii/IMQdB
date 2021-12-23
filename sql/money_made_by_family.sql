@@ -43,6 +43,7 @@ from (
 		x.imdb_name_id = a.imdb_name_id
 	where
 		m.currency = "USD"
+-- 		and tp.title_id = 2
 
 ) as fam_movies
 inner join (
@@ -78,8 +79,8 @@ inner join (
 	group by fam_ids.imdb_name_id
 ) fam_names
 on fam_movies.imdb_name_id = fam_names.imdb_name_id
--- where
--- 	fam_movies.imdb_name_id = "nm0905154"
+where
+	fam_movies.imdb_name_id = "nm0000226"
 group by
 	fam_movies.imdb_name_id
 order by fam_movies.imdb_title_id
