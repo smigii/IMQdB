@@ -1,6 +1,7 @@
 package imqdb.qc;
 
 import imqdb.QueryController;
+import imqdb.utils.Logger;
 import imqdb.utils.SqliteConnection;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
@@ -94,10 +95,8 @@ public class QcMovieDuration implements QueryController {
             highLow = "desc";
         }
 
-        System.out.println(clg_where);
 
-        PreparedStatement ps = db.prepareStatement(
-            "select movies.original_title as Title, movies.duration as \"Duration (minutes)\", " +
+        String sql = "select movies.original_title as Title, movies.duration as \"Duration (minutes)\", " +
                 "movies.year as Year, group_concat(distinct country) as Countries, \n" +
                 "group_concat(distinct genre) as Genres, \n" +
                 "group_concat(distinct language) as Languages \n" +
@@ -115,8 +114,9 @@ public class QcMovieDuration implements QueryController {
                 "and duration >= " + minDuration.getValue() + "\n" +
                 "and votes >= " + minCount.getValue() + "\n" +
                 "group by movies.imdb_title_id\n" +
-                "order by duration " + highLow + ";"
-        );
+                "order by duration " + highLow + ";";
+        Logger.log(sql);
+        PreparedStatement ps = db.prepareStatement(sql);
 
         return ps.executeQuery();
     }
