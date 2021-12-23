@@ -85,7 +85,7 @@ public class QcArtistMoneyGenerated implements QueryController {
 
 		ArrayList<String> artistIds = new ArrayList<>();
 		for(ArtistSearchResult asr : artistQueryList.getItems()) {
-			artistIds.add("fam_movies.imdb_name_id = \"" + asr.id + "\"");
+			artistIds.add("fam_movies.imdb_name_id = \"" + asr.id + "\" ");
 		}
 
 		String artistIdWhere = "";
@@ -99,8 +99,8 @@ public class QcArtistMoneyGenerated implements QueryController {
 			"	fam_movies.name as \"Artist\",\n" +
 			"	sum(fam_movies.worldwide_gross_income) as \"Worldwide Revenue Generated\",\n" +
 			"	sum(fam_movies.usa_gross_income) as \"Domestic Revenue Generated\",\n" +
-			"	fam_names.family_names as \"Family Members Included\"\n" +
-			"	group_concat(fam_movies.original_title,'; ') as \"Movies Included in Query\",\n" +
+			"	fam_names.family_names as \"Family Members Included\",\n" +
+			"	group_concat(fam_movies.original_title,'; ') as \"Movies Included in Query\"\n" +
 			"from (\n" +
 			"	-- Get all movies involving artist or artist family member\n" +
 			"	select distinct\n" +
@@ -135,7 +135,7 @@ public class QcArtistMoneyGenerated implements QueryController {
 			artistIdWhere +
 			"group by\n" +
 			"	fam_movies.imdb_name_id\n" +
-			"order by fam_movies.imdb_title_id");
+			"order by \"Worldwide Revenue Generated\" desc");
 		return ps.executeQuery();
 	}
 
