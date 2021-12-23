@@ -22,4 +22,5 @@ select fam_ids.imdb_name_id, group_concat(fam_names.name) from (
 	inner join relatives_artist ra on a.imdb_name_id = ra.imdb_name_id
 ) as fam_ids
 inner join artist fam_names on fam_ids.fam_id = fam_names.imdb_name_id
-where fam_ids.imdb_name_id = "nm0000226"
+-- where fam_ids.imdb_name_id = "nm0000226"
+group by fam_ids.imdb_name_id

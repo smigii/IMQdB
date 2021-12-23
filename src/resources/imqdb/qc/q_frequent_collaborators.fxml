@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="imqdb.qc.QcFrequentCollaborators">
+    <children>
+        <Label maxWidth="850.0" text="Use the search bar below to search for artists, then add them to the query. If no artists are added, all artists will be queried (This can take up to 30 seconds!)." wrapText="true">
+            <VBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </VBox.margin>
+        </Label>
+        <HBox alignment="CENTER_LEFT" maxHeight="200.0">
+            <children>
+                <VBox prefWidth="275.0">
+                    <children>
+                        <HBox>
+                            <VBox.margin>
+                                <Insets />
+                            </VBox.margin>
+                            <children>
+                                <TextField fx:id="artistSearchField" promptText="Search Artist" HBox.hgrow="ALWAYS">
+                                    <HBox.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </HBox.margin>
+                                </TextField>
+                                <Button mnemonicParsing="false" onAction="#artistSearchTrigger" text="Search">
+                                    <HBox.margin>
+                                        <Insets bottom="5.0" right="5.0" top="5.0" />
+                                    </HBox.margin>
+                                </Button>
+                            </children>
+                        </HBox>
+                        <ListView fx:id="artistSearchList" VBox.vgrow="ALWAYS">
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </VBox.margin></ListView>
+                    </children>
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin>
+                </VBox>
+                <Button fx:id="onAddBtnClick" mnemonicParsing="false" onAction="#onAddBtnClick" text="Add To Query" HBox.hgrow="NEVER">
+                    <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </HBox.margin>
+                </Button>
+                <VBox prefWidth="275.0">
+                    <children>
+                        <HBox alignment="CENTER_LEFT">
+                            <VBox.margin>
+                                <Insets />
+                            </VBox.margin>
+                            <children>
+                                <Button fx:id="onRemoveBtnClick" mnemonicParsing="false" onAction="#onRemoveBtnClick" prefWidth="75.0" text="Remove" HBox.hgrow="ALWAYS">
+                                    <HBox.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </HBox.margin>
+                                </Button>
+                                <Separator HBox.hgrow="ALWAYS" />
+                                <Button fx:id="onClearBtnClick" mnemonicParsing="false" onAction="#onClearBtnClick" prefWidth="75.0" text="Clear" HBox.hgrow="ALWAYS">
+                                    <HBox.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </HBox.margin>
+                                </Button>
+                            </children>
+                        </HBox>
+                        <ListView fx:id="artistQueryList" VBox.vgrow="ALWAYS">
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </VBox.margin></ListView>
+                    </children>
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin>
+                </VBox>
+                <VBox>
+                    <HBox.margin>
+                        <Insets left="25.0" />
+                    </HBox.margin>
+                    <children>
+                        <HBox alignment="CENTER_LEFT">
+                            <children>
+                                <ChoiceBox fx:id="titleBoxArtist" prefWidth="125.0" />
+                                <Label text="Artist Roles">
+                                    <HBox.margin>
+                                        <Insets left="5.0" />
+                                    </HBox.margin>
+                                </Label>
+                            </children>
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT">
+                            <children>
+                                <ChoiceBox fx:id="titleBoxCollab" prefWidth="125.0" />
+                                <Label text="Artist Roles">
+                                    <HBox.margin>
+                                        <Insets left="5.0" />
+                                    </HBox.margin>
+                                </Label>
+                            </children>
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </VBox.margin>
+                            <children>
+                                <Spinner fx:id="minCollab" editable="true" maxWidth="75.0">
+                                    <valueFactory>
+                                        <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1" initialValue="2" max="200" min="2" />
+                                    </valueFactory>
+                                    <HBox.margin>
+                                        <Insets right="5.0" />
+                                    </HBox.margin>
+                                </Spinner>
+                                <Label text="Min Collaborations" />
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </children>
+</VBox>
