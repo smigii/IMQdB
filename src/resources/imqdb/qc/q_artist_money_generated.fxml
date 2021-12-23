@@ -1,6 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<VBox xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="imqdb.qc.QcArtistMoneyGenerated" />
+<VBox xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="imqdb.qc.QcArtistMoneyGenerated">
+   <children>
+      <Label text="Artists to query. Leaving blank will query all artists, which could take up to 30 seconds.">
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
+      </Label>
+      <HBox alignment="CENTER_LEFT" maxHeight="200.0">
+         <children>
+            <VBox>
+               <children>
+                  <TextField fx:id="artistSearchField" promptText="Search Artist">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <ListView fx:id="artistSearchList" maxHeight="1.7976931348623157E308" />
+               </children>
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </VBox>
+            <Button mnemonicParsing="false" text="Add To Query" HBox.hgrow="NEVER">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </Button>
+            <VBox>
+               <children>
+                  <HBox alignment="CENTER_LEFT">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                     <children>
+                        <Button mnemonicParsing="false" prefWidth="75.0" text="Remove" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Separator HBox.hgrow="ALWAYS" />
+                        <Button mnemonicParsing="false" prefWidth="75.0" text="Clear" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <ListView fx:id="artistQueryList" maxHeight="1.7976931348623157E308" />
+               </children>
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </VBox>
+            <VBox>
+               <HBox.margin>
+                  <Insets bottom="5.0" left="25.0" right="5.0" top="5.0" />
+               </HBox.margin>
+               <children>
+                  <HBox alignment="CENTER_LEFT">
+                     <children>
+                        <ChoiceBox fx:id="titleBox" prefWidth="125.0" />
+                        <Label text="Artist Roles">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
+                     <VBox.margin>
+                        <Insets bottom="5.0" right="5.0" />
+                     </VBox.margin>
+                     <children>
+                        <Spinner fx:id="minYear" editable="true" maxWidth="75.0">
+                           <valueFactory>
+                              <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1" initialValue="2010" max="2099" min="1900" />
+                           </valueFactory>
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </Spinner>
+                        <Label text="Min Year" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
+                     <VBox.margin>
+                        <Insets bottom="5.0" right="5.0" />
+                     </VBox.margin>
+                     <children>
+                        <Spinner fx:id="maxYear" editable="true" maxWidth="75.0">
+                           <valueFactory>
+                              <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1" initialValue="2020" max="2099" min="1900" />
+                           </valueFactory>
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </Spinner>
+                        <Label text="Max Year" />
+                     </children>
+                  </HBox>
+                  <CheckBox fx:id="famBoxSpouses" mnemonicParsing="false" text="Include Spouses">
+                     <VBox.margin>
+                        <Insets bottom="5.0" right="5.0" />
+                     </VBox.margin></CheckBox>
+                  <CheckBox fx:id="famBoxChildren" mnemonicParsing="false" text="Include Children">
+                     <VBox.margin>
+                        <Insets bottom="5.0" right="5.0" />
+                     </VBox.margin></CheckBox>
+                  <CheckBox fx:id="famBoxParents" mnemonicParsing="false" text="Include Parents">
+                     <VBox.margin>
+                        <Insets bottom="5.0" right="5.0" />
+                     </VBox.margin></CheckBox>
+                  <CheckBox fx:id="famBoxRelatives" mnemonicParsing="false" text="Include Relatives">
+                     <VBox.margin>
+                        <Insets bottom="5.0" right="5.0" />
+                     </VBox.margin></CheckBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</VBox>
