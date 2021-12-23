@@ -6,7 +6,7 @@
 
 <VBox xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="imqdb.qc.QcFrequentCollaborators">
     <children>
-        <Label maxWidth="850.0" text="Use the search bar below to search for artists, then add them to the query. If no artists are added, all artists will be queried (This can take up to 30 seconds!)." wrapText="true">
+        <Label maxWidth="850.0" text="Use the search bar below to search for artists, then add them to the query. If no artists are added, all artists will be queried (This can take up to 45 seconds!)." wrapText="true">
             <VBox.margin>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </VBox.margin>

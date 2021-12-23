@@ -16,7 +16,7 @@
             <Insets left="5.0" right="5.0" top="5.0" />
          </VBox.margin>
       </Label>
-      <Label text="WARNING: This query can take up to 20 when searching for all family relations and no filters!">
+      <Label text="WARNING: This query can take up to 20 seconds when searching for all family relations and no filters!">
          <VBox.margin>
             <Insets bottom="15.0" left="5.0" right="5.0" />
          </VBox.margin>
