@@ -8,6 +8,8 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Shape;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,6 +23,7 @@ public class ControllerMain {
 	@FXML private ChoiceBox<Query> querySelector;
 	@FXML private AnchorPane queryParamPane;
 	@FXML private VBox mainVbox;
+	@FXML private Shape statusCircle;
 	private TableWrapper mainQueryTable;
 
 	// Export
@@ -47,6 +50,15 @@ public class ControllerMain {
 		mainQueryTable.getTable().setMaxHeight(999999999);
 		mainQueryTable.getTable().setPrefHeight(999999999);
 		mainVbox.getChildren().add(mainQueryTable.getTable());
+
+		try {
+			if(!db.isClosed()) {
+				statusCircle.setFill(Color.GREEN);
+			}
+		} catch(SQLException e){
+			System.out.println(e.toString());
+		}
+
 	}
 
 	public void onQuerySelectionChanged(ActionEvent event)

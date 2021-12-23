@@ -3,6 +3,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
 <SplitPane dividerPositions="0.65" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1500.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="imqdb.ControllerMain">
@@ -47,12 +48,33 @@
             <VBox fx:id="mainVbox" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
             <HBox alignment="CENTER_LEFT" VBox.vgrow="NEVER">
                <children>
-                  <Button fx:id="exportCsvBtn" mnemonicParsing="false" onAction="#onExportCsvClick" text="Export CSV" />
-                  <Label fx:id="exportMsg">
+                  <HBox prefHeight="25.0" prefWidth="730.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button fx:id="exportCsvBtn" mnemonicParsing="false" onAction="#onExportCsvClick" text="Export CSV">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </Button>
+                        <Label fx:id="exportMsg">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="170.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label fx:id="exportMsg1" text="DB Connection Status" />
+                        <Circle fx:id="statusCircle" fill="#ff1f1f" radius="5.0" stroke="BLACK" strokeType="INSIDE">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </Circle>
+                     </children>
                      <HBox.margin>
-                        <Insets left="5.0" />
+                        <Insets left="20.0" />
                      </HBox.margin>
-                  </Label>
+                  </HBox>
                </children>
             </HBox>
          </children>
