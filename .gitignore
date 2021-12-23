@@ -2,7 +2,7 @@ target/
 out/
 csv/
 err/
-sql/query_log.sql
+log/
 
 db/imdb.db
 

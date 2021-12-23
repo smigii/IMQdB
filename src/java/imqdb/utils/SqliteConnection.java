@@ -15,7 +15,6 @@ public class SqliteConnection {
 
 		try {
 			String prefix = "jdbc:sqlite:";
-//			String location = App.class.getResource("imdb.db").toExternalForm();
 			String location = "db/imdb.db";
 			connection = DriverManager.getConnection(prefix + location);
 		}

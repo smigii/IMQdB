@@ -12,7 +12,7 @@ public class ErrorWindow {
 	{
 		VBox root = new VBox();
 		root.getChildren().add(new Label("An SQL exception has occurred."));
-		root.getChildren().add(new Label("Please check " + Logger.getSessionPath() + " for details."));
+		root.getChildren().add(new Label("Please check " + Logger.getSessionTimestamp() + " for details."));
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add(App.class.getResource("style.css").toExternalForm());
 		Stage stage = new Stage();

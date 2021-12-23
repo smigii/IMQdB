@@ -7,20 +7,24 @@ import java.nio.file.Path;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 public class Logger {
 
-    private static String sessionPath;
+    private static String sessionTimestamp;
+    private static String errPathPrefix = "err/sql_error_";
+    private static String logPathPrefix = "log/sql_log_";
 
-    public static String getSessionPath()
+    public static String getSessionTimestamp()
     {
-        if(sessionPath == null) {
+        if(sessionTimestamp == null) {
+            Random random = new Random(System.currentTimeMillis());
             Date date = new Date(System.currentTimeMillis());
-            SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SS");
-            String timestamp = formatter.format(date);
-            sessionPath = "sql/query_log_" + timestamp + ".sql";
+            SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd-HH-mm");
+            sessionTimestamp = formatter.format(date);
+            sessionTimestamp += "-" + random.nextInt(100, 999);
         }
-        return sessionPath;
+        return sessionTimestamp;
     }
 
     public static void logQueryAttempt(String query){
@@ -29,31 +33,38 @@ public class Logger {
             Date date = new Date(System.currentTimeMillis());
             String message = "--------------- Query date and time: "
                 + formatter.format(date) + "\r\n\r\n" + query + "\r\n\r\n";
-            Logger.tryAppendToFile(message);
+            String path = logPathPrefix + getSessionTimestamp() + ".sql";
+            Logger.tryAppendToFile(message, path);
         }
         catch (IOException e){
             System.out.println(e.getMessage());
         }
     }
 
-    public static void logSqlError(SQLException e)
+    public static void logSqlError(SQLException e, String sql)
     {
         try {
             Date date = new Date(System.currentTimeMillis());
-            SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss:SS z");
             String timestamp = formatter.format(date);
-            Files.createDirectories(Path.of("err"));
-            String final_message = "--- QUERY ERROR --------------- \r\ndate and time: " + timestamp + "\r\n/* " + e.getMessage() + " */\r\n\r\n";
 
-            Logger.tryAppendToFile(final_message);
+            String final_message =
+                "--------------- QUERY ERROR:  --------------- \r\n--date and time: " + timestamp + "\r\n" +
+                "/* " + e.getMessage() + " */\r\n\r\n-- QUERY: \r\n\r\n" +
+                sql + "\r\n\r\n";
+
+            String path = errPathPrefix + getSessionTimestamp() + ".sql";
+            Logger.tryAppendToFile(final_message, path);
         }
         catch(IOException ioe) {
             System.out.println(ioe.getMessage());
         }
     }
 
-    private static void tryAppendToFile(String message) throws IOException {
-        FileOutputStream fos = new FileOutputStream(getSessionPath(), true);
+    private static void tryAppendToFile(String message, String path) throws IOException {
+        Files.createDirectories(Path.of("log/"));
+        Files.createDirectories(Path.of("err/"));
+        FileOutputStream fos = new FileOutputStream(path, true);
         fos.write(message.getBytes());
         fos.close();
     }

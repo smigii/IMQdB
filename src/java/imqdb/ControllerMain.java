@@ -87,17 +87,16 @@ public class ControllerMain {
 		if(activeController == null)
 			return;
 
+		String sql = activeController.createQuery();
+		ResultSet rs = activeController.execute(db, sql);
+		if(rs == null) return;
 		try {
-			ResultSet rs = activeController.execute(db);
-
-			if(rs == null) return;
-
 			mainQueryTable.fillTable(rs);
 		}
 		catch (SQLException e) {
-			Logger.logSqlError(e);
-			ErrorWindow.CreateSqlErrorWindow();
+			System.out.println(e.getMessage());
 		}
+
 
 	}
 

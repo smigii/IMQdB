@@ -38,7 +38,7 @@ public class QcAllTables extends QueryController {
 	{
 		String selectedTable = tableBox.getValue();
 		if(selectedTable == null) {
-			return null;
+			return "select null";
 		}
 		String sql = "select * from " + selectedTable;
 		return sql;
