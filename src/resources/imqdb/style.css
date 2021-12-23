@@ -3,7 +3,7 @@
 }
 
 .root {
-    -fx-background-image: url("../styling/movieBack.png");
+    -fx-background-image: url("../styling/movieBack2.png");
     -fx-background-size:     cover;
 }
 
@@ -64,6 +64,6 @@ Button, #querySelector {
 }
 
 #secondVbox {
-    -fx-background-color: #1a1a1a;
+    -fx-background-color: #55555588;
 }
 
