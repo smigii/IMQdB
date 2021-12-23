@@ -98,26 +98,26 @@ public class QcFamilyFun implements QueryController {
 		String familyRole = "";
 		if(!familyRoleBox.getValue().getId().equals("*"))
 			familyRole = "t2.title_id = " + familyRoleBox.getValue().getId() + " and\n";
-
-		PreparedStatement ps = db.prepareStatement(
-			"select m.original_title as \"Movie\", m.year as \"Year\", a1.name as \"Artist\", t1.title as Role, a2.name as \"Family Member\", t2.title as \"Family Member Role\", Relation as \"Family Member Relation\" from (\n" +
-				"\n" + unionSection + "\n" +
-				") as x\n" +
-				"\n" +
-				"inner join artist a1 on x.imdb_name_id = a1.imdb_name_id\n" +
-				"inner join artist a2 on x.family_id = a2.imdb_name_id\n" +
-				"inner join titles t1 on x.title_id = t1.title_id\n" +
-				"inner join titles t2 on x.family_role_id = t2.title_id\n" +
-				"inner join movies m  on x.imdb_title_id = m.imdb_title_id\n" +
-				"where\n" +
-				"m.year >= " + minYear.getValue() + " and\n" +
-				"m.year <= " + maxYear.getValue() + " and\n" +
-				artistRole +
-				familyRole +
-				"m.budget_currency >= " + minBudget.getValue() + " and m.currency = \"USD\"\n" +
-				"order by\n" +
-				"\tm.imdb_title_id"
-			);
+		String sql =
+				"select m.original_title as \"Movie\", m.year as \"Year\", a1.name as \"Artist\", t1.title as Role, a2.name as \"Family Member\", t2.title as \"Family Member Role\", Relation as \"Family Member Relation\" from (\n" +
+						"\n" + unionSection + "\n" +
+						") as x\n" +
+						"\n" +
+						"inner join artist a1 on x.imdb_name_id = a1.imdb_name_id\n" +
+						"inner join artist a2 on x.family_id = a2.imdb_name_id\n" +
+						"inner join titles t1 on x.title_id = t1.title_id\n" +
+						"inner join titles t2 on x.family_role_id = t2.title_id\n" +
+						"inner join movies m  on x.imdb_title_id = m.imdb_title_id\n" +
+						"where\n" +
+						"m.year >= " + minYear.getValue() + " and\n" +
+						"m.year <= " + maxYear.getValue() + " and\n" +
+						artistRole +
+						familyRole +
+						"m.budget_currency >= " + minBudget.getValue() + " and m.currency = \"USD\"\n" +
+						"order by\n" +
+						"\tm.imdb_title_id";
+		System.out.println(sql);
+		PreparedStatement ps = db.prepareStatement(sql);
 		return ps.executeQuery();
 	}
 }
