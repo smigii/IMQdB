@@ -51,6 +51,7 @@ public class ControllerMain {
 
 	public void onQuerySelectionChanged(ActionEvent event)
 	{
+		System.out.println(event.toString());
 		Query currentQuery = querySelector.getValue();
 		Node n = currentQuery.getNode();
 		setQueryParamPane(n);
