@@ -1,8 +1,8 @@
 package imqdb.qc;
 
 import imqdb.QueryController;
-import imqdb.UtilQueryCache;
-import imqdb.UtilQueryPair;
+import imqdb.utils.UtilQueries;
+import imqdb.utils.UtilQueryPair;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 
@@ -19,7 +19,7 @@ public class QcBillionClub implements QueryController {
 	public void initialize()
 	{
 		titleBox.getItems().add(UtilQueryPair.ANY);
-		titleBox.getItems().addAll(UtilQueryCache.getTitles());
+		titleBox.getItems().addAll(UtilQueries.getTitles());
 		titleBox.setValue(UtilQueryPair.ANY);
 	}
 

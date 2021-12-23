@@ -1,7 +1,7 @@
 package imqdb.qc;
 
 import imqdb.QueryController;
-import imqdb.SqliteConnection;
+import imqdb.utils.SqliteConnection;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 

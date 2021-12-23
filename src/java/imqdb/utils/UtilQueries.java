@@ -1,4 +1,4 @@
-package imqdb;
+package imqdb.utils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class UtilQueryCache {
+public class UtilQueries {
 
 	private static ArrayList<UtilQueryPair> genres;
 	private static ArrayList<UtilQueryPair> languages;
@@ -60,6 +60,32 @@ public class UtilQueryCache {
 		catch(SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
+		}
+	}
+
+	public static ArrayList<ArtistSearchResult> artistLookup(String artist)
+	{
+		ArrayList<ArtistSearchResult> asrList = new ArrayList<>();
+
+		if(artist == null || artist.isEmpty())
+			return asrList;
+
+		try {
+			Connection connection = SqliteConnection.getConnection();
+			PreparedStatement ps = connection.prepareStatement("select artist.*, c1.country as birth_country, c2.country as death_country from artist\n" +
+				"left join countries c1 on artist.country_of_birth_id = c1.country_id\n" +
+				"left join countries c2 on artist.country_of_death_id = c2.country_id\n" +
+				"where artist.name like \"" + artist + "\"");
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				ArtistSearchResult asr = new ArtistSearchResult(rs);
+				asrList.add(asr);
+			}
+			return asrList;
+		}
+		catch(SQLException e) {
+			System.out.println(e.getMessage());
+			return asrList;
 		}
 	}
 

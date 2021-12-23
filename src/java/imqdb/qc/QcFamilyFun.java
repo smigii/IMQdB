@@ -1,8 +1,8 @@
 package imqdb.qc;
 
-import imqdb.UtilQueryCache;
+import imqdb.utils.UtilQueries;
 import imqdb.QueryController;
-import imqdb.UtilQueryPair;
+import imqdb.utils.UtilQueryPair;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -30,8 +30,8 @@ public class QcFamilyFun implements QueryController {
 	{
 		artistRoleBox.getItems().add(UtilQueryPair.ANY);
 		familyRoleBox.getItems().add(UtilQueryPair.ANY);
-		artistRoleBox.getItems().addAll(UtilQueryCache.getTitles());
-		familyRoleBox.getItems().addAll(UtilQueryCache.getTitles());
+		artistRoleBox.getItems().addAll(UtilQueries.getTitles());
+		familyRoleBox.getItems().addAll(UtilQueries.getTitles());
 		artistRoleBox.setValue(UtilQueryPair.ANY);
 		familyRoleBox.setValue(UtilQueryPair.ANY);
 	}

@@ -1,5 +1,9 @@
 package imqdb;
 
+import imqdb.utils.ArtistSearchResult;
+import imqdb.utils.SqliteConnection;
+import imqdb.utils.TableWrapper;
+import imqdb.utils.UtilQueries;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -97,21 +101,7 @@ public class ControllerArtistDetails {
 			return;
 		}
 
-		try {
-			PreparedStatement ps = connection.prepareStatement("select artist.*, c1.country as birth_country, c2.country as death_country from artist\n" +
-				"left join countries c1 on artist.country_of_birth_id = c1.country_id\n" +
-				"left join countries c2 on artist.country_of_death_id = c2.country_id\n" +
-				"where artist.name like \"%" + val + "%\"");
-			ResultSet rs = ps.executeQuery();
-			artistSearchList.getItems().clear();
-			while(rs.next()) {
-				ArtistSearchResult asr = new ArtistSearchResult(rs);
-				artistSearchList.getItems().add(asr);
-			}
-		}
-		catch(SQLException e) {
-			System.out.println(e.getMessage());
-		}
+		artistSearchList.getItems().addAll(UtilQueries.artistLookup(val + "%"));
 	}
 
 	private void fillArtistBasicInfo(ArtistSearchResult asr)
@@ -176,50 +166,6 @@ public class ControllerArtistDetails {
 
 		basicInfoLabels.getChildren().addAll(labels);
 		basicInfoFields.getChildren().addAll(fields);
-	}
-
-	static class ArtistSearchResult {
-
-		public String id;
-		public String name;
-		public String birth_name;
-		public String height;
-		public String bio;
-
-		public String place_of_birth;
-		public String country_of_birth;
-		public String date_of_birth;
-
-		public String place_of_death;
-		public String country_of_death;
-		public String date_of_death;
-		public String reason_of_death;
-
-		public ArtistSearchResult(ResultSet rs)
-		{
-			try {
-				this.id = rs.getString("imdb_name_id");
-				this.name = rs.getString("name");
-				this.birth_name = rs.getString("birth_name");
-				this.height = rs.getString("height");
-				this.bio = rs.getString("bio");
-				this.place_of_birth = rs.getString("place_of_birth");
-				this.place_of_death = rs.getString("place_of_death");
-				this.country_of_birth = rs.getString("birth_country");
-				this.country_of_death = rs.getString("death_country");
-				this.date_of_birth = rs.getString("date_of_birth");
-				this.date_of_death = rs.getString("date_of_death");
-				this.reason_of_death = rs.getString("reason_of_death");
-			}
-			catch(SQLException e) {
-				System.out.println(e.getMessage());
-			}
-		}
-
-		public String toString()
-		{
-			return name + " (" + id + ")";
-		}
 	}
 
 }

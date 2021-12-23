@@ -1,7 +1,7 @@
 package imqdb.qc;
 
 import imqdb.QueryController;
-import imqdb.SqliteConnection;
+import imqdb.utils.SqliteConnection;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.RadioButton;
@@ -11,7 +11,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class QcMovieDuration implements QueryController {
 

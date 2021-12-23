@@ -1,5 +1,7 @@
 package imqdb;
 
+import imqdb.utils.SqliteConnection;
+import imqdb.utils.TableWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;

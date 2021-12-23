@@ -1,8 +1,8 @@
 package imqdb.qc;
 
 import imqdb.QueryController;
-import imqdb.UtilQueryCache;
-import imqdb.UtilQueryPair;
+import imqdb.utils.UtilQueries;
+import imqdb.utils.UtilQueryPair;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.RadioButton;
@@ -23,7 +23,7 @@ public class QcGrossByYear implements QueryController {
 	{
 		radioDomestic.fire();
 		genreBox.getItems().add(UtilQueryPair.ANY);
-		genreBox.getItems().addAll(UtilQueryCache.getGenres());
+		genreBox.getItems().addAll(UtilQueries.getGenres());
 		genreBox.setValue(UtilQueryPair.ANY);
 	}
 

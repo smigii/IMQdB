@@ -1,6 +1,5 @@
-package imqdb;
+package imqdb.utils;
 
-// TODO: I dont like this name
 public class UtilQueryPair {
 
 	private String name;
