@@ -75,7 +75,9 @@ public class UtilQueries {
 			PreparedStatement ps = connection.prepareStatement("select artist.*, c1.country as birth_country, c2.country as death_country from artist\n" +
 				"left join countries c1 on artist.country_of_birth_id = c1.country_id\n" +
 				"left join countries c2 on artist.country_of_death_id = c2.country_id\n" +
-				"where artist.name like \"" + artist + "\"");
+				"where artist.name like ?");
+			ps.setString(1, artist);
+
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
 				ArtistSearchResult asr = new ArtistSearchResult(rs);
@@ -114,8 +116,10 @@ public class UtilQueries {
 				"inner join movie_language on movie_language.imdb_title_id = movies.imdb_title_id\n" +
 				"inner join languages on movie_language.language_id = languages.language_id\n" +
 				"where\n" +
-				"\tmovies.original_title like \"" + movie + "\"\n" +
+				"\tmovies.original_title like ?\n" +
 				"group by movies.imdb_title_id;");
+			ps.setString(1, movie);
+
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
 				MovieSearchResult msr = new MovieSearchResult(rs);
