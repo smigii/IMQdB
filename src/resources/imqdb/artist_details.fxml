@@ -27,7 +27,7 @@
                         </Button>
                      </children>
                   </HBox>
-                  <ListView fx:id="artistSearchList" maxHeight="50.0">
+                  <ListView fx:id="artistSearchList" minHeight = "25.0" maxHeight="200.0">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
@@ -64,7 +64,7 @@
         <content>
             <VBox minHeight="0.0">
                <children>
-                  <TextArea fx:id="artistBio" editable="false" maxHeight="125.0" minHeight="0.0" wrapText="true" VBox.vgrow="ALWAYS" />
+                  <TextArea fx:id="artistBio" editable="false" maxHeight="125.0" minHeight="40.0" wrapText="true" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
         </content>
