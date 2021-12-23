@@ -40,7 +40,7 @@ public class QcAllTables extends QueryController {
 		if(selectedTable == null) {
 			return null;
 		}
-		String sql = "select *a from " + selectedTable;
+		String sql = "select * from " + selectedTable;
 		return sql;
 	}
 
