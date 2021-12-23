@@ -142,8 +142,6 @@ public class ControllerArtistDetails {
 			fields.add(new Label(asr.country_of_birth));
 		}
 
-		String death = "";
-
 		if(asr.date_of_death != null) {
 			labels.add(new Label("Date of Death:"));
 			fields.add(new Label(asr.date_of_death));

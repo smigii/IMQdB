@@ -89,4 +89,44 @@ public class UtilQueries {
 		}
 	}
 
+	public static ArrayList<MovieSearchResult> movieLookup(String movie)
+	{
+		ArrayList<MovieSearchResult> msrList = new ArrayList<>();
+
+		if(movie == null || movie.isEmpty())
+			return msrList;
+
+		try {
+			Connection connection = SqliteConnection.getConnection();
+			PreparedStatement ps = connection.prepareStatement("select\n" +
+				"\tmovies.*,\n" +
+				"\tproduction_company,\n" +
+				"\tgroup_concat(distinct country) as \"countries\",\n" +
+				"\tgroup_concat(distinct genre) as \"genres\",\n" +
+				"\tgroup_concat(distinct language) as \"languages\"\n" +
+				"from movies\n" +
+				"\n" +
+				"inner join production_companies on production_companies.production_id = movies.production_id\n" +
+				"inner join movie_country on movie_country.imdb_title_id = movies.imdb_title_id\n" +
+				"inner join countries on movie_country.country_id = countries.country_id\n" +
+				"inner join movie_genre on movie_genre.imdb_title_id = movies.imdb_title_id\n" +
+				"inner join genres on movie_genre.genre_id = genres.genre_id\n" +
+				"inner join movie_language on movie_language.imdb_title_id = movies.imdb_title_id\n" +
+				"inner join languages on movie_language.language_id = languages.language_id\n" +
+				"where\n" +
+				"\tmovies.original_title like \"" + movie + "\"\n" +
+				"group by movies.imdb_title_id;");
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				MovieSearchResult msr = new MovieSearchResult(rs);
+				msrList.add(msr);
+			}
+			return msrList;
+		}
+		catch(SQLException e) {
+			System.out.println(e.getMessage());
+			return msrList;
+		}
+	}
+
 }
