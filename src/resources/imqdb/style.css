@@ -67,3 +67,27 @@ Button, #querySelector {
     -fx-background-color: #55555588;
 }
 
+.titled-pane > .title {
+    -fx-background-color: #deb522;
+}
+
+.titled-pane:focused > .title
+{
+    -fx-color: white;
+}
+.titled-pane > *.content
+{
+    -fx-background-color:#000000;
+}
+
+.titled-pane:focused > .title > .arrow-button .arrow
+{
+    -fx-background-color: white;
+}
+.titled-pane .label
+{
+    -fx-text-fill: white;
+}
+.titled-pane .choice-box .label {
+    -fx-text-fill: black;
+}
