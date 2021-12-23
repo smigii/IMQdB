@@ -1,7 +1,6 @@
 package imqdb.qc;
 
 import imqdb.QueryController;
-import imqdb.utils.Logger;
 import imqdb.utils.SqliteConnection;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
@@ -21,7 +20,6 @@ public class QcAllTables extends QueryController {
 		try {
 			Connection connection = SqliteConnection.getConnection();
 			String sql = "SELECT name FROM sqlite_master WHERE type = \"table\"";
-			Logger.logQueryAttempt(sql);
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {

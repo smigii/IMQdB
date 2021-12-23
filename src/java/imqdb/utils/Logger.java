@@ -12,8 +12,13 @@ import java.util.Random;
 public class Logger {
 
     private static String sessionTimestamp;
-    private static String errPathPrefix = "err/sql_error_";
-    private static String logPathPrefix = "log/sql_log_";
+    private static final String errPathPrefix = "err/sql_error_";
+    private static final String logPathPrefix = "log/sql_log_";
+
+    public static String getErrPathPrefix()
+    {
+        return errPathPrefix;
+    }
 
     public static String getSessionTimestamp()
     {

@@ -2,7 +2,6 @@ package imqdb.qc;
 
 import imqdb.QueryController;
 import imqdb.utils.ArtistSearchResult;
-import imqdb.utils.Logger;
 import imqdb.utils.UtilQueries;
 import imqdb.utils.UtilQueryPair;
 import javafx.event.EventHandler;
@@ -11,10 +10,6 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class QcArtistMoneyGenerated extends QueryController {

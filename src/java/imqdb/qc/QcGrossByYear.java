@@ -1,15 +1,12 @@
 package imqdb.qc;
 
 import imqdb.QueryController;
-import imqdb.utils.Logger;
 import imqdb.utils.UtilQueries;
 import imqdb.utils.UtilQueryPair;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
-
-import java.sql.*;
 
 public class QcGrossByYear extends QueryController {
 

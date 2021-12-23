@@ -1,6 +1,5 @@
 package imqdb.qc;
 
-import imqdb.utils.Logger;
 import imqdb.utils.UtilQueries;
 import imqdb.QueryController;
 import imqdb.utils.UtilQueryPair;
@@ -9,10 +8,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Spinner;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class QcFamilyFun extends QueryController {

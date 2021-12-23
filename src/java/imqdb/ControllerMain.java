@@ -1,7 +1,5 @@
 package imqdb;
 
-import imqdb.utils.ErrorWindow;
-import imqdb.utils.Logger;
 import imqdb.utils.SqliteConnection;
 import imqdb.utils.TableWrapper;
 import javafx.fxml.FXML;
@@ -13,7 +11,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.*;
@@ -66,7 +63,6 @@ public class ControllerMain {
 
 	public void onQuerySelectionChanged(ActionEvent event)
 	{
-		System.out.println(event.toString());
 		Query currentQuery = querySelector.getValue();
 		Node n = currentQuery.getNode();
 		setQueryParamPane(n);
@@ -76,13 +72,6 @@ public class ControllerMain {
 	@FXML protected void onRunBtnClick()
 	{
 		QueryController activeController = querySelector.getValue().getController();
-
-		// Create the sql logging directory if it does not exist.
-		try {
-			Files.createDirectories(Path.of("sql"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
 		if(activeController == null)
 			return;
@@ -98,11 +87,6 @@ public class ControllerMain {
 		}
 
 
-	}
-
-	@FXML protected void onMovieSearchBtnClick()
-	{
-		System.out.println("Movie search");
 	}
 
 	private void setQueryParamPane(Node n)
