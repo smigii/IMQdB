@@ -1,3 +1,69 @@
 * {
-padding: 40px;
+    padding: 40px;
 }
+
+.root {
+    -fx-background-image: url("../styling/movieBack.png");
+    -fx-background-size:     cover;
+}
+
+
+#labelTitleBox {
+    -fx-background-color: #deb522;
+    -fx-background-radius:20px;
+    -fx-alignment: center;
+    -fx-border-color: black;
+    -fx-border-radius: 18px;
+    -fx-border-width: 3px;
+}
+
+#querySelector {
+    -fx-font-family: "Arial Black";
+    -fx-font-size: 30px;
+}
+
+#title {
+    -fx-font-size: 43px;
+    -fx-text-fill: black;
+    -fx-font-family: "Arial Black";
+}
+
+#mainHBox, .tableBack {
+    -fx-background-color: #1a1a1a;
+    -fx-effect: innershadow(three-pass-box, #464646, 12 , 0.5, 1, 1);
+    -fx-border-style: solid;
+}
+
+#mainVbox, #QueryTitled, #exportCsvBtnHBox {
+    -fx-padding: 5px;
+}
+
+Button, #querySelector {
+    -fx-background-radius: 10px;
+}
+
+#btn_run, #exportCsvBtn {
+    -fx-background-color: linear-gradient(#18b0e5,#128bb5);
+    -fx-text-fill: white;
+    -fx-font-size: 25px;
+    -fx-font-family: "Arial Black";
+}
+
+#btn_run:hover, #exportCsvBtn:hover {
+    -fx-background-color: #1bafe2;
+}
+
+#btn_run:pressed, #exportCsvBtn:pressed {
+    -fx-background-color: #138bb5
+}
+
+.tableBack {
+    -fx-padding: 15px;
+    -fx-border-insets: 15px;
+    -fx-background-insets: 15px;
+}
+
+#secondVbox {
+    -fx-background-color: #1a1a1a;
+}
+
