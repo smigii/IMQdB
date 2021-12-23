@@ -1,6 +1,7 @@
 package imqdb.qc;
 
 import imqdb.QueryController;
+import imqdb.utils.Logger;
 import imqdb.utils.UtilQueries;
 import imqdb.utils.UtilQueryPair;
 import javafx.fxml.FXML;
@@ -90,6 +91,7 @@ public class QcGrossByYear implements QueryController {
 				"order by\n" +
 				"	m.year desc"
 		);
+		Logger.log(ps.toString());
 
 		return ps.executeQuery();
 	}

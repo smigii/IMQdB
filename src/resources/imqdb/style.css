@@ -51,20 +51,19 @@
     -fx-font-weight: none;
 }
 
-.list-cell:even,
+
 .list-cell:odd,
-.table-row-cell:even,
 .table-row-cell:odd{
     -fx-control-inner-background: derive(-fx-base, 15%);
 }
 
-.list-cell:empty,
-.table-row-cell:empty {
-    -fx-background-color: transparent;
+.list-cell:even,
+.table-row-cell:even {
+    -fx-control-inner-background: derive(-fx-base, 5%);
 }
 
 .list-cell,
 .table-row-cell{
     -fx-border-color: transparent;
-    -fx-table-cell-border-color:transparent;
+    -fx-table-cell-border-color: transparent;
 }
