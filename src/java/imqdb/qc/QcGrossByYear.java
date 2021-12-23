@@ -18,17 +18,17 @@ public class QcGrossByYear implements QueryController {
 	@FXML Spinner<Integer> maxYear;
 	@FXML RadioButton radioDomestic;
 	@FXML RadioButton radioWorldwide;
-	@FXML RadioButton radioGross;
-	@FXML RadioButton radioNone;
 	@FXML RadioButton radioHigh;
 	@FXML RadioButton radioLow;
+	@FXML RadioButton radioGross;
+	@FXML RadioButton radioProfit;
 
 	@FXML
 	public void initialize()
 	{
 		radioDomestic.fire();
+		radioHigh.fire();
 		radioGross.fire();
-		radioNone.fire();
 
 		genreBox.getItems().add(UtilQueryPair.ANY);
 		genreBox.getItems().addAll(UtilQueries.getGenres());
@@ -43,49 +43,52 @@ public class QcGrossByYear implements QueryController {
 	public ResultSet execute(Connection db) throws SQLException
 	{
 		// Genre selection
-		String genre_section = "";
+		String genreSection = "";
 		if(!genreBox.getValue().isAny()) {
-			genre_section = "genres.genre_id = \"" + genreBox.getValue().getId() + "\" and ";
+			genreSection = "and m.imdb_title_id in (select mg.imdb_title_id from movie_genre mg where mg.genre_id = " + genreBox.getValue().getId() + ")\n";
 		}
 
 		// Country selection
-		String count_section = "";
+		String countrySection = "";
 		if(!countryBox.getValue().isAny()) {
-			count_section = "countries.country_id = \"" + countryBox.getValue().getId() + "\" and";
+			countrySection = "and m.imdb_title_id in (select mc.imdb_title_id from movie_country mc where mc.country_id = " + countryBox.getValue().getId() + ")\n";
 		}
+
+		String subtraction = (radioGross.isSelected()) ? "" : " - m.budget_currency ";
+		String grossProfit = (radioGross.isSelected()) ? "Gross" : "Profit";
 
 		// Region selection
 		String region;
 		String regionAlias;
 		if(radioDomestic.isSelected()) {
 			region = "usa_gross_income";
-			regionAlias = "Domestic_Income";
+			regionAlias = "\"Domestic " + grossProfit + "\"";
 		} else {
 			region = "worldwide_gross_income";
-			regionAlias = "Worldwide_Income";
+			regionAlias = "\"Worldwide " + grossProfit + "\"";
 		}
 
-		String subtractionAmount = "";
-		if(!radioGross.isSelected()){
-			subtractionAmount = "- movies.budget_currency";
-			regionAlias = "Revenue";
-		}
-
-		String orderBy = "order by movies.year DESC";
+		String minMax = "max";
 		if(radioLow.isSelected()){
-			orderBy = "order by " + regionAlias + " ASC";
-		} else if(radioHigh.isSelected()) {
-			orderBy = "order by " + regionAlias + " DESC";
-
+			minMax = "min";
 		}
 
 		PreparedStatement ps = db.prepareStatement(
-			"select movies.original_title as \"Title\", movies.year as \"Year\", movies." + region + subtractionAmount + " as \"" + regionAlias + "\" from movies\n" +
-				"natural join movie_genre natural join genres natural join countries\n" +
-				"where " + genre_section + count_section + "movies.year >= " + minYear.getValue() + " and movies.year <= " + maxYear.getValue() + "\n" +
-				"group by movies.year\n" +
-				"having max(movies." + region + ")\n" +
-					orderBy
+			"select\n" +
+				"	m.year as Year,\n" +
+				"	m.original_title as Title,\n" +
+					minMax + "(m." + region  + subtraction + ") as " + regionAlias + "\n" +
+				"from movies m\n" +
+				"where\n" +
+				"m.currency = \"USD\"\n" +
+				"and m.year >= " + minYear.getValue() + "\n" +
+				"and m.year <= " + maxYear.getValue() + "\n" +
+				genreSection +
+				countrySection +
+				"group by\n" +
+				"	m.year\n" +
+				"order by\n" +
+				"	m.year desc"
 		);
 
 		return ps.executeQuery();
