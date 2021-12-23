@@ -1,5 +1,6 @@
 package imqdb.qc;
 
+import imqdb.utils.Logger;
 import imqdb.utils.UtilQueries;
 import imqdb.QueryController;
 import imqdb.utils.UtilQueryPair;
@@ -39,6 +40,9 @@ public class QcFamilyFun implements QueryController {
 	@Override
 	public ResultSet execute(Connection db) throws SQLException
 	{
+		boolean hasCheckedBoxes = false;
+		String emptyQuery = "1=0 and\n"; // only keep the column names
+
 		String childrenSection = "select\n" +
 			"\t\tca.imdb_name_id, tp.title_id, ca.child_imdb_id as family_id, tp2.title_id as family_role_id, tp.imdb_title_id, \"Child\" as \"Relation\"\n" +
 			"\tfrom children_artist ca\n" +
@@ -88,8 +92,19 @@ public class QcFamilyFun implements QueryController {
 
 		String unionSection = String.join("\nunion\n", unions);
 
-		if(unionSection.isEmpty())
-			return null;
+		if(unionSection.isEmpty()) {
+			unions.add(childrenSection);
+			unions.add(parentSection);
+			unions.add(spouseSection);
+			unions.add(relativeSection);
+			unionSection = String.join("\nunion\n", unions);
+		} else {
+			hasCheckedBoxes = true;
+		}
+
+		if (hasCheckedBoxes){
+			emptyQuery = "";
+		}
 
 		String artistRole = "";
 		if(!artistRoleBox.getValue().getId().equals("*"))
@@ -113,10 +128,11 @@ public class QcFamilyFun implements QueryController {
 						"m.year <= " + maxYear.getValue() + " and\n" +
 						artistRole +
 						familyRole +
+						emptyQuery +
 						"m.budget_currency >= " + minBudget.getValue() + " and m.currency = \"USD\"\n" +
 						"order by\n" +
 						"\tm.imdb_title_id";
-		System.out.println(sql);
+		Logger.log(sql);
 		PreparedStatement ps = db.prepareStatement(sql);
 		return ps.executeQuery();
 	}

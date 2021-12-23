@@ -1,6 +1,7 @@
 package imqdb.qc;
 
 import imqdb.QueryController;
+import imqdb.utils.Logger;
 import imqdb.utils.UtilQueries;
 import imqdb.utils.UtilQueryPair;
 import javafx.fxml.FXML;
@@ -31,19 +32,20 @@ public class QcBillionClub implements QueryController {
 			titleSection = "where titles.title_id = \"" + titleBox.getValue().getId() + "\"";
 		}
 
-		PreparedStatement ps = db.prepareStatement(
-			"select\n" +
-				"artist.name as Name,\n" +
-				"titles.title as \"Artist Job\",\n" +
-				"billion_dollar_movies.original_title as Title,\n" +
-				"billion_dollar_movies.year as Year,\n" +
-				"billion_dollar_movies.worldwide_gross_income as \"Worldwide Gross\"\n" +
-				"from billion_dollar_movies\n" +
-				"left join title_principals on billion_dollar_movies.imdb_title_id = title_principals.imdb_title_id\n" +
-				"left join artist on title_principals.imdb_name_id = artist.imdb_name_id\n" +
-				"left join titles on title_principals.title_id = titles.title_id " +
-				titleSection
-		);
+		String sql =
+				"select\n" +
+						"artist.name as Name,\n" +
+						"titles.title as \"Artist Job\",\n" +
+						"billion_dollar_movies.original_title as Title,\n" +
+						"billion_dollar_movies.year as Year,\n" +
+						"billion_dollar_movies.worldwide_gross_income as \"Worldwide Gross\"\n" +
+						"from billion_dollar_movies\n" +
+						"left join title_principals on billion_dollar_movies.imdb_title_id = title_principals.imdb_title_id\n" +
+						"left join artist on title_principals.imdb_name_id = artist.imdb_name_id\n" +
+						"left join titles on title_principals.title_id = titles.title_id " +
+						titleSection;
+		Logger.log(sql);
+		PreparedStatement ps = db.prepareStatement(sql);
 
 		return ps.executeQuery();
 	}

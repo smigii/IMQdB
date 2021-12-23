@@ -1,6 +1,7 @@
 package imqdb.qc;
 
 import imqdb.QueryController;
+import imqdb.utils.Logger;
 import imqdb.utils.SqliteConnection;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
@@ -27,7 +28,7 @@ public class QcMatchmaker implements QueryController {
             while (rs.next()) {
                 titleBox.getItems().add(rs.getString("title"));
             }
-            titleBox.setValue("Any");
+            titleBox.setValue("Actor");
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -46,7 +47,7 @@ public class QcMatchmaker implements QueryController {
             title_where = "";
         }
 
-        PreparedStatement ps = db.prepareStatement("select\n" +
+        String sql = "select\n" +
                 "    m.original_title as \"Movie\",\n" +
                 "    m.year as \"Year\",\n" +
                 "    a1.name as \"Artist\",\n" +
@@ -79,7 +80,10 @@ public class QcMatchmaker implements QueryController {
                 title_where +
                 year_where +
                 "\n" +
-                "order by \"Artist\"");
+                "order by \"Artist\"";
+
+        Logger.log(sql);
+        PreparedStatement ps = db.prepareStatement(sql);
 
         return ps.executeQuery();
     }

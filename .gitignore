@@ -1,6 +1,7 @@
 target/
 out/
 csv/
+sql/query_log.sql
 
 db/imdb.db
 

@@ -2,6 +2,7 @@ package imqdb.qc;
 
 import imqdb.QueryController;
 import imqdb.utils.ArtistSearchResult;
+import imqdb.utils.Logger;
 import imqdb.utils.UtilQueries;
 import imqdb.utils.UtilQueryPair;
 import javafx.event.EventHandler;
@@ -113,29 +114,30 @@ public class QcFrequentCollaborators implements QueryController {
 
 		String fullWhere = String.join(" and\n", fullWhereList);
 
-		PreparedStatement ps = db.prepareStatement(
-			"select\n" +
-			"	a1.name as \"Artist\",\n" +
-			"	a2.name as \"Collaborator\",\n" +
-			"	count(distinct tp2.imdb_title_id) as \"Count\",\n" +
-			"	group_concat(m.original_title, '; ') as \"Movies\"\n" +
-			"from title_principals tp1\n" +
-			"inner join title_principals tp2 on\n" +
-			"	tp1.imdb_title_id = tp2.imdb_title_id\n" +
-			"inner join artist a1 on\n" +
-			"	tp1.imdb_name_id = a1.imdb_name_id\n" +
-			"inner join artist a2 on\n" +
-			"	tp2.imdb_name_id = a2.imdb_name_id\n" +
-			"inner join movies m on\n" +
-			"	tp2.imdb_title_id = m.imdb_title_id\n" +
-			"where\n" +
-				fullWhere +
-			"group by\n" +
-			"	tp1.imdb_name_id, tp2.imdb_name_id\n" +
-			"having\n" +
-			"	\"Count\" >= " + minCollab.getValue() + "\n" +
-			"order by \"Count\" desc"
-		);
+		String sql =
+				"select\n" +
+						"	a1.name as \"Artist\",\n" +
+						"	a2.name as \"Collaborator\",\n" +
+						"	count(distinct tp2.imdb_title_id) as \"Count\",\n" +
+						"	group_concat(m.original_title, '; ') as \"Movies\"\n" +
+						"from title_principals tp1\n" +
+						"inner join title_principals tp2 on\n" +
+						"	tp1.imdb_title_id = tp2.imdb_title_id\n" +
+						"inner join artist a1 on\n" +
+						"	tp1.imdb_name_id = a1.imdb_name_id\n" +
+						"inner join artist a2 on\n" +
+						"	tp2.imdb_name_id = a2.imdb_name_id\n" +
+						"inner join movies m on\n" +
+						"	tp2.imdb_title_id = m.imdb_title_id\n" +
+						"where\n" +
+						fullWhere +
+						"group by\n" +
+						"	tp1.imdb_name_id, tp2.imdb_name_id\n" +
+						"having\n" +
+						"	\"Count\" >= " + minCollab.getValue() + "\n" +
+						"order by \"Count\" desc";
+		Logger.log(sql);
+		PreparedStatement ps = db.prepareStatement(sql);
 		return ps.executeQuery();
 	}
 }
