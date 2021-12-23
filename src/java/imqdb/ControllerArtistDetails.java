@@ -218,7 +218,7 @@ public class ControllerArtistDetails {
 
 		public String toString()
 		{
-			return name;
+			return name + " (" + id + ")";
 		}
 	}
 
