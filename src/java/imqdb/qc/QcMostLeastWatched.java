@@ -136,7 +136,7 @@ public class QcMostLeastWatched implements QueryController {
                 "and year <= " + maxYear.getValue() + "\n" +
                 "group by movies.imdb_title_id\n" +
                 "order by (movies.reviews_from_users + movies.reviews_from_critics) " + highLow + ";";
-        System.out.println(sql);
+
         PreparedStatement ps = db.prepareStatement(sql);
 
         return ps.executeQuery();
