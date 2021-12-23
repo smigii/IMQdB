@@ -48,6 +48,10 @@ public class QueryFactory {
 			new Query("Frequent Collaborators", "qc/q_frequent_collaborators.fxml")
 		);
 
+		queries.add(
+				new Query("Movies couples worked on before they got married", "qc/q_matchmaker.fxml")
+		);
+
 		return queries;
 	}
 

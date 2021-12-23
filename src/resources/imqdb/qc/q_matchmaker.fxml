@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="imqdb.qc.QcMatchmaker">
+   <children>
+      <VBox>
+         <children>
+            <Label text="Artist Title" />
+            <ChoiceBox fx:id="titleBox" />
+         </children>
+         <HBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </HBox.margin>
+      </VBox>
+      <VBox>
+         <Label text="Married After" />
+         <Spinner fx:id="afterYear" editable="true" maxWidth="75.0" BorderPane.alignment="CENTER">
+            <valueFactory>
+               <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1" initialValue="1990" max="2099" min="1900" />
+            </valueFactory>
+         </Spinner>
+         <HBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </HBox.margin>
+      </VBox>
+   </children>
+</HBox>
