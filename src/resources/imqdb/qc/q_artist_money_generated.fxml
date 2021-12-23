@@ -13,48 +13,66 @@
       </Label>
       <HBox alignment="CENTER_LEFT" maxHeight="200.0">
          <children>
-            <VBox>
+            <VBox prefWidth="275.0">
                <children>
-                  <TextField fx:id="artistSearchField" promptText="Search Artist">
+                  <HBox>
                      <VBox.margin>
-                        <Insets bottom="10.0" />
-                     </VBox.margin>
-                  </TextField>
-                  <ListView fx:id="artistSearchList" maxHeight="1.7976931348623157E308" />
-               </children>
-               <HBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </HBox.margin>
-            </VBox>
-            <Button mnemonicParsing="false" text="Add To Query" HBox.hgrow="NEVER">
-               <HBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </HBox.margin>
-            </Button>
-            <VBox>
-               <children>
-                  <HBox alignment="CENTER_LEFT">
-                     <VBox.margin>
-                        <Insets bottom="10.0" />
+                        <Insets />
                      </VBox.margin>
                      <children>
-                        <Button mnemonicParsing="false" prefWidth="75.0" text="Remove" HBox.hgrow="ALWAYS">
+                        <TextField fx:id="artistSearchField" promptText="Search Artist" HBox.hgrow="ALWAYS">
                            <HBox.margin>
-                              <Insets right="5.0" />
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
-                        </Button>
-                        <Separator HBox.hgrow="ALWAYS" />
-                        <Button mnemonicParsing="false" prefWidth="75.0" text="Clear" HBox.hgrow="ALWAYS">
+                        </TextField>
+                        <Button mnemonicParsing="false" onAction="#artistSearchTrigger" text="Search">
                            <HBox.margin>
-                              <Insets left="5.0" />
+                              <Insets bottom="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </Button>
                      </children>
                   </HBox>
-                  <ListView fx:id="artistQueryList" maxHeight="1.7976931348623157E308" />
+                  <ListView fx:id="artistSearchList" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin></ListView>
                </children>
                <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </VBox>
+            <Button fx:id="onAddBtnClick" mnemonicParsing="false" onAction="#onAddBtnClick" text="Add To Query" HBox.hgrow="NEVER">
+               <HBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </Button>
+            <VBox prefWidth="275.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <children>
+                        <Button fx:id="onRemoveBtnClick" mnemonicParsing="false" onAction="#onRemoveBtnClick" prefWidth="75.0" text="Remove" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Separator HBox.hgrow="ALWAYS" />
+                        <Button fx:id="onClearBtnClick" mnemonicParsing="false" onAction="#onClearBtnClick" prefWidth="75.0" text="Clear" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <ListView fx:id="artistQueryList" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin></ListView>
+               </children>
+               <HBox.margin>
+                  <Insets />
                </HBox.margin>
             </VBox>
             <VBox>

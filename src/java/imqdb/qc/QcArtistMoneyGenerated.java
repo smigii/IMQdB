@@ -1,6 +1,14 @@
 package imqdb.qc;
 
 import imqdb.QueryController;
+import imqdb.utils.ArtistSearchResult;
+import imqdb.utils.UtilQueries;
+import imqdb.utils.UtilQueryPair;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,6 +16,35 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class QcArtistMoneyGenerated implements QueryController {
+
+	@FXML private TextField artistSearchField;
+	@FXML private ListView<ArtistSearchResult> artistSearchList;
+	@FXML private ListView<ArtistSearchResult> artistQueryList;
+	@FXML private ChoiceBox<UtilQueryPair> titleBox;
+	@FXML private Spinner<Integer> minYear;
+	@FXML private Spinner<Integer> maxYear;
+	@FXML private CheckBox famBoxSpouses;
+	@FXML private CheckBox famBoxChildren;
+	@FXML private CheckBox famBoxParents;
+	@FXML private CheckBox famBoxRelatives;
+
+	@FXML public void initialize()
+	{
+		titleBox.getItems().add(UtilQueryPair.ANY);
+		titleBox.getItems().addAll(UtilQueries.getTitles());
+		titleBox.setValue(UtilQueryPair.ANY);
+
+		artistSearchField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent keyEvent)
+			{
+				if(keyEvent.getCode().equals(KeyCode.ENTER)) {
+					artistSearchTrigger();
+				}
+			}
+		});
+	}
+
 
 	@Override
 	public ResultSet execute(Connection db) throws SQLException
@@ -99,6 +136,38 @@ public class QcArtistMoneyGenerated implements QueryController {
 			"	fam_movies.imdb_name_id\n" +
 			"order by fam_movies.imdb_title_id");
 		return ps.executeQuery();
+	}
+
+	@FXML protected void onClearBtnClick()
+	{
+		artistQueryList.getItems().clear();
+	}
+
+	@FXML protected void onRemoveBtnClick()
+	{
+		ArtistSearchResult selectedArtist = artistQueryList.getSelectionModel().getSelectedItem();
+		if(selectedArtist == null) {
+			return;
+		}
+		artistQueryList.getItems().remove(selectedArtist);
+		System.out.println("hi");
+	}
+
+	@FXML protected void onAddBtnClick()
+	{
+		ArtistSearchResult selectedArtist = artistSearchList.getSelectionModel().getSelectedItem();
+		if(selectedArtist == null) {
+			return;
+		}
+		artistSearchList.getItems().remove(selectedArtist);
+		artistQueryList.getItems().add(selectedArtist);
+	}
+
+	@FXML protected void artistSearchTrigger()
+	{
+		String artist = artistSearchField.getText();
+		artistSearchList.getItems().clear();
+		artistSearchList.getItems().addAll(UtilQueries.artistLookup(artist + "%"));
 	}
 
 }

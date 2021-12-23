@@ -5,11 +5,14 @@ import imqdb.utils.TableWrapper;
 import imqdb.utils.MovieSearchResult;
 import imqdb.utils.UtilQueries;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 
 import java.sql.Connection;
@@ -45,16 +48,16 @@ public class ControllerMovieDetails {
 
 		creditsTable = new TableWrapper();
 		movieDetailsBox.getChildren().add(creditsTable.getTable());
-	}
 
-	@FXML protected void onMovieSearchBtnClick()
-	{
-		String val = movieSearchField.getText();
-		if(val.equals("")) {
-			return;
-		}
-
-		movieSearchList.getItems().addAll(UtilQueries.movieLookup(val + "%"));
+		movieSearchField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent keyEvent)
+			{
+				if(keyEvent.getCode().equals(KeyCode.ENTER)) {
+					movieSearchTrigger();
+				}
+			}
+		});
 	}
 
 	public void onMovieSearchSelectionChanged(MovieSearchResult msr)
@@ -159,6 +162,16 @@ public class ControllerMovieDetails {
 
 		basicInfoLabels.getChildren().addAll(labels);
 		basicInfoFields.getChildren().addAll(fields);
+	}
+
+	@FXML protected void movieSearchTrigger()
+	{
+		String val = movieSearchField.getText();
+		if(val.equals("")) {
+			return;
+		}
+		movieSearchList.getItems().clear();
+		movieSearchList.getItems().addAll(UtilQueries.movieLookup(val + "%"));
 	}
 
 }

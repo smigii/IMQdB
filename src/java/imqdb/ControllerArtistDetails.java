@@ -5,12 +5,15 @@ import imqdb.utils.SqliteConnection;
 import imqdb.utils.TableWrapper;
 import imqdb.utils.UtilQueries;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 
 import java.sql.Connection;
@@ -46,6 +49,16 @@ public class ControllerArtistDetails {
 
 		artistCreditTable = new TableWrapper();
 		artistCreditBox.getChildren().add(artistCreditTable.getTable());
+
+		artistSearchField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent keyEvent)
+			{
+				if(keyEvent.getCode().equals(KeyCode.ENTER)) {
+					artistSearchTrigger();
+				}
+			}
+		});
 	}
 
 	public void onArtistSearchSelectionChanged(ArtistSearchResult asr)
@@ -91,17 +104,6 @@ public class ControllerArtistDetails {
 		catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-	}
-
-	@FXML
-	protected void onArtistSearchBtnClick()
-	{
-		String val = artistSearchField.getText();
-		if(val.equals("")) {
-			return;
-		}
-
-		artistSearchList.getItems().addAll(UtilQueries.artistLookup(val + "%"));
 	}
 
 	private void fillArtistBasicInfo(ArtistSearchResult asr)
@@ -164,6 +166,16 @@ public class ControllerArtistDetails {
 
 		basicInfoLabels.getChildren().addAll(labels);
 		basicInfoFields.getChildren().addAll(fields);
+	}
+
+	@FXML protected void artistSearchTrigger()
+	{
+		String val = artistSearchField.getText();
+		if(val.equals("")) {
+			return;
+		}
+		artistSearchList.getItems().clear();
+		artistSearchList.getItems().addAll(UtilQueries.artistLookup(val + "%"));
 	}
 
 }
