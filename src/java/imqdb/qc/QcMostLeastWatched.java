@@ -1,9 +1,7 @@
 package imqdb.qc;
 
-import imqdb.ControllerArtistDetails;
 import imqdb.QueryController;
 import imqdb.utils.*;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ListView;
@@ -17,7 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class QcMostLeastWatched implements QueryController {
+public class QcMostLeastWatched extends QueryController {
 
     private Connection connection;
     private ArrayList<ArtistSearchResult> artists;
@@ -69,7 +67,7 @@ public class QcMostLeastWatched implements QueryController {
     }
 
     @Override
-    public ResultSet execute(Connection db) throws SQLException
+    public String createQuery()
     {
 
         String genre_selected = genreBox.getValue();
@@ -134,10 +132,7 @@ public class QcMostLeastWatched implements QueryController {
                 "group by movies.imdb_title_id\n" +
                 "order by (movies.reviews_from_users + movies.reviews_from_critics) " + highLow + ";";
 
-        Logger.log(sql);
-        PreparedStatement ps = db.prepareStatement(sql);
-
-        return ps.executeQuery();
+        return sql;
 
     }
 

@@ -13,7 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class QcMovieRating implements QueryController {
+public class QcMovieRating extends QueryController {
 
     @FXML private ChoiceBox<String> genreBox;
     @FXML private ChoiceBox<String> languageBox;
@@ -49,7 +49,7 @@ public class QcMovieRating implements QueryController {
     }
 
     @Override
-    public ResultSet execute(Connection db) throws SQLException
+    public String createQuery()
     {
         String genre_selected = genreBox.getValue();
         String language_selected = languageBox.getValue();
@@ -86,9 +86,7 @@ public class QcMovieRating implements QueryController {
                 count_where +
                 "\n\torder by avg_vote " + highLow +
                 "\n\tlimit 10;";
-        Logger.log(sql);
-        PreparedStatement ps = db.prepareStatement(sql);
 
-        return ps.executeQuery();
+        return sql;
     }
 }

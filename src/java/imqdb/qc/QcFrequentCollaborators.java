@@ -20,7 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class QcFrequentCollaborators implements QueryController {
+public class QcFrequentCollaborators extends QueryController {
 
 	@FXML private TextField artistSearchField;
 	@FXML private ListView<ArtistSearchResult> artistSearchList;
@@ -81,7 +81,7 @@ public class QcFrequentCollaborators implements QueryController {
 	}
 
 	@Override
-	public ResultSet execute(Connection db) throws SQLException
+	public String createQuery()
 	{
 
 		// Artist Id Where
@@ -136,8 +136,7 @@ public class QcFrequentCollaborators implements QueryController {
 						"having\n" +
 						"	\"Count\" >= " + minCollab.getValue() + "\n" +
 						"order by \"Count\" desc";
-		Logger.log(sql);
-		PreparedStatement ps = db.prepareStatement(sql);
-		return ps.executeQuery();
+
+		return sql;
 	}
 }

@@ -15,7 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class QcFamilyFun implements QueryController {
+public class QcFamilyFun extends QueryController {
 
 	@FXML private ChoiceBox<UtilQueryPair> artistRoleBox;
 	@FXML private ChoiceBox<UtilQueryPair> familyRoleBox;
@@ -40,7 +40,7 @@ public class QcFamilyFun implements QueryController {
 	}
 
 	@Override
-	public ResultSet execute(Connection db) throws SQLException
+	public String createQuery()
 	{
 		boolean hasCheckedBoxes = false;
 		String emptyQuery = "1=0 and\n"; // only keep the column names
@@ -134,8 +134,7 @@ public class QcFamilyFun implements QueryController {
 						"m.budget_currency >= " + minBudget.getValue() + " and m.currency = \"USD\"\n" +
 						"order by\n" +
 						"\tm.imdb_title_id";
-		Logger.log(sql);
-		PreparedStatement ps = db.prepareStatement(sql);
-		return ps.executeQuery();
+
+		return sql;
 	}
 }

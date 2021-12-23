@@ -12,7 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class QcBillionClub implements QueryController {
+public class QcBillionClub extends QueryController {
 
 	@FXML ChoiceBox<UtilQueryPair> titleBox;
 
@@ -25,7 +25,7 @@ public class QcBillionClub implements QueryController {
 	}
 
 	@Override
-	public ResultSet execute(Connection db) throws SQLException
+	public String createQuery()
 	{
 		String titleSection = "";
 		if(!titleBox.getValue().getId().equals("*")) {
@@ -44,9 +44,7 @@ public class QcBillionClub implements QueryController {
 						"left join artist on title_principals.imdb_name_id = artist.imdb_name_id\n" +
 						"left join titles on title_principals.title_id = titles.title_id " +
 						titleSection;
-		Logger.log(sql);
-		PreparedStatement ps = db.prepareStatement(sql);
 
-		return ps.executeQuery();
+		return sql;
 	}
 }

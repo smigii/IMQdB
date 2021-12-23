@@ -5,7 +5,6 @@ import imqdb.utils.Logger;
 import imqdb.utils.SqliteConnection;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 
 import java.sql.Connection;
@@ -13,7 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class QcMatchmaker implements QueryController {
+public class QcMatchmaker extends QueryController {
 
     @FXML private ChoiceBox<String> titleBox;
     @FXML private Spinner<Integer> afterYear;
@@ -36,7 +35,7 @@ public class QcMatchmaker implements QueryController {
     }
 
     @Override
-    public ResultSet execute(Connection db) throws SQLException
+    public String createQuery()
     {
         String title_selected = titleBox.getValue();
         String year_selected = Integer.toString(afterYear.getValue());
@@ -82,9 +81,6 @@ public class QcMatchmaker implements QueryController {
                 "\n" +
                 "order by \"Artist\"";
 
-        Logger.log(sql);
-        PreparedStatement ps = db.prepareStatement(sql);
-
-        return ps.executeQuery();
+        return sql;
     }
 }

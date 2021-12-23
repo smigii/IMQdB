@@ -11,7 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class QcAllTables implements QueryController {
+public class QcAllTables extends QueryController {
 
 	@FXML ChoiceBox<String> tableBox;
 
@@ -21,7 +21,7 @@ public class QcAllTables implements QueryController {
 		try {
 			Connection connection = SqliteConnection.getConnection();
 			String sql = "SELECT name FROM sqlite_master WHERE type = \"table\"";
-			Logger.log(sql);
+			Logger.logQueryAttempt(sql);
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -34,14 +34,14 @@ public class QcAllTables implements QueryController {
 	}
 
 	@Override
-	public ResultSet execute(Connection db) throws SQLException
+	public String createQuery()
 	{
 		String selectedTable = tableBox.getValue();
 		if(selectedTable == null) {
 			return null;
 		}
-		PreparedStatement ps = db.prepareStatement("select * from " + selectedTable);
-		return ps.executeQuery();
+		String sql = "select *a from " + selectedTable;
+		return sql;
 	}
 
 }

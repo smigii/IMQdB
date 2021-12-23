@@ -11,7 +11,7 @@ import javafx.scene.control.Spinner;
 
 import java.sql.*;
 
-public class QcGrossByYear implements QueryController {
+public class QcGrossByYear extends QueryController {
 
 	@FXML ChoiceBox<UtilQueryPair> genreBox;
 	@FXML ChoiceBox<UtilQueryPair> countryBox;
@@ -41,7 +41,7 @@ public class QcGrossByYear implements QueryController {
 	}
 
 	@Override
-	public ResultSet execute(Connection db) throws SQLException
+	public String createQuery()
 	{
 		// Genre selection
 		String genreSection = "";
@@ -74,7 +74,7 @@ public class QcGrossByYear implements QueryController {
 			minMax = "min";
 		}
 
-		PreparedStatement ps = db.prepareStatement(
+		String sql =
 			"select\n" +
 				"	m.year as Year,\n" +
 				"	m.original_title as Title,\n" +
@@ -89,10 +89,8 @@ public class QcGrossByYear implements QueryController {
 				"group by\n" +
 				"	m.year\n" +
 				"order by\n" +
-				"	m.year desc"
-		);
-		Logger.log(ps.toString());
+				"	m.year desc";
 
-		return ps.executeQuery();
+		return sql;
 	}
 }

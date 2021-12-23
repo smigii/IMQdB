@@ -1,5 +1,7 @@
 package imqdb;
 
+import imqdb.utils.ErrorWindow;
+import imqdb.utils.Logger;
 import imqdb.utils.SqliteConnection;
 import imqdb.utils.TableWrapper;
 import javafx.fxml.FXML;
@@ -93,7 +95,8 @@ public class ControllerMain {
 			mainQueryTable.fillTable(rs);
 		}
 		catch (SQLException e) {
-			System.out.println(e.getMessage());
+			Logger.logSqlError(e);
+			ErrorWindow.CreateSqlErrorWindow();
 		}
 
 	}

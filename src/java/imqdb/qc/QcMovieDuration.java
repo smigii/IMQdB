@@ -13,7 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class QcMovieDuration implements QueryController {
+public class QcMovieDuration extends QueryController {
 
     @FXML private ChoiceBox<String> genreBox;
     @FXML private ChoiceBox<String> languageBox;
@@ -59,7 +59,7 @@ public class QcMovieDuration implements QueryController {
     }
 
     @Override
-    public ResultSet execute(Connection db) throws SQLException
+    public String createQuery()
     {
         String genre_selected = genreBox.getValue();
         String language_selected = languageBox.getValue();
@@ -115,9 +115,7 @@ public class QcMovieDuration implements QueryController {
                 "and votes >= " + minCount.getValue() + "\n" +
                 "group by movies.imdb_title_id\n" +
                 "order by duration " + highLow + ";";
-        Logger.log(sql);
-        PreparedStatement ps = db.prepareStatement(sql);
 
-        return ps.executeQuery();
+        return sql;
     }
 }
