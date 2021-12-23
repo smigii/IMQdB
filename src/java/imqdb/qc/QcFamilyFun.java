@@ -35,6 +35,8 @@ public class QcFamilyFun implements QueryController {
 		familyRoleBox.getItems().addAll(UtilQueries.getTitles());
 		artistRoleBox.setValue(UtilQueryPair.ANY);
 		familyRoleBox.setValue(UtilQueryPair.ANY);
+
+		famBoxChildren.fire();
 	}
 
 	@Override

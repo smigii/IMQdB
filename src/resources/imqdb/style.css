@@ -61,9 +61,3 @@
 .table-row-cell:even {
     -fx-control-inner-background: derive(-fx-base, 5%);
 }
-
-.list-cell,
-.table-row-cell{
-    -fx-border-color: transparent;
-    -fx-table-cell-border-color: transparent;
-}

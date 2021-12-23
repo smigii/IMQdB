@@ -24,7 +24,7 @@
                                 </Button>
                             </children>
                         </HBox>
-                        <ListView fx:id="movieSearchList" maxHeight="50.0">
+                        <ListView fx:id="movieSearchList" maxHeight="75.0">
                             <VBox.margin>
                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                             </VBox.margin>

@@ -27,7 +27,7 @@
                         </Button>
                      </children>
                   </HBox>
-                  <ListView fx:id="artistSearchList" minHeight = "25.0" maxHeight="200.0">
+                  <ListView fx:id="artistSearchList" maxHeight="75.0" minHeight="25.0">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>

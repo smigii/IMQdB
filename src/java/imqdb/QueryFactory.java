@@ -49,7 +49,7 @@ public class QueryFactory {
 		);
 
 		queries.add(
-				new Query("Matchmaker movies", "qc/q_matchmaker.fxml")
+				new Query("Matchmaker Movies", "qc/q_matchmaker.fxml")
 		);
 
 		return queries;
