@@ -48,18 +48,3 @@
 ### Artifacts
 
 Build -> Build Artifacts -> IMQDB.jar
-
-### Running
-
-Javafx SDK can be downloaded from https://gluonhq.com/products/javafx/
-
-1. Unzip db.zip (use extract here)
-2. Unzip javafx sdk that corresponds to your OS (use extract here)
-3. Should now have following directory structure 
-   ```text
-   ├─IMQDB.jar
-   ├─javafx-sdk-17.0.1/
-   └─db
-     └─imdb.db
-   ```
-4. From project root, run: `java --module-path "javafx-sdk-17.0.1/lib" --add-modules javafx.controls,javafx.fxml -jar IMQDB.jar App`
