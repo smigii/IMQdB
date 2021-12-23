@@ -91,7 +91,7 @@
          </padding>
       </VBox>
        <VBox fx:id="secondVbox">
-      <TabPane tabClosingPolicy="UNAVAILABLE">
+      <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
         <tabs>
           <Tab text="Artist Details">
             <content>
