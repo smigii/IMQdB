@@ -27,7 +27,7 @@ public class QcMatchmaker implements QueryController {
             while (rs.next()) {
                 titleBox.getItems().add(rs.getString("title"));
             }
-            titleBox.setValue("Any");
+            titleBox.setValue("Actor");
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
