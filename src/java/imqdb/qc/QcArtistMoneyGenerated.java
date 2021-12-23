@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class QcArtistMoneyGenerated implements QueryController {
 
@@ -49,13 +50,57 @@ public class QcArtistMoneyGenerated implements QueryController {
 	@Override
 	public ResultSet execute(Connection db) throws SQLException
 	{
+
+		String unionBase = "select a.imdb_name_id, a.imdb_name_id as fam_id from artist a\n";
+
+		String unionParents =
+			"select a.imdb_name_id, pa.parent_id as fam_id from artist a\n" +
+			"inner join parents_artist pa on a.imdb_name_id = pa.imdb_name_id\n";
+
+		String unionChildren =
+			"select a.imdb_name_id, ca.child_imdb_id as fam_id from artist a\n" +
+			"inner join children_artist ca on a.imdb_name_id = ca.imdb_name_id\n";
+
+		String unionSpouses =
+			"select a.imdb_name_id, sa.spouse_id as fam_id from artist a\n" +
+			"inner join spouses_artist sa on a.imdb_name_id = sa.imdb_name_id\n";
+
+		String unionRelatives =
+			"select a.imdb_name_id, ra.relative_id as fam_id from artist a\n" +
+			"inner join relatives_artist ra on a.imdb_name_id = ra.imdb_name_id\n";
+
+		ArrayList<String> unionList = new ArrayList<>();
+
+		unionList.add(unionBase);
+		if(famBoxSpouses.isSelected())
+			unionList.add(unionSpouses);
+		if(famBoxChildren.isSelected())
+			unionList.add(unionChildren);
+		if(famBoxParents.isSelected())
+			unionList.add(unionParents);
+		if(famBoxRelatives.isSelected())
+			unionList.add(unionRelatives);
+
+		String unionSection = String.join("\n union \n", unionList);
+
+		ArrayList<String> artistIds = new ArrayList<>();
+		for(ArtistSearchResult asr : artistQueryList.getItems()) {
+			artistIds.add("fam_movies.imdb_name_id = \"" + asr.id + "\"");
+		}
+
+		String artistIdWhere = "";
+		if(!artistIds.isEmpty()) {
+			artistIdWhere += "where\n";
+			artistIdWhere += String.join(" or\n", artistIds);
+		}
+
 		PreparedStatement ps = db.prepareStatement(
 			"select\n" +
 			"	fam_movies.name as \"Artist\",\n" +
-			"	group_concat(fam_movies.original_title,'; ') as \"Movies Included in Query\",\n" +
 			"	sum(fam_movies.worldwide_gross_income) as \"Worldwide Revenue Generated\",\n" +
 			"	sum(fam_movies.usa_gross_income) as \"Domestic Revenue Generated\",\n" +
 			"	fam_names.family_names as \"Family Members Included\"\n" +
+			"	group_concat(fam_movies.original_title,'; ') as \"Movies Included in Query\",\n" +
 			"from (\n" +
 			"	-- Get all movies involving artist or artist family member\n" +
 			"	select distinct\n" +
@@ -63,29 +108,7 @@ public class QcArtistMoneyGenerated implements QueryController {
 			"		a.name,\n" +
 			"		m.*\n" +
 			"	from (\n" +
-			"\n" +
-			"		select a.imdb_name_id, a.imdb_name_id as fam_id from artist a\n" +
-			"		\n" +
-			"		union\n" +
-			"\n" +
-			"		select a.imdb_name_id, sa.spouse_id as fam_id from artist a\n" +
-			"		inner join spouses_artist sa on a.imdb_name_id = sa.imdb_name_id\n" +
-			"\n" +
-			"		union\n" +
-			"\n" +
-			"		select a.imdb_name_id, ca.child_imdb_id as fam_id from artist a\n" +
-			"		inner join children_artist ca on a.imdb_name_id = ca.imdb_name_id\n" +
-			"\n" +
-			"		union\n" +
-			"\n" +
-			"		select a.imdb_name_id, pa.parent_id as fam_id from artist a\n" +
-			"		inner join parents_artist pa on a.imdb_name_id = pa.imdb_name_id\n" +
-			"\n" +
-			"		union\n" +
-			"\n" +
-			"		select a.imdb_name_id, ra.relative_id as fam_id from artist a\n" +
-			"		inner join relatives_artist ra on a.imdb_name_id = ra.imdb_name_id\n" +
-			"\n" +
+				unionSection +
 			"	) as x\n" +
 			"	inner join title_principals tp on\n" +
 			"		tp.imdb_name_id = x.fam_id\n" +
@@ -103,35 +126,13 @@ public class QcArtistMoneyGenerated implements QueryController {
 			"		fam_ids.imdb_name_id,\n" +
 			"		group_concat(fam_names.name,'; ') as \"family_names\"\n" +
 			"	from (\n" +
-			"		select a.imdb_name_id, a.imdb_name_id as fam_id from artist a\n" +
-			"\n" +
-			"		union\n" +
-			"\n" +
-			"		select a.imdb_name_id, sa.spouse_id as fam_id from artist a\n" +
-			"		inner join spouses_artist sa on a.imdb_name_id = sa.imdb_name_id\n" +
-			"\n" +
-			"		union\n" +
-			"\n" +
-			"		select a.imdb_name_id, ca.child_imdb_id as fam_id from artist a\n" +
-			"		inner join children_artist ca on a.imdb_name_id = ca.imdb_name_id\n" +
-			"\n" +
-			"		union\n" +
-			"\n" +
-			"		select a.imdb_name_id, pa.parent_id as fam_id from artist a\n" +
-			"		inner join parents_artist pa on a.imdb_name_id = pa.imdb_name_id\n" +
-			"\n" +
-			"		union\n" +
-			"\n" +
-			"		select a.imdb_name_id, ra.relative_id as fam_id from artist a\n" +
-			"		inner join relatives_artist ra on a.imdb_name_id = ra.imdb_name_id\n" +
-			"\n" +
+				unionSection +
 			"	) as fam_ids\n" +
 			"	inner join artist fam_names on fam_ids.fam_id = fam_names.imdb_name_id\n" +
 			"	group by fam_ids.imdb_name_id\n" +
 			") fam_names\n" +
 			"on fam_movies.imdb_name_id = fam_names.imdb_name_id\n" +
-			"-- where\n" +
-			"	-- fam_movies.imdb_name_id = \"nm0905154\"\n" +
+			artistIdWhere +
 			"group by\n" +
 			"	fam_movies.imdb_name_id\n" +
 			"order by fam_movies.imdb_title_id");
@@ -150,7 +151,6 @@ public class QcArtistMoneyGenerated implements QueryController {
 			return;
 		}
 		artistQueryList.getItems().remove(selectedArtist);
-		System.out.println("hi");
 	}
 
 	@FXML protected void onAddBtnClick()
