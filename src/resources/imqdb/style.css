@@ -91,3 +91,8 @@ Button, #querySelector {
 .titled-pane .choice-box .label {
     -fx-text-fill: black;
 }
+
+.titled-pane .radio-button, .titled-pane .check-box
+{
+    -fx-text-fill: white;
+}
