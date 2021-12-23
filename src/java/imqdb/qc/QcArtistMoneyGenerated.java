@@ -94,12 +94,17 @@ public class QcArtistMoneyGenerated implements QueryController {
 			artistIdWhere += String.join(" or\n", artistIds);
 		}
 
+		String famMoviesWhere = "";
+		if(!titleBox.getValue().isAny()) {
+			famMoviesWhere = "and tp.title_id = " + titleBox.getValue().getId() + "\n";
+		}
+
 		PreparedStatement ps = db.prepareStatement(
 			"select\n" +
 			"	fam_movies.name as \"Artist\",\n" +
 			"	sum(fam_movies.worldwide_gross_income) as \"Worldwide Revenue Generated\",\n" +
 			"	sum(fam_movies.usa_gross_income) as \"Domestic Revenue Generated\",\n" +
-			"	fam_names.family_names as \"Family Members Included\",\n" +
+			"	fam_names.family_names as \"Family Members Queried\",\n" +
 			"	group_concat(fam_movies.original_title,'; ') as \"Movies Included in Query\"\n" +
 			"from (\n" +
 			"	-- Get all movies involving artist or artist family member\n" +
@@ -118,6 +123,9 @@ public class QcArtistMoneyGenerated implements QueryController {
 			"		x.imdb_name_id = a.imdb_name_id\n" +
 			"	where\n" +
 			"		m.currency = \"USD\"\n" +
+			"		and m.year >= " + minYear.getValue() + "\n" +
+			"		and m.year <= " + maxYear.getValue() + "\n" +
+					famMoviesWhere +
 			"\n" +
 			") as fam_movies\n" +
 			"inner join (\n" +
