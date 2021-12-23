@@ -4,12 +4,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<HBox xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="imqdb.qc.QcGrossByYear">
+<HBox prefHeight="75.0" prefWidth="601.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="imqdb.qc.QcGrossByYear">
    <children>
-      <VBox>
+      <VBox prefHeight="190.0" prefWidth="55.0">
          <children>
             <Label text="Genre" />
             <ChoiceBox fx:id="genreBox" />
+         </children>
+         <HBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </HBox.margin>
+      </VBox>
+      <VBox layoutX="80.0" layoutY="15.0" prefHeight="172.0" prefWidth="55.0">
+         <children>
+            <Label text="Country" />
+            <ChoiceBox fx:id="countryBox" />
          </children>
          <HBox.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -41,15 +50,73 @@
          <children>
             <RadioButton fx:id="radioDomestic" mnemonicParsing="false" text="US and Canada">
                <toggleGroup>
-                  <ToggleGroup fx:id="grossGroup"/>
+                  <ToggleGroup fx:id="grossGroup" />
                </toggleGroup>
+               <padding>
+                  <Insets right="5.0" />
+               </padding>
             </RadioButton>
             <RadioButton fx:id="radioWorldwide" mnemonicParsing="false" text="Worldwide">
                <toggleGroup>
-                  <fx:reference source="grossGroup"/>
+                  <fx:reference source="grossGroup" />
                </toggleGroup>
             </RadioButton>
          </children>
+         <padding>
+            <Insets right="5.0" />
+         </padding>
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+      </VBox>
+      <VBox alignment="CENTER_LEFT" layoutX="310.0" layoutY="10.0" prefHeight="75.0" prefWidth="70.0">
+         <children>
+            <RadioButton fx:id="radioGross" mnemonicParsing="false" text="Gross">
+               <toggleGroup>
+                  <ToggleGroup fx:id="grossGroup1" />
+               </toggleGroup>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </RadioButton>
+            <RadioButton fx:id="radioWorldwide1" mnemonicParsing="false" text="Profit">
+               <toggleGroup>
+                  <fx:reference source="grossGroup1" />
+               </toggleGroup>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </RadioButton>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </VBox>
+      <VBox alignment="CENTER_LEFT" layoutX="382.0" layoutY="10.0" prefHeight="59.0" prefWidth="68.0">
+         <children>
+            <Label text="Sort Amount" />
+            <RadioButton fx:id="radioNone" mnemonicParsing="false" text="None">
+               <toggleGroup>
+                  <ToggleGroup fx:id="grossGroup11" />
+               </toggleGroup>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </RadioButton>
+            <RadioButton fx:id="radioHigh" mnemonicParsing="false" text="Highest" toggleGroup="$grossGroup11">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </RadioButton>
+            <RadioButton fx:id="radioLow" layoutX="10.0" layoutY="23.0" mnemonicParsing="false" text="Lowest" toggleGroup="$grossGroup11">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </RadioButton>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
       </VBox>
    </children>
 </HBox>

@@ -29,4 +29,9 @@ public class UtilQueryPair {
 		return id;
 	}
 
+	public boolean isAny()
+	{
+		return id.equals("*");
+	}
+
 }
