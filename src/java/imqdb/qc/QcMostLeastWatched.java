@@ -1,5 +1,7 @@
 package imqdb.qc;
 
+import imqdb.Services;
+import imqdb.db.IDatabase;
 import imqdb.db.SqliteConnection;
 import imqdb.utils.*;
 import javafx.fxml.FXML;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 public class QcMostLeastWatched implements IQueryController {
 
     private Connection connection;
+    private final IDatabase db;
     private ArrayList<ArtistSearchResult> artists;
     @FXML private ChoiceBox<String> genreBox;
     @FXML private ChoiceBox<String> languageBox;
@@ -28,6 +31,10 @@ public class QcMostLeastWatched implements IQueryController {
     @FXML private TextField artistSearchField;
     @FXML private ListView<ArtistSearchResult> artistSearchList;
 
+    public QcMostLeastWatched()
+    {
+        db = Services.getDatabase();
+    }
 
     @FXML void initialize()
     {
@@ -136,20 +143,18 @@ public class QcMostLeastWatched implements IQueryController {
 
     }
 
-    @FXML
-    protected void onArtistSearchBtnClick()
+    @FXML protected void onArtistSearchBtnClick()
     {
-        // copied from ControllerArtistDetails
-        String val = artistSearchField.getText();
-        if(val.equals("")) {
+        String artist = artistSearchField.getText().strip();
+        if(artist.isEmpty())
             return;
-        }
+        db.artistLookup(artist+"%", this::fillArtistSearchTable);
+    }
 
+    public void fillArtistSearchTable(ArrayList<ArtistSearchResult> artists)
+    {
         artistSearchList.getItems().clear();
-        artists = UtilQueries.artistLookup("%" + val + "%");
-        for (ArtistSearchResult asr : artists){
-            artistSearchList.getItems().add(asr);
-        }
+        artistSearchList.getItems().addAll(artists);
     }
 
     public void onArtistClearBtnClick() {

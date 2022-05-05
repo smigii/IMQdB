@@ -1,5 +1,7 @@
 package imqdb.qc;
 
+import imqdb.Services;
+import imqdb.db.IDatabase;
 import imqdb.utils.ArtistSearchResult;
 import imqdb.utils.UtilQueries;
 import imqdb.utils.UtilQueryPair;
@@ -16,12 +18,18 @@ import java.util.ArrayList;
 
 public class QcFrequentCollaborators implements IQueryController {
 
+	private IDatabase db;
 	@FXML private TextField artistSearchField;
 	@FXML private ListView<ArtistSearchResult> artistSearchList;
 	@FXML private ListView<ArtistSearchResult> artistQueryList;
 	@FXML private ChoiceBox<UtilQueryPair> titleBoxArtist;
 	@FXML private ChoiceBox<UtilQueryPair> titleBoxCollab;
 	@FXML private Spinner<Integer> minCollab;
+
+	public QcFrequentCollaborators()
+	{
+		db = Services.getDatabase();
+	}
 
 	@FXML public void initialize()
 	{
@@ -69,15 +77,21 @@ public class QcFrequentCollaborators implements IQueryController {
 
 	@FXML protected void artistSearchTrigger()
 	{
-		String artist = artistSearchField.getText();
+		String artist = artistSearchField.getText().strip();
+		if(artist.isEmpty())
+			return;
+		db.artistLookup(artist+"%", this::fillArtistSearchTable);
+	}
+
+	public void fillArtistSearchTable(ArrayList<ArtistSearchResult> artists)
+	{
 		artistSearchList.getItems().clear();
-		artistSearchList.getItems().addAll(UtilQueries.artistLookup(artist + "%"));
+		artistSearchList.getItems().addAll(artists);
 	}
 
 	@Override
 	public String createQuery()
 	{
-
 		// Artist Id Where
 		ArrayList<String> artistIdList = new ArrayList<>();
 		for(ArtistSearchResult asr : artistQueryList.getItems()) {

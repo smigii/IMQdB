@@ -1,5 +1,7 @@
 package imqdb.qc;
 
+import imqdb.Services;
+import imqdb.db.IDatabase;
 import imqdb.utils.ArtistSearchResult;
 import imqdb.utils.UtilQueries;
 import imqdb.utils.UtilQueryPair;
@@ -13,6 +15,8 @@ import java.util.ArrayList;
 
 public class QcArtistMoneyGenerated implements IQueryController {
 
+	private final IDatabase db;
+
 	@FXML private TextField artistSearchField;
 	@FXML private ListView<ArtistSearchResult> artistSearchList;
 	@FXML private ListView<ArtistSearchResult> artistQueryList;
@@ -23,6 +27,11 @@ public class QcArtistMoneyGenerated implements IQueryController {
 	@FXML private CheckBox famBoxChildren;
 	@FXML private CheckBox famBoxParents;
 	@FXML private CheckBox famBoxRelatives;
+
+	public QcArtistMoneyGenerated()
+	{
+		db = Services.getDatabase();
+	}
 
 	@FXML public void initialize()
 	{
@@ -40,7 +49,6 @@ public class QcArtistMoneyGenerated implements IQueryController {
 			}
 		});
 	}
-
 
 	@Override
 	public String createQuery()
@@ -169,9 +177,16 @@ public class QcArtistMoneyGenerated implements IQueryController {
 
 	@FXML protected void artistSearchTrigger()
 	{
-		String artist = artistSearchField.getText();
+		String artist = artistSearchField.getText().strip();
+		if(artist.isEmpty())
+			return;
+		db.artistLookup(artist+"%", this::fillArtistSearchTable);
+	}
+
+	public void fillArtistSearchTable(ArrayList<ArtistSearchResult> artists)
+	{
 		artistSearchList.getItems().clear();
-		artistSearchList.getItems().addAll(UtilQueries.artistLookup(artist + "%"));
+		artistSearchList.getItems().addAll(artists);
 	}
 
 }
