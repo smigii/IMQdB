@@ -28,8 +28,8 @@ public class QcBillionClub implements IQueryController {
 	public String createQuery()
 	{
 		String titleSection = "";
-		if(!titleBox.getValue().getId().equals("*")) {
-			titleSection = "where titles.title_id = \"" + titleBox.getValue().getId() + "\"";
+		if(!titleBox.getValue().id().equals("*")) {
+			titleSection = "where titles.title_id = \"" + titleBox.getValue().id() + "\"";
 		}
 
 		String sql =

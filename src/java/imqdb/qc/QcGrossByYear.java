@@ -49,13 +49,13 @@ public class QcGrossByYear implements IQueryController {
 		// Genre selection
 		String genreSection = "";
 		if(!genreBox.getValue().isAny()) {
-			genreSection = "and m.imdb_title_id in (select mg.imdb_title_id from movie_genre mg where mg.genre_id = " + genreBox.getValue().getId() + ")\n";
+			genreSection = "and m.imdb_title_id in (select mg.imdb_title_id from movie_genre mg where mg.genre_id = " + genreBox.getValue().id() + ")\n";
 		}
 
 		// Country selection
 		String countrySection = "";
 		if(!countryBox.getValue().isAny()) {
-			countrySection = "and m.imdb_title_id in (select mc.imdb_title_id from movie_country mc where mc.country_id = " + countryBox.getValue().getId() + ")\n";
+			countrySection = "and m.imdb_title_id in (select mc.imdb_title_id from movie_country mc where mc.country_id = " + countryBox.getValue().id() + ")\n";
 		}
 
 		String subtraction = (radioGross.isSelected()) ? "" : " - m.budget_currency ";

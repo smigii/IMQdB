@@ -103,11 +103,11 @@ public class QcFrequentCollaborators implements IQueryController {
 		// Artist Title Where
 		String artistTitleWhere = "";
 		if(!titleBoxArtist.getValue().isAny())
-			artistTitleWhere = "tp1.title_id = " + titleBoxArtist.getValue().getId() + "\n";
+			artistTitleWhere = "tp1.title_id = " + titleBoxArtist.getValue().id() + "\n";
 
 		String collabTitleWhere = "";
 		if(!titleBoxCollab.getValue().isAny())
-			collabTitleWhere = "tp2.title_id = " + titleBoxCollab.getValue().getId() + "\n";
+			collabTitleWhere = "tp2.title_id = " + titleBoxCollab.getValue().id() + "\n";
 
 		// Full Where clause
 		ArrayList<String> fullWhereList = new ArrayList<>();

@@ -98,7 +98,7 @@ public class QcArtistMoneyGenerated implements IQueryController {
 
 		String famMoviesWhere = "";
 		if(!titleBox.getValue().isAny()) {
-			famMoviesWhere = "and tp.title_id = " + titleBox.getValue().getId() + "\n";
+			famMoviesWhere = "and tp.title_id = " + titleBox.getValue().id() + "\n";
 		}
 
 		String sql =

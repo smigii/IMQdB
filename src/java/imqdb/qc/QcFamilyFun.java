@@ -110,12 +110,12 @@ public class QcFamilyFun implements IQueryController {
 		}
 
 		String artistRole = "";
-		if(!artistRoleBox.getValue().getId().equals("*"))
-			artistRole = "t1.title_id = " + artistRoleBox.getValue().getId() + " and\n";
+		if(!artistRoleBox.getValue().id().equals("*"))
+			artistRole = "t1.title_id = " + artistRoleBox.getValue().id() + " and\n";
 
 		String familyRole = "";
-		if(!familyRoleBox.getValue().getId().equals("*"))
-			familyRole = "t2.title_id = " + familyRoleBox.getValue().getId() + " and\n";
+		if(!familyRoleBox.getValue().id().equals("*"))
+			familyRole = "t2.title_id = " + familyRoleBox.getValue().id() + " and\n";
 		String sql =
 				"select m.original_title as \"Movie\", m.year as \"Year\", a1.name as \"Artist\", t1.title as Role, a2.name as \"Family Member\", t2.title as \"Family Member Role\", Relation as \"Family Member Relation\" from (\n" +
 						"\n" + unionSection + "\n" +
