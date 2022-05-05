@@ -1,10 +1,8 @@
 package imqdb;
 
 import imqdb.db.IDatabase;
-import imqdb.db.SqliteConnection;
 import imqdb.utils.TableWrapper;
 import imqdb.utils.MovieSearchResult;
-import imqdb.utils.UtilQueries;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -16,8 +14,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,7 +21,6 @@ import java.util.List;
 
 public class ControllerMovieDetails {
 
-//	private Connection connection;
 	private final IDatabase db;
 
 	@FXML private ListView<MovieSearchResult> movieSearchList;
@@ -39,7 +34,6 @@ public class ControllerMovieDetails {
 
 	public ControllerMovieDetails()
 	{
-//		connection = SqliteConnection.getConnection();
 		db = Services.getDatabase();
 	}
 

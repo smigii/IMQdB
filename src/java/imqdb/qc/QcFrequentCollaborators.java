@@ -1,7 +1,8 @@
 package imqdb.qc;
 
+import imqdb.Services;
+import imqdb.db.IDatabase;
 import imqdb.utils.ArtistSearchResult;
-import imqdb.utils.UtilQueries;
 import imqdb.utils.UtilQueryPair;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 
 public class QcFrequentCollaborators implements IQueryController {
 
+	private IDatabase db;
 	@FXML private TextField artistSearchField;
 	@FXML private ListView<ArtistSearchResult> artistSearchList;
 	@FXML private ListView<ArtistSearchResult> artistQueryList;
@@ -23,12 +25,17 @@ public class QcFrequentCollaborators implements IQueryController {
 	@FXML private ChoiceBox<UtilQueryPair> titleBoxCollab;
 	@FXML private Spinner<Integer> minCollab;
 
+	public QcFrequentCollaborators()
+	{
+		db = Services.getDatabase();
+	}
+
 	@FXML public void initialize()
 	{
 		titleBoxArtist.getItems().add(UtilQueryPair.ANY);
 		titleBoxCollab.getItems().add(UtilQueryPair.ANY);
-		titleBoxArtist.getItems().addAll(UtilQueries.getTitles());
-		titleBoxCollab.getItems().addAll(UtilQueries.getTitles());
+		titleBoxArtist.getItems().addAll(db.getTitles());
+		titleBoxCollab.getItems().addAll(db.getTitles());
 		titleBoxArtist.setValue(UtilQueryPair.ANY);
 		titleBoxCollab.setValue(UtilQueryPair.ANY);
 
@@ -69,15 +76,21 @@ public class QcFrequentCollaborators implements IQueryController {
 
 	@FXML protected void artistSearchTrigger()
 	{
-		String artist = artistSearchField.getText();
+		String artist = artistSearchField.getText().strip();
+		if(artist.isEmpty())
+			return;
+		db.artistLookup(artist+"%", this::fillArtistSearchTable);
+	}
+
+	public void fillArtistSearchTable(ArrayList<ArtistSearchResult> artists)
+	{
 		artistSearchList.getItems().clear();
-		artistSearchList.getItems().addAll(UtilQueries.artistLookup(artist + "%"));
+		artistSearchList.getItems().addAll(artists);
 	}
 
 	@Override
 	public String createQuery()
 	{
-
 		// Artist Id Where
 		ArrayList<String> artistIdList = new ArrayList<>();
 		for(ArtistSearchResult asr : artistQueryList.getItems()) {
@@ -90,11 +103,11 @@ public class QcFrequentCollaborators implements IQueryController {
 		// Artist Title Where
 		String artistTitleWhere = "";
 		if(!titleBoxArtist.getValue().isAny())
-			artistTitleWhere = "tp1.title_id = " + titleBoxArtist.getValue().getId() + "\n";
+			artistTitleWhere = "tp1.title_id = " + titleBoxArtist.getValue().id() + "\n";
 
 		String collabTitleWhere = "";
 		if(!titleBoxCollab.getValue().isAny())
-			collabTitleWhere = "tp2.title_id = " + titleBoxCollab.getValue().getId() + "\n";
+			collabTitleWhere = "tp2.title_id = " + titleBoxCollab.getValue().id() + "\n";
 
 		// Full Where clause
 		ArrayList<String> fullWhereList = new ArrayList<>();
