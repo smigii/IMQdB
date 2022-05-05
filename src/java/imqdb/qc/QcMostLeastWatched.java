@@ -1,6 +1,7 @@
 package imqdb.qc;
 
 import imqdb.QueryController;
+import imqdb.db.SqliteConnection;
 import imqdb.utils.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;

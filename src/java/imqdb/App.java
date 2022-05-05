@@ -1,6 +1,6 @@
 package imqdb;
 
-import imqdb.utils.SqliteConnection;
+import imqdb.db.SqliteConnection;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

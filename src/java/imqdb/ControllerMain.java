@@ -1,6 +1,7 @@
 package imqdb;
 
-import imqdb.utils.SqliteConnection;
+import imqdb.db.IDatabase;
+import imqdb.utils.ErrorWindow;
 import imqdb.utils.TableWrapper;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
@@ -8,7 +9,6 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 
 import java.nio.file.Files;
@@ -17,7 +17,8 @@ import java.sql.*;
 
 public class ControllerMain {
 
-	private final Connection db;
+//	private final Connection db;
+	private final IDatabase db;
 
 	// Main query section (left side)
 	@FXML private ChoiceBox<Query> querySelector;
@@ -32,7 +33,7 @@ public class ControllerMain {
 
 	public ControllerMain()
 	{
-		db = SqliteConnection.getConnection();
+		db = Services.getDatabase();
 	}
 
 	@FXML public void initialize()
@@ -51,13 +52,13 @@ public class ControllerMain {
 		mainQueryTable.getTable().setPrefHeight(999999999);
 		mainVbox.getChildren().add(mainQueryTable.getTable());
 
-		try {
-			if(!db.isClosed()) {
-				statusCircle.setFill(Color.GREEN);
-			}
-		} catch(SQLException e){
-			System.out.println(e.toString());
-		}
+//		try {
+//			if(!db.isClosed()) {
+//				statusCircle.setFill(Color.GREEN);
+//			}
+//		} catch(SQLException e){
+//			System.out.println(e.toString());
+//		}
 
 	}
 
@@ -77,16 +78,7 @@ public class ControllerMain {
 			return;
 
 		String sql = activeController.createQuery();
-		ResultSet rs = activeController.execute(db, sql);
-		if(rs == null) return;
-		try {
-			mainQueryTable.fillTable(rs);
-		}
-		catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-
-
+		db.runQuery(sql, this::fillTable);
 	}
 
 	private void setQueryParamPane(Node n)
@@ -110,6 +102,18 @@ public class ControllerMain {
 			exportMsg.setText("Failed to export CSV :(");
 		}
 
+	}
+
+	public void fillTable(ResultSet rs)
+	{
+		if(rs == null) return;
+		try {
+			mainQueryTable.fillTable(rs);
+		}
+		catch (SQLException e) {
+			ErrorWindow.CreateSqlErrorWindow();
+			System.out.println(e.getMessage());
+		}
 	}
 
 }

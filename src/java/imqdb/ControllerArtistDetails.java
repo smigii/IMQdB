@@ -1,7 +1,7 @@
 package imqdb;
 
+import imqdb.db.IDatabase;
 import imqdb.utils.ArtistSearchResult;
-import imqdb.utils.SqliteConnection;
 import imqdb.utils.TableWrapper;
 import imqdb.utils.UtilQueries;
 import javafx.beans.value.ObservableValue;
@@ -16,8 +16,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,7 +23,8 @@ import java.util.List;
 
 public class ControllerArtistDetails {
 
-	private Connection connection;
+//	private Connection connection;
+	private final IDatabase db;
 
 	@FXML private ListView<ArtistSearchResult> artistSearchList;
 	@FXML private TextField artistSearchField;
@@ -38,7 +37,7 @@ public class ControllerArtistDetails {
 
 	public ControllerArtistDetails()
 	{
-		connection = SqliteConnection.getConnection();
+		db = Services.getDatabase();
 	}
 
 	@FXML public void initialize()
@@ -74,36 +73,24 @@ public class ControllerArtistDetails {
 			artistBio.setText(asr.bio);
 
 		// Movie Credits
-		try {
-			artistMoneyBox.getChildren().clear();
-			PreparedStatement ps = connection.prepareStatement(
-				"select\n" +
-					"\tsum(worldwide_gross_income) as \"world_gross\",\n" +
-					"\tsum(usa_gross_income) as \"domestic_gross\"\n" +
-					"from title_principals tp\n" +
-					"inner join movies m on tp.imdb_title_id = m.imdb_title_id\n" +
-					"where tp.imdb_name_id = \"" + asr.id + "\"");
-			ResultSet rs = ps.executeQuery();
-			artistMoneyBox.getChildren().add(new Label("Total domestic revenue generated: $" + rs.getString("domestic_gross")));
-			artistMoneyBox.getChildren().add(new Label("Total worldwide revenue generated: $" + rs.getString("world_gross")));
-		}
-		catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
+		IDatabase db = Services.getDatabase();
 
-		try {
-			PreparedStatement ps = connection.prepareStatement(
-				"select original_title as Title, year as Year, titles.title as Job, movies.usa_gross_income as \"Gross Domestic Revenue\", movies.worldwide_gross_income as \"Gross Worldwide Revenur\", movies.budget_currency as Budget, movies.currency as Currency from title_principals\n" +
-					"inner join movies on title_principals.imdb_title_id = movies.imdb_title_id\n" +
-					"inner join titles on title_principals.title_id = titles.title_id\n" +
-					"where title_principals.imdb_name_id = \"" + asr.id + "\"" +
-					"order by year desc");
-			ResultSet rs = ps.executeQuery();
-			artistCreditTable.fillTable(rs);
-		}
-		catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
+		String sqlMoney = "select\n" +
+			"\tsum(worldwide_gross_income) as \"world_gross\",\n" +
+			"\tsum(usa_gross_income) as \"domestic_gross\"\n" +
+			"from title_principals tp\n" +
+			"inner join movies m on tp.imdb_title_id = m.imdb_title_id\n" +
+			"where tp.imdb_name_id = \"" + asr.id + "\"";
+		db.runQuery(sqlMoney, this::fillArtistMoney);
+
+		String sqlCredits = "select\n" +
+			"original_title as Title, year as Year, titles.title as Job, movies.usa_gross_income as \"Gross Domestic Revenue\", movies.worldwide_gross_income as \"Gross Worldwide Revenur\", movies.budget_currency as Budget, movies.currency as Currency from title_principals\n" +
+			"inner join movies on title_principals.imdb_title_id = movies.imdb_title_id\n" +
+			"inner join titles on title_principals.title_id = titles.title_id\n" +
+			"where title_principals.imdb_name_id = \"" + asr.id + "\"" +
+			"order by year desc";
+		db.runQuery(sqlCredits, this::fillArtistCredits);
+
 	}
 
 	private void fillArtistBasicInfo(ArtistSearchResult asr)
@@ -166,6 +153,28 @@ public class ControllerArtistDetails {
 
 		basicInfoLabels.getChildren().addAll(labels);
 		basicInfoFields.getChildren().addAll(fields);
+	}
+
+	private void fillArtistMoney(ResultSet rs)
+	{
+		try {
+			artistMoneyBox.getChildren().clear();
+			artistMoneyBox.getChildren().add(new Label("Total domestic revenue generated: $" + rs.getString("domestic_gross")));
+			artistMoneyBox.getChildren().add(new Label("Total worldwide revenue generated: $" + rs.getString("world_gross")));
+		}
+		catch(SQLException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	private void fillArtistCredits(ResultSet rs)
+	{
+		try {
+			artistCreditTable.fillTable(rs);
+		}
+		catch(SQLException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	@FXML protected void artistSearchTrigger()

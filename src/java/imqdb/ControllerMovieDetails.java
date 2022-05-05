@@ -1,6 +1,7 @@
 package imqdb;
 
-import imqdb.utils.SqliteConnection;
+import imqdb.db.IDatabase;
+import imqdb.db.SqliteConnection;
 import imqdb.utils.TableWrapper;
 import imqdb.utils.MovieSearchResult;
 import imqdb.utils.UtilQueries;
@@ -24,7 +25,8 @@ import java.util.List;
 
 public class ControllerMovieDetails {
 
-	private Connection connection;
+//	private Connection connection;
+	private final IDatabase db;
 
 	@FXML private ListView<MovieSearchResult> movieSearchList;
 	@FXML private TextField movieSearchField;
@@ -37,7 +39,8 @@ public class ControllerMovieDetails {
 
 	public ControllerMovieDetails()
 	{
-		connection = SqliteConnection.getConnection();
+//		connection = SqliteConnection.getConnection();
+		db = Services.getDatabase();
 	}
 
 	@FXML public void initialize()
@@ -66,12 +69,18 @@ public class ControllerMovieDetails {
 
 		fillBasicInfo(msr);
 
+		String sql = "select\n" +
+			"name as Name, title as Title from title_principals tp\n" +
+			"inner join artist on tp.imdb_name_id = artist.imdb_name_id\n" +
+			"inner join titles on tp.title_id = titles.title_id\n" +
+			"where tp.imdb_title_id = \"" + msr.id + "\"";
+
+		db.runQuery(sql, this::fillCreditsTable);
+	}
+
+	public void fillCreditsTable(ResultSet rs)
+	{
 		try {
-			PreparedStatement ps = connection.prepareStatement("select name as Name, title as Title from title_principals tp\n" +
-				"inner join artist on tp.imdb_name_id = artist.imdb_name_id\n" +
-				"inner join titles on tp.title_id = titles.title_id\n" +
-				"where tp.imdb_title_id = \"" + msr.id + "\"");
-			ResultSet rs = ps.executeQuery();
 			creditsTable.fillTable(rs);
 		}
 		catch (SQLException e) {

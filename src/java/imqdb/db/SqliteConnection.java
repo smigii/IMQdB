@@ -1,4 +1,4 @@
-package imqdb.utils;
+package imqdb.db;
 
 import java.sql.*;
 import java.time.LocalDateTime;

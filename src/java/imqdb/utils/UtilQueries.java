@@ -1,5 +1,7 @@
 package imqdb.utils;
 
+import imqdb.db.SqliteConnection;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

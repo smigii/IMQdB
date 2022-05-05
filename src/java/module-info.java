@@ -11,4 +11,6 @@ module imqdb {
 	opens imqdb.qc to javafx.fxml;
 	exports imqdb.utils;
 	opens imqdb.utils to javafx.fxml;
+	exports imqdb.db;
+	opens imqdb.db to javafx.fxml;
 }
