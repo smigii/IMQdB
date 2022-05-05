@@ -21,7 +21,6 @@ import java.util.List;
 
 public class ControllerMovieDetails {
 
-//	private Connection connection;
 	private final IDatabase db;
 
 	@FXML private ListView<MovieSearchResult> movieSearchList;
@@ -35,7 +34,6 @@ public class ControllerMovieDetails {
 
 	public ControllerMovieDetails()
 	{
-//		connection = SqliteConnection.getConnection();
 		db = Services.getDatabase();
 	}
 

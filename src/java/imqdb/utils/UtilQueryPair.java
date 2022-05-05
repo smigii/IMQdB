@@ -9,7 +9,6 @@ public record UtilQueryPair(String name, String id) {
 		return name;
 	}
 
-
 	public boolean isAny()
 	{
 		return id.equals("*");

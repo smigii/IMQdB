@@ -1,50 +1,39 @@
 package imqdb.qc;
 
-import imqdb.db.SqliteConnection;
+import imqdb.Services;
+import imqdb.db.IDatabase;
+import imqdb.utils.UtilQueryPair;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Spinner;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 public class QcMatchmaker implements IQueryController {
 
-    @FXML private ChoiceBox<String> titleBox;
+    private final IDatabase db;
+    @FXML private ChoiceBox<UtilQueryPair> titleBox;
     @FXML private Spinner<Integer> afterYear;
+
+    public QcMatchmaker()
+    {
+        db = Services.getDatabase();
+    }
 
     @FXML void initialize()
     {
-        try {
-            Connection connection = SqliteConnection.getConnection();
-            PreparedStatement ps = connection.prepareStatement("select title from titles");
-            ResultSet rs = ps.executeQuery();
-            titleBox.getItems().add("Any");
-            while (rs.next()) {
-                titleBox.getItems().add(rs.getString("title"));
-            }
-            titleBox.setValue("Actor");
-        }
-        catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+        titleBox.getItems().add(UtilQueryPair.ANY);
+        titleBox.getItems().addAll(db.getTitles());
+        titleBox.setValue(UtilQueryPair.ANY);
     }
 
     @Override
     public String createQuery()
     {
-        String title_selected = titleBox.getValue();
+        UtilQueryPair selectedTitle = titleBox.getValue();
+        String title_where = selectedTitle.isAny() ? "" : "\n\tand t1.title = \"" + selectedTitle.name() + "\"";
         String year_selected = Integer.toString(afterYear.getValue());
-        String title_where = "\n\tand t1.title = \"" + title_selected + "\"";
         String year_where = "\n\tand x.s_year >= \"" + year_selected + "\"";
 
-        if (title_selected.equals("Any")){
-            title_where = "";
-        }
-
-        String sql = "select\n" +
+        return "select\n" +
                 "    m.original_title as \"Movie\",\n" +
                 "    m.year as \"Year\",\n" +
                 "    a1.name as \"Artist\",\n" +
@@ -78,7 +67,5 @@ public class QcMatchmaker implements IQueryController {
                 year_where +
                 "\n" +
                 "order by \"Artist\"";
-
-        return sql;
     }
 }

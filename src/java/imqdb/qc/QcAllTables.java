@@ -1,26 +1,33 @@
 package imqdb.qc;
 
-import imqdb.db.SqliteConnection;
+import imqdb.Services;
+import imqdb.db.IDatabase;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class QcAllTables implements IQueryController {
 
-	@FXML ChoiceBox<String> tableBox;
+	private final IDatabase db;
+	@FXML private ChoiceBox<String> tableBox;
+
+	public QcAllTables()
+	{
+		db = Services.getDatabase();
+	}
 
 	@FXML
 	public void initialize()
 	{
+		String sql = "SELECT name FROM sqlite_master WHERE type = \"table\"";
+		db.runQuery(sql, this::fillTableBox);
+	}
+
+	public void fillTableBox(ResultSet rs)
+	{
 		try {
-			Connection connection = SqliteConnection.getConnection();
-			String sql = "SELECT name FROM sqlite_master WHERE type = \"table\"";
-			PreparedStatement ps = connection.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				tableBox.getItems().add(rs.getString("name"));
 			}
