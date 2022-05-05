@@ -1,5 +1,6 @@
 package imqdb;
 
+import imqdb.qc.IQueryController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import java.io.IOException;
@@ -7,7 +8,7 @@ import java.io.IOException;
 public class Query {
 
 	private String name;
-	private QueryController controller;
+	private IQueryController controller;
 	private Node node;
 
 	public Query(String name, String fxmlPath)
@@ -16,7 +17,7 @@ public class Query {
 		try {
 			FXMLLoader l = new FXMLLoader(getClass().getResource(fxmlPath));
 			this.node = l.load();
-			this.controller = l.<QueryController>getController();
+			this.controller = l.<IQueryController>getController();
 		}
 		catch(IOException e) {
 			// TODO: Handle this less shittely
@@ -34,7 +35,7 @@ public class Query {
 		return node;
 	}
 
-	public QueryController getController()
+	public IQueryController getController()
 	{
 		return controller;
 	}

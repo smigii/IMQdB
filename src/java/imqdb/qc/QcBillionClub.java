@@ -1,12 +1,11 @@
 package imqdb.qc;
 
-import imqdb.QueryController;
 import imqdb.utils.UtilQueries;
 import imqdb.utils.UtilQueryPair;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 
-public class QcBillionClub extends QueryController {
+public class QcBillionClub implements IQueryController {
 
 	@FXML ChoiceBox<UtilQueryPair> titleBox;
 

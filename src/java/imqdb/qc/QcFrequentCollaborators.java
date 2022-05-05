@@ -1,6 +1,5 @@
 package imqdb.qc;
 
-import imqdb.QueryController;
 import imqdb.utils.ArtistSearchResult;
 import imqdb.utils.UtilQueries;
 import imqdb.utils.UtilQueryPair;
@@ -15,7 +14,7 @@ import javafx.scene.input.KeyEvent;
 
 import java.util.ArrayList;
 
-public class QcFrequentCollaborators extends QueryController {
+public class QcFrequentCollaborators implements IQueryController {
 
 	@FXML private TextField artistSearchField;
 	@FXML private ListView<ArtistSearchResult> artistSearchList;

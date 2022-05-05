@@ -1,6 +1,5 @@
 package imqdb.qc;
 
-import imqdb.QueryController;
 import imqdb.db.SqliteConnection;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
@@ -10,7 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class QcAllTables extends QueryController {
+public class QcAllTables implements IQueryController {
 
 	@FXML ChoiceBox<String> tableBox;
 

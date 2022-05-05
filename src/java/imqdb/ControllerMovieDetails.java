@@ -179,8 +179,13 @@ public class ControllerMovieDetails {
 		if(val.equals("")) {
 			return;
 		}
+		db.movieLookup(val+"%", this::fillMovieSearchList);
+	}
+
+	public void fillMovieSearchList(ArrayList<MovieSearchResult> movies)
+	{
 		movieSearchList.getItems().clear();
-		movieSearchList.getItems().addAll(UtilQueries.movieLookup(val + "%"));
+		movieSearchList.getItems().addAll(movies);
 	}
 
 }

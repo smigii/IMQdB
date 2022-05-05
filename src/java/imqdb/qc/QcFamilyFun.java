@@ -1,7 +1,6 @@
 package imqdb.qc;
 
 import imqdb.utils.UtilQueries;
-import imqdb.QueryController;
 import imqdb.utils.UtilQueryPair;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -10,7 +9,7 @@ import javafx.scene.control.Spinner;
 
 import java.util.ArrayList;
 
-public class QcFamilyFun extends QueryController {
+public class QcFamilyFun implements IQueryController {
 
 	@FXML private ChoiceBox<UtilQueryPair> artistRoleBox;
 	@FXML private ChoiceBox<UtilQueryPair> familyRoleBox;

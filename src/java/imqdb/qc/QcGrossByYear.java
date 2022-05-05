@@ -1,6 +1,5 @@
 package imqdb.qc;
 
-import imqdb.QueryController;
 import imqdb.utils.UtilQueries;
 import imqdb.utils.UtilQueryPair;
 import javafx.fxml.FXML;
@@ -8,7 +7,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 
-public class QcGrossByYear extends QueryController {
+public class QcGrossByYear implements IQueryController {
 
 	@FXML ChoiceBox<UtilQueryPair> genreBox;
 	@FXML ChoiceBox<UtilQueryPair> countryBox;

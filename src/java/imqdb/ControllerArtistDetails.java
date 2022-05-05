@@ -183,8 +183,13 @@ public class ControllerArtistDetails {
 		if(val.equals("")) {
 			return;
 		}
+		db.artistLookup(val+"%", this::fillArtistLookup);
+	}
+
+	public void fillArtistLookup(ArrayList<ArtistSearchResult> artists)
+	{
 		artistSearchList.getItems().clear();
-		artistSearchList.getItems().addAll(UtilQueries.artistLookup(val + "%"));
+		artistSearchList.getItems().addAll(artists);
 	}
 
 }

@@ -1,6 +1,5 @@
 package imqdb.qc;
 
-import imqdb.QueryController;
 import imqdb.db.SqliteConnection;
 import imqdb.utils.*;
 import javafx.fxml.FXML;
@@ -16,7 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class QcMostLeastWatched extends QueryController {
+public class QcMostLeastWatched implements IQueryController {
 
     private Connection connection;
     private ArrayList<ArtistSearchResult> artists;

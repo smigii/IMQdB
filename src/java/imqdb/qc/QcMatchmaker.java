@@ -1,6 +1,5 @@
 package imqdb.qc;
 
-import imqdb.QueryController;
 import imqdb.db.SqliteConnection;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
@@ -11,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class QcMatchmaker extends QueryController {
+public class QcMatchmaker implements IQueryController {
 
     @FXML private ChoiceBox<String> titleBox;
     @FXML private Spinner<Integer> afterYear;

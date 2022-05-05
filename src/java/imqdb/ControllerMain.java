@@ -1,6 +1,7 @@
 package imqdb;
 
 import imqdb.db.IDatabase;
+import imqdb.qc.IQueryController;
 import imqdb.utils.ErrorWindow;
 import imqdb.utils.TableWrapper;
 import javafx.fxml.FXML;
@@ -72,7 +73,7 @@ public class ControllerMain {
 
 	@FXML protected void onRunBtnClick()
 	{
-		QueryController activeController = querySelector.getValue().getController();
+		IQueryController activeController = querySelector.getValue().getController();
 
 		if(activeController == null)
 			return;

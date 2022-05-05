@@ -1,6 +1,5 @@
 package imqdb.qc;
 
-import imqdb.QueryController;
 import imqdb.db.SqliteConnection;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
@@ -12,7 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class QcMovieDuration extends QueryController {
+public class QcMovieDuration implements IQueryController {
 
     @FXML private ChoiceBox<String> genreBox;
     @FXML private ChoiceBox<String> languageBox;
