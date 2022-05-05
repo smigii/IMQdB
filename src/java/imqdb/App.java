@@ -1,6 +1,5 @@
 package imqdb;
 
-import imqdb.db.SqliteConnection;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -10,7 +9,7 @@ public class App extends javafx.application.Application {
 	@Override
 	public void start(Stage stage) throws IOException
 	{
-		SqliteConnection.connect();
+		Services.init();
 		FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("main.fxml"));
 		Scene scene = new Scene(fxmlLoader.load());
 		scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());  // Apply stylesheet

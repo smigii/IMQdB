@@ -2,6 +2,7 @@ package imqdb;
 
 import imqdb.db.IDatabase;
 import imqdb.db.LocalDatabase;
+import imqdb.db.SqliteConnection;
 
 public class Services {
 
@@ -13,6 +14,11 @@ public class Services {
 			db = new LocalDatabase();
 		}
 		return db;
+	}
+
+	public static void init()
+	{
+		SqliteConnection.connect();
 	}
 
 }

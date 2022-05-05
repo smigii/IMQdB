@@ -1,6 +1,9 @@
 package imqdb.qc;
 
+import imqdb.Services;
+import imqdb.db.IDatabase;
 import imqdb.db.SqliteConnection;
+import imqdb.utils.UtilQueryPair;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.RadioButton;
@@ -13,78 +16,62 @@ import java.sql.SQLException;
 
 public class QcMovieDuration implements IQueryController {
 
-    @FXML private ChoiceBox<String> genreBox;
-    @FXML private ChoiceBox<String> languageBox;
-    @FXML private ChoiceBox<String> countryBox;
+    private final IDatabase db;
+    @FXML private ChoiceBox<UtilQueryPair> genreBox;
+    @FXML private ChoiceBox<UtilQueryPair> languageBox;
+    @FXML private ChoiceBox<UtilQueryPair> countryBox;
     @FXML private Spinner<Integer> minYear;
     @FXML private Spinner<Integer> maxYear;
     @FXML private RadioButton radioLongest;
     @FXML private Spinner<Integer> minDuration;
     @FXML private Spinner<Integer> minCount;
 
+    public QcMovieDuration()
+    {
+        db = Services.getDatabase();
+    }
+
     @FXML void initialize()
     {
         radioLongest.fire();
-        try {
-            Connection connection = SqliteConnection.getConnection();
-            PreparedStatement ps = connection.prepareStatement("select genre from genres");
-            ResultSet rs = ps.executeQuery();
-            genreBox.getItems().add("Any");
-            while (rs.next()) {
-                genreBox.getItems().add(rs.getString("genre"));
-            }
-            genreBox.setValue("Any");
-
-            ps = connection.prepareStatement("select language from languages");
-            rs = ps.executeQuery();
-            languageBox.getItems().add("Any");
-            while (rs.next()) {
-                languageBox.getItems().add(rs.getString("language"));
-            }
-            languageBox.setValue("English");
-
-            ps = connection.prepareStatement("select country from countries");
-            rs = ps.executeQuery();
-            countryBox.getItems().add("Any");
-            while (rs.next()) {
-                countryBox.getItems().add(rs.getString("country"));
-            }
-            countryBox.setValue("USA");
-        }
-        catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+        UtilQueryPair.fillChoiceBoxAddAny(genreBox, db.getGenres());
+        UtilQueryPair.fillChoiceBoxAddAny(languageBox, db.getLanguages());
+        UtilQueryPair.fillChoiceBoxAddAny(countryBox, db.getCountries());
     }
 
     @Override
     public String createQuery()
     {
-        String genre_selected = genreBox.getValue();
-        String language_selected = languageBox.getValue();
-        String country_selected = countryBox.getValue();
+        UtilQueryPair selGenre = genreBox.getValue();
+        UtilQueryPair selLang = languageBox.getValue();
+        UtilQueryPair selCountry = countryBox.getValue();
 
-        String genre_where = "movies.imdb_title_id in (select imdb_title_id from movie_genre natural join genres where genres.genre = \"" + genre_selected + "\")";
-        String language_where = "movies.imdb_title_id in (select imdb_title_id from movie_language natural join languages where languages.language = \"" + language_selected + "\")";
-        String country_where = "movies.imdb_title_id in (select imdb_title_id from movie_country natural join countries where countries.country = \"" + country_selected + "\")";
+        String genre_where = "movies.imdb_title_id in (select imdb_title_id from movie_genre natural join genres where genres.genre = \"" + selGenre.name() + "\")";
+        String language_where = "movies.imdb_title_id in (select imdb_title_id from movie_language natural join languages where languages.language = \"" + selLang.name() + "\")";
+        String country_where = "movies.imdb_title_id in (select imdb_title_id from movie_country natural join countries where countries.country = \"" + selCountry.name() + "\")";
 
         String clg_where = "";
         int clauses = 0;
-        if(!genre_selected.equals("Any")) {
+
+        if(!selGenre.isAny()) {
             clg_where += genre_where + "\n";
             clauses++;
         }
-        if(!language_selected.equals("Any")) {
+
+        if(!selLang.isAny()) {
             if(clauses > 0)
                 clg_where += "and ";
             clg_where += language_where + "\n";
             clauses++;
         }
-        if(!country_selected.equals("Any")) {
+
+        if(!selCountry.isAny()) {
             if(clauses > 0)
                 clg_where += "and ";
             clg_where += country_where + "\n";
             clauses++;
         }
+
         if(clauses > 0)
             clg_where += " and ";
 
