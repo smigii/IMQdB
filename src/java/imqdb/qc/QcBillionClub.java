@@ -1,19 +1,26 @@
 package imqdb.qc;
 
-import imqdb.utils.UtilQueries;
+import imqdb.Services;
+import imqdb.db.IDatabase;
 import imqdb.utils.UtilQueryPair;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 
 public class QcBillionClub implements IQueryController {
 
-	@FXML ChoiceBox<UtilQueryPair> titleBox;
+	private final IDatabase db;
+	@FXML private ChoiceBox<UtilQueryPair> titleBox;
+
+	public QcBillionClub()
+	{
+		db = Services.getDatabase();
+	}
 
 	@FXML
 	public void initialize()
 	{
 		titleBox.getItems().add(UtilQueryPair.ANY);
-		titleBox.getItems().addAll(UtilQueries.getTitles());
+		titleBox.getItems().addAll(db.getTitles());
 		titleBox.setValue(UtilQueryPair.ANY);
 	}
 

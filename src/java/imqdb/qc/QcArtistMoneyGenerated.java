@@ -3,7 +3,6 @@ package imqdb.qc;
 import imqdb.Services;
 import imqdb.db.IDatabase;
 import imqdb.utils.ArtistSearchResult;
-import imqdb.utils.UtilQueries;
 import imqdb.utils.UtilQueryPair;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -36,7 +35,7 @@ public class QcArtistMoneyGenerated implements IQueryController {
 	@FXML public void initialize()
 	{
 		titleBox.getItems().add(UtilQueryPair.ANY);
-		titleBox.getItems().addAll(UtilQueries.getTitles());
+		titleBox.getItems().addAll(db.getTitles());
 		titleBox.setValue(UtilQueryPair.ANY);
 
 		artistSearchField.setOnKeyPressed(new EventHandler<KeyEvent>() {

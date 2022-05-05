@@ -1,6 +1,7 @@
 package imqdb.qc;
 
-import imqdb.utils.UtilQueries;
+import imqdb.Services;
+import imqdb.db.IDatabase;
 import imqdb.utils.UtilQueryPair;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
@@ -9,16 +10,22 @@ import javafx.scene.control.Spinner;
 
 public class QcGrossByYear implements IQueryController {
 
-	@FXML ChoiceBox<UtilQueryPair> genreBox;
-	@FXML ChoiceBox<UtilQueryPair> countryBox;
-	@FXML Spinner<Integer> minYear;
-	@FXML Spinner<Integer> maxYear;
-	@FXML RadioButton radioDomestic;
-	@FXML RadioButton radioWorldwide;
-	@FXML RadioButton radioHigh;
-	@FXML RadioButton radioLow;
-	@FXML RadioButton radioGross;
-	@FXML RadioButton radioProfit;
+	private final IDatabase db;
+	@FXML private ChoiceBox<UtilQueryPair> genreBox;
+	@FXML private ChoiceBox<UtilQueryPair> countryBox;
+	@FXML private Spinner<Integer> minYear;
+	@FXML private Spinner<Integer> maxYear;
+	@FXML private RadioButton radioDomestic;
+	@FXML private RadioButton radioWorldwide;
+	@FXML private RadioButton radioHigh;
+	@FXML private RadioButton radioLow;
+	@FXML private RadioButton radioGross;
+	@FXML private RadioButton radioProfit;
+
+	public QcGrossByYear()
+	{
+		db = Services.getDatabase();
+	}
 
 	@FXML
 	public void initialize()
@@ -28,11 +35,11 @@ public class QcGrossByYear implements IQueryController {
 		radioGross.fire();
 
 		genreBox.getItems().add(UtilQueryPair.ANY);
-		genreBox.getItems().addAll(UtilQueries.getGenres());
+		genreBox.getItems().addAll(db.getGenres());
 		genreBox.setValue(UtilQueryPair.ANY);
 
 		countryBox.getItems().add(UtilQueryPair.ANY);
-		countryBox.getItems().addAll(UtilQueries.getCountries());
+		countryBox.getItems().addAll(db.getCountries());
 		countryBox.setValue(UtilQueryPair.ANY);
 	}
 

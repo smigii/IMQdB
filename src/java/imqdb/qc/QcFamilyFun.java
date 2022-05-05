@@ -1,6 +1,7 @@
 package imqdb.qc;
 
-import imqdb.utils.UtilQueries;
+import imqdb.Services;
+import imqdb.db.IDatabase;
 import imqdb.utils.UtilQueryPair;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 
 public class QcFamilyFun implements IQueryController {
 
+	private final IDatabase db;
 	@FXML private ChoiceBox<UtilQueryPair> artistRoleBox;
 	@FXML private ChoiceBox<UtilQueryPair> familyRoleBox;
 	@FXML private CheckBox famBoxChildren;
@@ -21,12 +23,17 @@ public class QcFamilyFun implements IQueryController {
 	@FXML private Spinner<Integer> maxYear;
 	@FXML private Spinner<Integer> minBudget;
 
+	public QcFamilyFun()
+	{
+		db = Services.getDatabase();
+	}
+
 	@FXML public void initialize()
 	{
 		artistRoleBox.getItems().add(UtilQueryPair.ANY);
 		familyRoleBox.getItems().add(UtilQueryPair.ANY);
-		artistRoleBox.getItems().addAll(UtilQueries.getTitles());
-		familyRoleBox.getItems().addAll(UtilQueries.getTitles());
+		artistRoleBox.getItems().addAll(db.getTitles());
+		familyRoleBox.getItems().addAll(db.getTitles());
 		artistRoleBox.setValue(UtilQueryPair.ANY);
 		familyRoleBox.setValue(UtilQueryPair.ANY);
 

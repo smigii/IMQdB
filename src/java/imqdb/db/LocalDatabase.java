@@ -3,6 +3,7 @@ package imqdb.db;
 import imqdb.utils.ArtistSearchResult;
 import imqdb.utils.Logger;
 import imqdb.utils.MovieSearchResult;
+import imqdb.utils.UtilQueryPair;
 import javafx.concurrent.Task;
 
 import java.sql.Connection;
@@ -14,11 +15,36 @@ import java.util.function.Consumer;
 
 public class LocalDatabase implements IDatabase {
 
-	private final Connection db;
+	private final Connection connection;
+	private final ArrayList<UtilQueryPair> genres;
+	private final ArrayList<UtilQueryPair> languages;
+	private final ArrayList<UtilQueryPair> titles;
+	private final ArrayList<UtilQueryPair> countries;
 
 	public LocalDatabase()
 	{
-		db = SqliteConnection.getConnection();
+		connection = SqliteConnection.getConnection();
+		genres = fill("genres", "genre", "genre_id");
+		languages = fill("languages", "language", "language_id");
+		countries = fill("countries", "country", "country_id");
+		titles = fill("titles", "title", "title_id");
+	}
+
+	private ArrayList<UtilQueryPair> fill(String table, String field, String id)
+	{
+		ArrayList<UtilQueryPair> list = new ArrayList<>();
+		try {
+			PreparedStatement ps = connection.prepareStatement("select * from " + table);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				list.add(new UtilQueryPair(rs.getString(field), rs.getString(id)));
+			}
+			return list;
+		}
+		catch(SQLException e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
 	}
 
 	@Override
@@ -28,7 +54,7 @@ public class LocalDatabase implements IDatabase {
 			@Override protected ResultSet call() throws Exception {
 				Logger.logQueryAttempt(sql);
 				try {
-					PreparedStatement ps = db.prepareStatement(sql);
+					PreparedStatement ps = connection.prepareStatement(sql);
 					return ps.executeQuery();
 				}
 				catch(SQLException e) {
@@ -56,7 +82,8 @@ public class LocalDatabase implements IDatabase {
 			protected ArrayList<ArtistSearchResult> call() throws Exception
 			{
 				try {
-					PreparedStatement ps = db.prepareStatement("select artist.*, c1.country as birth_country, c2.country as death_country from artist\n" +
+					PreparedStatement ps = connection.prepareStatement("select\n" +
+						"\tartist.*, c1.country as birth_country, c2.country as death_country from artist\n" +
 						"left join countries c1 on artist.country_of_birth_id = c1.country_id\n" +
 						"left join countries c2 on artist.country_of_death_id = c2.country_id\n" +
 						"where artist.name like ?");
@@ -102,7 +129,6 @@ public class LocalDatabase implements IDatabase {
 						"\tgroup_concat(distinct genre) as \"genres\",\n" +
 						"\tgroup_concat(distinct language) as \"languages\"\n" +
 						"from movies\n" +
-						"\n" +
 						"inner join production_companies on production_companies.production_id = movies.production_id\n" +
 						"inner join movie_country on movie_country.imdb_title_id = movies.imdb_title_id\n" +
 						"inner join countries on movie_country.country_id = countries.country_id\n" +
@@ -131,6 +157,26 @@ public class LocalDatabase implements IDatabase {
 
 		task.setOnSucceeded(ev -> callback.accept(task.getValue()));
 		dispatchThread(task);
+	}
+
+	public ArrayList<UtilQueryPair> getGenres()
+	{
+		return genres;
+	}
+
+	public ArrayList<UtilQueryPair> getLanguages()
+	{
+		return languages;
+	}
+
+	public ArrayList<UtilQueryPair> getCountries()
+	{
+		return countries;
+	}
+
+	public ArrayList<UtilQueryPair> getTitles()
+	{
+		return titles;
 	}
 
 	private <T> void dispatchThread(Task<T> task)

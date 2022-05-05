@@ -2,8 +2,8 @@ package imqdb.utils;
 
 public class UtilQueryPair {
 
-	private String name;
-	private String id;
+	private final String name;
+	private final String id;
 
 	public static UtilQueryPair ANY = new UtilQueryPair("Any", "*");
 

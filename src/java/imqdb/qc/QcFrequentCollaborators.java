@@ -3,7 +3,6 @@ package imqdb.qc;
 import imqdb.Services;
 import imqdb.db.IDatabase;
 import imqdb.utils.ArtistSearchResult;
-import imqdb.utils.UtilQueries;
 import imqdb.utils.UtilQueryPair;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -35,8 +34,8 @@ public class QcFrequentCollaborators implements IQueryController {
 	{
 		titleBoxArtist.getItems().add(UtilQueryPair.ANY);
 		titleBoxCollab.getItems().add(UtilQueryPair.ANY);
-		titleBoxArtist.getItems().addAll(UtilQueries.getTitles());
-		titleBoxCollab.getItems().addAll(UtilQueries.getTitles());
+		titleBoxArtist.getItems().addAll(db.getTitles());
+		titleBoxCollab.getItems().addAll(db.getTitles());
 		titleBoxArtist.setValue(UtilQueryPair.ANY);
 		titleBoxCollab.setValue(UtilQueryPair.ANY);
 

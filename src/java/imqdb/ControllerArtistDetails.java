@@ -3,7 +3,6 @@ package imqdb;
 import imqdb.db.IDatabase;
 import imqdb.utils.ArtistSearchResult;
 import imqdb.utils.TableWrapper;
-import imqdb.utils.UtilQueries;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
